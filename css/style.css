@@ -1,0 +1,208 @@
+@font-face {
+  font-family: 'Open sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open sans') url('opensans.woff');
+}
+
+body {
+  background: url(../images/sky.png) 0 0 repeat-x rgb(238, 238, 238);
+  font-family: Georgia, serif;
+}
+
+h1, h2, h3{
+  color: rgb(72,72,72);
+  font-family: 'Open sans', sans-serif;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 300%;
+}
+
+h4 {
+  font-size: medium;
+  font-style: italic;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+  color: #4169e1;
+}
+
+button {
+  font-family: sans-serif;
+  font-size: smaller;
+}
+
+textarea {
+  font-family: monospace;
+  font-size: medium;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid gray;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+}
+
+.hiddenContent {
+  display: none;
+}
+
+.divRight {
+  text-align: right;
+}
+
+.changeset {
+  margin-top: 10px;
+  border: 1px solid black;
+}
+
+.changeset.backedout {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 0px;
+}
+
+.changeset.backout {
+  margin-top: 0px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-top: 0px;
+}
+
+.csetTitle {
+  font-weight: bold;
+  /*font-family: Verdana, sans-serif;*/
+  font-family: 'Open sans', sans-serif;
+  background-color: #87ceeb;
+  color: black;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.csetTitle a:link {
+  color: black;
+  text-decoration: none;
+}
+
+.csetTitle a:visited {
+  color: black;
+}
+
+.csetTitle a:active {
+  color: black;
+}
+
+.csetTitle.backedout {
+  background-color: silver;
+}
+
+.csetTitle.backout {
+  background-color: #87ceeb;
+}
+
+.csetHead {
+  padding-bottom: 10px;
+  background-color: rgb(245, 255, 250);
+}
+
+.backoutbanner {
+  font-weight: bold;
+  background-color: rgb(255,239,217);
+  color: red;
+  border: 1px solid black;
+}
+
+.backout {
+  background-color: rgb(255,239,217);
+}
+
+.backoutHeader {
+  color: red; 
+}
+
+.whiteboard {
+  border: 1px solid black;
+}
+
+.loadingOverlay .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.bug {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  border-top: 1px solid black;
+}
+
+.bug.resolved {
+  background-color: rgb(245, 255, 250);
+}
+
+.viewhide {
+  text-decoration: none;
+  color: #4169e1;
+  cursor: pointer;
+}
+
+.grid-12.commentDiv {
+  display: none;
+}
+
+.ctr {
+  text-align: center;
+}
+
+.subwarn {
+  color: red;
+}
+
+.prevButton {
+  margin: 10px;
+}
+
+.nextButton {
+  margin: 10px;
+}
+
+.summaryHeading {
+  text-decoration: underline;
+}
+
+#errorText {
+  border: 1px solid rgb(255,213,153);
+  background-color: rgb(255,239,217);
+  color: rgb(51,51,51);
+}
+
+#loadingOverlay {
+  padding-left: 25px;
+}
+
+#loadingOverlayContainer {
+  position: fixed;
+}
+
+#headline, #helpText {
+  margin: 0;
+  padding: 0;
+}
+
+#expandButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

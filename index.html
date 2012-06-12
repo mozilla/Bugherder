@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="css/toast.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/flick/jquery-ui-1.8.21.custom.css" />
+    <script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.21.custom.min.js"></script>
+    <script type="text/javascript" src="js/bzjs/bz.js"></script>
+    <script type="text/javascript" src="js/Utils.js"></script>
+    <script type="text/javascript" src="js/Config.js"></script>
+    <script type="text/javascript" src="js/Step.js"></script>
+    <script type="text/javascript" src="js/UI.js"></script>
+    <script type="text/javascript" src="js/DebugUI.js"></script>
+    <script type="text/javascript" src="js/ViewerController.js"></script>
+    <script type="text/javascript" src="js/Viewer.js"></script>
+    <script type="text/javascript" src="js/Summary.js"></script>
+    <script type="text/javascript" src="js/Dialogs.js"></script>
+    <script type="text/javascript" src="js/PushData.js"></script>
+    <script type="text/javascript" src="js/MilestoneData.js"></script>
+    <script type="text/javascript" src="js/BugData.js"></script>
+    <script type="text/javascript" src="js/Remapper.js"></script>
+    <script type="text/javascript" src="js/mcMerge.js"></script>
+    <title>mcMerge</title>
+  </head>
+  <body>
+    <script type="text/javascript">mcMerge.init();</script>
+    <div class="ctr">
+      <h1 id="title">m-cMerge</h1>
+      <h4>A tool to help with post-merge Bugzilla administrivia</h4>
+
+      <div class="hiddenContent hideAll" id="errors">
+        <span id="errorText"></span>
+      </div>
+
+      <div class="hiddenContent hideAll" id="loading"></div>
+
+      <div class="hiddenContent hideAll" id="getCset">
+        <p id="formText">
+          Please enter the URL or hex changeset ID of a changeset from the merge:
+        </p>
+        <form id="csetForm" action="">
+          <input type="text" id="changeset"></input>
+          <button type="submit" value="Submit" id="revSubmit">Submit</button>
+        </form>
+      </div>
+
+      <div class="hiddenContent hideAll" id="detail"></div>
+
+    </div>
+
+    <div class="wrap">
+      <div class="grids">
+        <div class="hiddenContent hideAll" id="viewerOutput"></div>
+        <div class="hiddenContent hideAll" id="pushes"></div>
+      </div>
+    </div>
+    <div id="bugLoadForm" title="Add bug">
+      <p>Enter the bug number you wish to add</p>
+      <input type="text" name="Bug number" id="loadBug" class="text ui-widget-content ui-corner-all" />
+    </div>
+    <div id="bugChangeForm" title="Change bug">
+      <p>Enter a new bug number</p>
+      <input type="text" name="Bug number" id="changeBug" class="text ui-widget-content ui-corner-all" />
+    </div>
+    <div id="credentialsForm" title="Enter your bugzilla credentials">
+      <p>Please provide your bugzilla login<br>
+      Username: <input type="text" name="username" id="username" class="text ui-widget-content ui-corner-all" /><br />
+      Password: <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" />
+      </p>
+    </div>
+    <div id="loadingOverlay" title="Loading">
+      Please wait...
+    </div>
+    <div id="invalidBugMessage" title="Invalid bug number">
+      <p>That wasn't a valid bug number!</p>
+    </div>
+    <div id="invalidEmailMessage" title="Invalid email address">
+      <p>That didn't look like a valid email address!</p>
+    </div>
+    <div id="submissionMessage" title="Submission completed">
+      <p id="submissionText"></p>
+    </div>
+    <noscript>
+      You need Javascript to proceed.
+    </noscript>
+  </body>
+</html>
