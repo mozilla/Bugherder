@@ -429,6 +429,12 @@ var PushData = {
     push.hgLink = Config.hgRevURL + push.cset;
     push.desc = this.htmlEncode(cset.desc);
 
+    var author = cset.author;
+    var index = author.indexOf(' <');
+    if (author.indexOf(' <') != -1)
+      author = author.substr(0, index);
+    push.author = this.htmlEncode(author);
+
     // Have a stab at working out the bug number. This will return the first possibility
     // it finds - which may not in fact be the bug number! It may also turn out to be the
     // tip of a merge, or the bug number of the bug backed out by this changeset

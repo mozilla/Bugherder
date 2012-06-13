@@ -412,6 +412,7 @@ var Viewer = {
     var html = "";
     var cset = PushData.allPushes[index].cset;
     var desc = PushData.allPushes[index].desc;
+    var author = PushData.allPushes[index].author;
     html += '<div class="changeset';
     if (classToAdd != '')
       html += ' ' + classToAdd;
@@ -423,6 +424,7 @@ var Viewer = {
     html += '">';
     html += '      <div class="grid-12">Changeset: '+ UI.linkifyChangeset(cset) + '</div>';
     html += '    </div>';
+    html += '      <div class="grid-12">'+ author + '</div>';
     html += '    <div class="grid-two-thirds">' + UI.linkifyDescription(desc);
     html += '    </div>';
     html += '    <div class="grid-one-third divRight">';
