@@ -375,7 +375,7 @@ Step.prototype.attachBugToCset = function(index, bugID) {
   if (bug) {
     leaveOpen = Config.leaveOpenRE.test(bug.whiteboard);
     hasMilestone = bug.milestone != '---';
-    if (hasMilestone)
+    if (hasMilestone || leaveOpen)
       milestone = bug.milestone;
     else {
       var defaultMilestone = MilestoneData.milestones[bug.product].defaultIndex;
