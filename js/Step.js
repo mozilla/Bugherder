@@ -136,14 +136,7 @@ Step.prototype.createBug = function(bugID, info) {
   if (changed) {
     bug.id = bugID;
 
-    // It appears some people still do this, so we may as well correct it
-    var whiteboard = BugData.bugs[bugID].whiteboard;
-    var inboundIndex = whiteboard.indexOf('[inbound]');
-    if (inboundIndex != -1) {
-      var before = whiteboard.substr(0,inboundIndex);
-      var after = whiteboard.substr(inboundIndex + 9);
-      bug.whiteboard = before + after;
-    }
+    bug.whiteboard = this.adjustWhiteboard(BugData.bugs[bugID].whiteboard);
 
     // And likewise...
     var keywords = BugData.bugs[bugID].keywords;
@@ -353,6 +346,13 @@ Step.prototype.continueSubmit = function(i) {
     UI.showBugSubmitDialog(this.successful, this.sendData.length);
   } else
     this.startSubmit(i+1);
+};
+
+
+Step.prototype.adjustWhiteboard = function(whiteboard) {
+  // It appears some people still do this, so we may as well correct it
+  var newWhiteboard = whiteboard.replace('[inbound]','');
+  return newWhiteboard;
 };
 
 
