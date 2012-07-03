@@ -352,6 +352,10 @@ Step.prototype.continueSubmit = function(i) {
 Step.prototype.adjustWhiteboard = function(whiteboard) {
   // It appears some people still do this, so we may as well correct it
   var newWhiteboard = whiteboard.replace('[inbound]','');
+
+  // Remove annotations on fx-team merges
+  newWhiteboard = newWhiteboard.replace('[fixed-in-fx-team]','');
+
   return newWhiteboard;
 };
 
