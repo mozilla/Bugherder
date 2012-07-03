@@ -507,8 +507,10 @@ var Viewer = {
   },
 
 
-  addChangeset: function viewer_addChangeset(index, classToAdd) {
+  addChangeset: function viewer_addChangeset(index, isLast, classToAdd) {
     classToAdd = classToAdd || '';
+    if (isLast)
+      classToAdd += ' last';
     // build HTML for changeset part
     var pushHTML = this.makeHTMLForChangeset(index, classToAdd);
     pushHTML += this.makeBugDivHTML(PushData.allPushes[index].cset);
@@ -541,12 +543,12 @@ var Viewer = {
     var len = pushes.length;
 
     if (!isBackedOut) {
-      var html = pushes.map(function(i) {return this.addChangeset(i);}, this).join('');
+      var html = pushes.map(function(i, ind, arr) {return this.addChangeset(i, ind == arr.length - 1);}, this).join('');
       $('#viewerOutput').append(html);
     } else {
-      var html = pushes.map(function(i) {
-        var h = PushData.allPushes[i].affected.map(function(j) {return this.addChangeset(j, 'backedout');}, this).join('');
-        return h + this.makeBackoutBannerHTML() + this.addChangeset(i, 'backout');
+      var html = pushes.map(function(i, ind, arr) {
+        var h = PushData.allPushes[i].affected.map(function(j) {return this.addChangeset(j, false, 'backedout');}, this).join('');
+        return h + this.makeBackoutBannerHTML() + this.addChangeset(i, ind == arr.length - 1, 'backout');
       }, this).join('');
       $('#viewerOutput').append(html);
     }

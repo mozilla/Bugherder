@@ -130,6 +130,10 @@ td {
   background-color: rgb(255,239,217);
 }
 
+.backout.last {
+  margin-bottom: 0px;
+}
+
 .backoutHeader {
   color: red; 
 }
