@@ -15,7 +15,7 @@ var Config = {
   versionRE: /^mozilla\d+$/i,
   csetInputRE: /^(tip|[\da-f]{12,40})$/i,
   csetIDRE: /\b([\da-f]{12,40})\b/ig,
-  leaveOpenRE: /leave\s+open/i,
+  leaveOpenRE: /leave(?:-|\s+)open/i,
   bugNumRE: /\b(\d{4,7})\b/g,
   strictBugNumRE: /^(\d{4,7})$/,
   mergeRE: /\bmerg(ed?|ing)\b/i,
