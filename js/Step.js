@@ -136,9 +136,9 @@ Step.prototype.createBug = function(bugID, info) {
   if (changed) {
     bug.id = bugID;
 
-    bug.whiteboard = this.adjustWhiteboard(BugData.bugs[bugID].whiteboard);
+    bug.whiteboard = BugData.bugs[bugID].whiteboard;
 
-    // And likewise...
+    // Remove checkin-needed if present in keywords
     var keywords = BugData.bugs[bugID].keywords;
     var checkinIndex = keywords.indexOf('checkin-needed');
     if (checkinIndex != -1) {
@@ -389,6 +389,10 @@ Step.prototype.attachBugToCset = function(index, bugID) {
                                           bug.canResolve && !leaveOpen,
                            linkedChangesets: [],
                            milestone: milestone};
+
+    // Adjust the whiteboard the first time we see this bug
+    if (bug)
+      bug.whiteboard = this.adjustWhiteboard(bug.whiteboard);
   }
 
   attached.canComment = !!bug; // reserved for future use :-)
