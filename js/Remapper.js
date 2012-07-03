@@ -117,9 +117,11 @@ var Remapper = {
         if (b in BugData.bugs) {
           if (BugData.bugs[b].whiteboard.length == 0 && inboundSingle == false) {
             BugData.bugs[b].whiteboard = '[inbound]'
+            BugData.bugs[b].summary += ' [inbound]';
             inboundSingle = true;
           } else if (BugData.bugs[b].whiteboard.length > 0 && inboundMultiple == false) {
             BugData.bugs[b].whiteboard += '[inbound]';
+            BugData.bugs[b].summary += ' [inbound]';
             inboundMultiple = true;
           }
         }
