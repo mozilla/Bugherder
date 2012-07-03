@@ -3,7 +3,7 @@
 var mcMerge = {
   debug: false,
   expand: false,
-  remap: true,
+  remap: false,
 
   stageTypes: [{name: 'fixes'},
     {name: 'foundBackouts'},
