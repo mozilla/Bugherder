@@ -561,6 +561,7 @@ var Viewer = {
     $('.commentCheck').on('change', this.onCommentCheckClick);
     $('.milestone').on('change', this.onMilestoneChange);
 
+    $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
     if (onPrevious.fn) {
       $('.prevButton').click(function (e) {
@@ -582,7 +583,6 @@ var Viewer = {
       self.onExpandButtonClick(e);
     });
 
-    $('#viewerOutput').append(this.makeSubmitHTML());
     $('#submitButton').click(function (e) {
       self.onSubmitButtonClick(e);
     });

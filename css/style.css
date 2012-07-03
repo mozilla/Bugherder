@@ -202,6 +202,10 @@ td {
   padding: 0;
 }
 
+#submitButton {
+  margin-top: 10px;
+}
+
 #expandButton {
   margin-top: 10px;
   margin-bottom: 10px;
