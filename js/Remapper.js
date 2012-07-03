@@ -25,12 +25,14 @@ var Remapper = {
    html += '<div class="grid-12"><h3>Other options:</h3></div>'
    html += '<div class="grid-12">Display an alert after fetching last_change_time (to allow you to mid-air the change)';
    html += '<input type="checkbox" id="midair"></div>';
-   html += '<div class="grid-12">Set bug statuses to NEW (to allow you to test bug resolution)';
+   html += '<div class="grid-12">Set bug statuses to NEW (to allow you testing of bug resolution)';
    html += '<input type="checkbox" id="new"></div>';
-   html += '<div class="grid-12">Add checkin-needed into keywords (to allow you to test checkin-needed removal)';
+   html += '<div class="grid-12">Add checkin-needed into keywords (to allow testing of checkin-needed removal)';
    html += '<input type="checkbox" id="checkin"></div>';
-   html += '<div class="grid-12">Add [inbound] into whiteboard (to allow you to test [inbound] removal)';
+   html += '<div class="grid-12">Add [inbound] into whiteboard (to allow testing of [inbound] removal)';
    html += '<input type="checkbox" id="inbound"></div>';
+   html += '<div class="grid-12">Add [fixed-in-fx-team] into whiteboard (to allow testing of [fixed-in-fx-team] removal)';
+   html += '<input type="checkbox" id="fxteam"></div>';
    html += '<hr>';
    return html;
   },
@@ -123,6 +125,30 @@ var Remapper = {
             BugData.bugs[b].whiteboard += '[inbound]';
             BugData.bugs[b].summary += ' [inbound]';
             inboundMultiple = true;
+          }
+        }
+      }
+    }
+
+    if ($('#fxteam').prop('checked')) {
+      if (remaps.items == 0) {
+        this.error('You need to redirect at least 1 bug for fxteam to work!');
+        return;
+      }
+      var fxteamSingle = false;
+      var fxteamMultiple = false;
+      for (b in remaps) {
+        if (b == 'items')
+          continue;
+        if (b in BugData.bugs) {
+          if (BugData.bugs[b].whiteboard.length == 0 && fxteamSingle == false) {
+            BugData.bugs[b].whiteboard = '[fixed-in-fx-team]'
+            BugData.bugs[b].summary += ' [fixed-in-fx-team]';
+            fxteamSingle = true;
+          } else if (BugData.bugs[b].whiteboard.length > 0 && fxteamMultiple == false) {
+            BugData.bugs[b].whiteboard += '[fixed-in-fx-team]';
+            BugData.bugs[b].summary += ' [fixed-in-fx-team]';
+            fxteamMultiple = true;
           }
         }
       }
