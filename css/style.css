@@ -60,6 +60,10 @@ td {
   text-align: right;
 }
 
+.grid-3.divRight {
+  margin-left: 0px;
+}
+
 .changeset {
   margin-top: 10px;
   border: 1px solid black;
