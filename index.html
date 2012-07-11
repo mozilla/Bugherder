@@ -16,7 +16,6 @@
     <script type="text/javascript" src="js/ViewerController.js"></script>
     <script type="text/javascript" src="js/Viewer.js"></script>
     <script type="text/javascript" src="js/Summary.js"></script>
-    <script type="text/javascript" src="js/Dialogs.js"></script>
     <script type="text/javascript" src="js/PushData.js"></script>
     <script type="text/javascript" src="js/MilestoneData.js"></script>
     <script type="text/javascript" src="js/BugData.js"></script>
@@ -57,14 +56,20 @@
         <div class="hiddenContent hideAll" id="pushes"></div>
       </div>
     </div>
-    <div id="submissionMessage" title="Submission completed">
-      <p id="submissionText"></p>
-    </div>
 
     <div class="modal hideAll" id="loadingModal">
       <div id="lmTitle" class="modalTitle">Loading...</div>
       <div id="lmContent" class="modalContent">
         Please wait
+      </div>
+    </div>
+
+    <div class="modal hideAll" id="progressModal">
+      <div id="pmTitle" class="modalTitle">Working...</div>
+      <div id="pmContent" class="modalContent">
+        <progress max="100" val="0" id="progressBar">
+          <span id="progressText">0%</span>
+        </progress>
       </div>
     </div>
 

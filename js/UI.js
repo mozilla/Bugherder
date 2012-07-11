@@ -78,6 +78,27 @@ var UI = {
   },
 
 
+  hideProgressModal: function UI_hideProgressModal() {
+    $('#progressModal').toggle();
+    $('#opaque').toggle();
+  },
+
+
+  updateProgressModal: function UI_updateProgressModal(percentage) {
+    $('#progressBar').attr('value', percentage);
+    $('#progressText').text(percentage+'%');
+  },
+
+
+  showProgressModal: function UI_showProgressModal() {
+    $('#progressBar').attr('value', '0');
+    $('#progressBar').attr('max', '100');
+    $('#progressText').text('0%');
+    $('#opaque').toggle();
+    $('#progressModal').toggle();
+  },
+
+
   onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
     e.preventDefault(); 
     $('#crCancel').unbind('click', UI.onCredentialsCancel);

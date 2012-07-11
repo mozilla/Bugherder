@@ -191,7 +191,7 @@ Step.prototype.onSubmitError = function(where, msg, i) {
       delete Step.username;
       this.retries = [];
       UI.showErrorMessage('The username or password you supplied was not valid. Submit attempt abandoned.');
-      UI.hideLoadingOverlay();
+      UI.hideProgressModal();
       return;
     }
     this.retries.push(i);
@@ -227,12 +227,12 @@ Step.prototype.onCredentialsAcquired = function(username) {
 
 
 Step.prototype.beginSubmit = function() {
-  UI.showLoadingOverlay();
+  UI.showProgressModal();
   this.constructData();
   this.retries = [];
   this.successful = 0;
   if (this.sendData.length == 0) {
-    UI.hideLoadingOverlay();
+    UI.hideProgressModal();
     return;
   }
 
@@ -287,6 +287,7 @@ Step.prototype.postSubmit = function(i) {
     this.retries.pop();
 
   this.successful += 1;
+  UI.updateProgressModal(((i+1) * 100)/this.sendData.length);
 
   var sent = this.sendData[i];
   delete sent.update_token;
@@ -335,15 +336,14 @@ Step.prototype.postSubmit = function(i) {
 
 Step.prototype.continueSubmit = function(i) {
   if (i + 1 >= this.sendData.length) {
-    UI.hideLoadingOverlay();
+    UI.updateProgressModal(100);
     if (this.retries.length > 0) {
       var ltext = this.retries.map(function(elem) {
         var bug = this.sendData[elem].id;
         return 'Bug ' + bug;}, this).join('\n');
       UI.showErrorMessage('The following bugs failed to submit:\n' + ltext);
     }
-
-    UI.showBugSubmitDialog(this.successful, this.sendData.length);
+    UI.hideProgressModal();
   } else
     this.startSubmit(i+1);
 };
