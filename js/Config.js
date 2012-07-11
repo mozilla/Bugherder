@@ -145,3 +145,8 @@ var Config = {
 
 Config.bugNumberREs = [Config.bugRE1, Config.bugRE2, Config.bugRE3,
                        Config.bugRE4, Config.bugRE5, Config.bugRE6, Config.bugRE7];
+
+// Detect input type="email" support
+$(document).ready(function() {
+  Config.needsValidation = $('#username').prop('type') != 'email';
+});

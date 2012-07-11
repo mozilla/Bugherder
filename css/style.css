@@ -8,6 +8,7 @@
 body {
   background: url(../images/sky.png) 0 0 repeat-x rgb(238, 238, 238);
   font-family: Georgia, serif;
+  z-index: 1;
 }
 
 h1, h2, h3{
@@ -150,6 +151,69 @@ td {
   display: none;
 }
 
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
+  padding: 5px;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background-color: rgb(238,238,238);
+  font-size: large;
+  width: 300px;
+}
+
+.modalTitle {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #87ceeb;
+}
+
+.modalContent {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.modalForm {
+  width: 400px;
+}
+
+.modalForm p {
+  margin: 0px 0px 5px 0px;
+}
+
+.modalForm input {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.modalForm button {
+  font-family: 'Open Sans', sans-serif;
+  font-size: large;
+}
+
+#opaque {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: .80;
+  filter: Alpha(Opacity=80); 
+  background-color: rgb(238, 238, 238);
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  background-position: 50% 50%;
+  z-index: 10;
+}
+
 .bug {
   padding-top: 5px;
   padding-bottom: 5px;
@@ -173,6 +237,10 @@ td {
 
 .ctr {
   text-align: center;
+}
+
+div.ctr {
+  z-index: 5;
 }
 
 .subwarn {

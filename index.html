@@ -26,6 +26,7 @@
   </head>
   <body>
     <script type="text/javascript">mcMerge.init();</script>
+    <div class="hideAll" id="opaque"></div>
     <div class="ctr">
       <h1 id="title">m-cMerge</h1>
       <h4>A tool to help with post-merge Bugzilla administrivia</h4>
@@ -56,32 +57,76 @@
         <div class="hiddenContent hideAll" id="pushes"></div>
       </div>
     </div>
-    <div id="bugLoadForm" title="Add bug">
-      <p>Enter the bug number you wish to add</p>
-      <input type="text" name="Bug number" id="loadBug" class="text ui-widget-content ui-corner-all" />
-    </div>
-    <div id="bugChangeForm" title="Change bug">
-      <p>Enter a new bug number</p>
-      <input type="text" name="Bug number" id="changeBug" class="text ui-widget-content ui-corner-all" />
-    </div>
-    <div id="credentialsForm" title="Enter your bugzilla credentials">
-      <p>Please provide your bugzilla login<br>
-      Username: <input type="text" name="username" id="username" class="text ui-widget-content ui-corner-all" /><br />
-      Password: <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" />
-      </p>
-    </div>
-    <div id="loadingOverlay" title="Loading">
-      Please wait...
-    </div>
-    <div id="invalidBugMessage" title="Invalid bug number">
-      <p>That wasn't a valid bug number!</p>
-    </div>
-    <div id="invalidEmailMessage" title="Invalid email address">
-      <p>That didn't look like a valid email address!</p>
-    </div>
     <div id="submissionMessage" title="Submission completed">
       <p id="submissionText"></p>
     </div>
+
+    <div class="modal hideAll" id="loadingModal">
+      <div id="lmTitle" class="modalTitle">Loading...</div>
+      <div id="lmContent" class="modalContent">
+        Please wait
+      </div>
+    </div>
+
+    <div class="modal modalForm hideAll" id="addBugModal">
+      <div id="abTitle" class="modalTitle">Add bug</div>
+      <div id="abContent" class="modalContent">
+        <form method="GET" action = "" id="addBugForm">
+          <p>
+           Enter the bug number you wish to add:<br />
+          <input type="text" name="Bug number" id="loadBug" />
+          </p>
+          <div class="divRight">
+            <input type="submit" value="Add"/>
+            <button id="abCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal modalForm hideAll" id="changeBugModal">
+      <div id="cbTitle" class="modalTitle">Change bug</div>
+      <div id="cbContent" class="modalContent">
+        <form method="GET" action = "" id="changeBugForm">
+          <p>
+           Enter a new bug number:<br />
+          <input type="text" name="Bug number" id="changeBug" />
+          </p>
+          <div class="divRight">
+            <input type="submit" value="Change"/>
+            <button id="cbCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal modalForm hideAll" id="credentialsModal">
+      <div id="crTitle" class="modalTitle">Enter your Bugzilla credentials</div>
+      <div id="crContent" class="modalContent">
+        <form method="GET" action="" id="credentialsForm">
+          <p>Please provide your bugzilla login:<br />
+          Username: <input type="email" name="username" id="username" /><br />
+          Password: <input type="password" name="password" id="password" />
+          </p>
+          <div class="divRight">
+            <input type="submit" value="Add"/>
+            <button id="crCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal modalForm hideAll" id="messageModal">
+      <div id="mmTitle" class="modalTitle">Whoops!</div>
+      <div id="mmContent" class="modalContent">
+          <p id="mmText">
+          </p>
+          <div class="divRight">
+            <button id="mmOK">OK</button>
+          </div>
+      </div>
+    </div>
+
     <noscript>
       You need Javascript to proceed.
     </noscript>

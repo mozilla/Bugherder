@@ -34,29 +34,26 @@ var UI = {
 
 
   hideLoadingOverlay: function UI_hideLoadingOverlay() {
-    LoadingOverlay.closeLoadingMessage();
+    $('#loadingModal').toggle();
+    $('#opaque').toggle();
   },
 
 
   showLoadingOverlay: function UI_showLoadingOverlay() {
-    LoadingOverlay.showLoadingMessage();
+    $('#opaque').toggle();
+    $('#loadingModal').toggle();
   },
 
 
   showInvalidEmailDialog: function UI_showInvalidEmailDialog() {
     this.hideLoadingOverlay();
-    $('#invalidEmailMessage').dialog("open");
+    UI.showMessageModal('That didn\'t look like a valid email address!');
   },
 
 
   showInvalidBugDialog: function UI_showInvalidBugDialog() {
     this.hideLoadingOverlay();
-    $('#invalidBugMessage').dialog("open");
-  },
-
-
-  showCredentialsForm: function UI_showCredentialsForm() {
-    $('#credentialsForm').dialog('open');
+    UI.showMessageModal('That didn\'t look like a valid bug number!');
   },
 
 
@@ -81,21 +78,130 @@ var UI = {
   },
 
 
+  onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
+    e.preventDefault(); 
+    $('#crCancel').unbind('click', UI.onCredentialsCancel);
+    UI.hideCredentialsForm();
+    ViewerController.onCredentialsEntered($('#username').val(), $('#password').val());
+    $('#username').val('');
+    $('#password').val('');
+  },
+
+
+  onCredentialsCancel: function UI_onCredentialsCancel(e) {
+    e.preventDefault(); 
+    $('#username').val('');
+    $('#password').val('');
+    $('#credentialsForm').unbind('submit', UI.onCredentialsSubmit);
+    UI.hideCredentialsForm();
+  },
+
+
+  showCredentialsForm: function UI_showCredentialsForm() {
+    $('#username').val('');
+    $('#password').val('');
+    $('#credentialsForm').one('submit', UI.onCredentialsSubmit);
+    $('#crCancel').one('click', UI.onCredentialsCancel);
+    $('#opaque').toggle();
+    $('#credentialsModal').toggle();
+    $('#username')[0].focus();
+  },
+
+
+  hideCredentialsForm: function UI_hideCredentialsForm() {
+    $('#credentialsModal').toggle();
+    $('#opaque').toggle();
+  },
+
+
+  onAddBugSubmit: function UI_onAddBugSubmit(e) {
+    e.preventDefault(); 
+    $('#abCancel').unbind('click', UI.onAddBugCancel);
+    UI.hideBugLoadForm();
+    var index = $('#addBugForm').attr('data-index');
+    ViewerController.onAddBug(parseInt(index), $('#loadBug').val());
+  },
+
+
+  onAddBugCancel: function UI_onAddBugCancel(e) {
+    e.preventDefault(); 
+    $('#addBugForm').unbind('submit', UI.onAddBugSubmit);
+    UI.hideBugLoadForm();
+  },
+
+
   showBugLoadForm: function UI_showBugChangeForm(index) {
     var cset = PushData.allPushes[index].cset;
-    $('#bugLoadForm').attr('data-index', index);
-    $('#bugLoadForm').dialog('option', 'title', 'Add bug to ' + cset);
-    $('#bugLoadForm').dialog('open');
+    $('#abTitle').text('Add bug to ' + cset);
+    $('#loadBug').val('');
+    $('#addBugForm').attr('data-index', index);
+    $('#addBugForm').one('submit', UI.onAddBugSubmit);
+    $('#abCancel').one('click', UI.onAddBugCancel);
+    $('#opaque').toggle();
+    $('#addBugModal').toggle();
+    $('#loadBug')[0].focus();
+  },
+
+
+  hideBugLoadForm: function UI_hideBugLoadForm() {
+    $('#addBugModal').toggle();
+    $('#opaque').toggle();
+  },
+
+
+  onChangeBugSubmit: function UI_onChangeBugSubmit(e) {
+    e.preventDefault(); 
+    $('#cbCancel').unbind('click', UI.onChangeBugCancel);
+    UI.hideBugChangeForm();
+    var index = $('#changeBugForm').attr('data-index');
+    var bug = $('#changeBugForm').attr('data-bug');
+    ViewerController.onChangeBug(parseInt(index), bug, $('#changeBug')[0].value);
+  },
+
+
+  onChangeBugCancel: function UI_onChangeBugCancel(e) {
+    e.preventDefault(); 
+    $('#changeBugForm').unbind('submit', UI.onChangeBugSubmit);
+    UI.hideBugChangeForm();
+    var cset = $('#changeBugForm').attr('data-cset');
+    var bug = $('#changeBugForm').attr('data-bug');
+    Viewer.addChangeButtonListener(cset, bug);
   },
 
 
   showBugChangeForm: function UI_showBugChangeForm(index, bug) {
-    $('#bugChangeForm').attr('data-index', index);
-    $('#bugChangeForm').attr('data-bug', bug);
     var cset = PushData.allPushes[index].cset;
-    $('#bugChangeForm').attr('data-cset', cset);
-    $('#bugChangeForm').dialog('option', 'title', 'Change bug ' + bug + ' for ' + cset);
-    $('#bugChangeForm').dialog('open');
+    $('#cbTitle').text('Change bug ' + bug + ' for ' + cset);
+    $('#changeBug').val('');
+    $('#changeBugForm').attr('data-index', index);
+    $('#changeBugForm').attr('data-bug', bug);
+    $('#changeBugForm').attr('data-cset', cset);
+    $('#changeBugForm').one('submit', UI.onChangeBugSubmit);
+    $('#cbCancel').one('click', UI.onChangeBugCancel);
+    $('#opaque').toggle();
+    $('#changeBugModal').toggle();
+    $('#changeBug')[0].focus();
+  },
+
+
+  hideBugChangeForm: function UI_hideBugChangeForm() {
+    $('#changeBugModal').toggle();
+    $('#opaque').toggle();
+  },
+
+
+  showMessageModal: function UI_showMessageModal(message) {
+    $('#mmText').text(message);
+
+    var onOK = function() {
+      $('#messageModal').toggle();
+      $('#opaque').toggle();
+    }
+
+    $('#mmOK').one('click', onOK);
+    $('#opaque').toggle();
+    $('#messageModal').toggle();
+    $('#mmOK')[0].focus();
   },
 
 

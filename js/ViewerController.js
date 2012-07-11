@@ -43,10 +43,12 @@ var ViewerController = {
     $('#password')[0].value = '';
 
     // Verify the email is valid
-    uname = uname.trim();
-    if (!this.isValidEmail(uname)) {
-      UI.showInvalidEmailDialog();
-      return;
+    if (Config.needsValidation) {
+      uname = uname.trim();
+      if (!this.isValidEmail(uname)) {
+        UI.showInvalidEmailDialog();
+        return;
+      }
     }
 
     // Create privileged loader
