@@ -170,7 +170,7 @@ progress {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   z-index: 20;
-  background-color: rgb(238,238,238);
+  background-color: white;
   font-size: large;
   width: 300px;
 }
