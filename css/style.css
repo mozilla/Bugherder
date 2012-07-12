@@ -54,7 +54,8 @@ td {
 }
 
 progress {
-  margin: 10px;
+  margin-top: 5px;
+  width: 100%;
 }
 
 .hiddenContent {

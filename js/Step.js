@@ -343,7 +343,7 @@ Step.prototype.continueSubmit = function(i) {
         return 'Bug ' + bug;}, this).join('\n');
       UI.showErrorMessage('The following bugs failed to submit:\n' + ltext);
     }
-    UI.hideProgressModal();
+    window.setTimeout(UI.hideProgressModal, 1000);
   } else
     this.startSubmit(i+1);
 };

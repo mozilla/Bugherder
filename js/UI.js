@@ -85,15 +85,16 @@ var UI = {
 
 
   updateProgressModal: function UI_updateProgressModal(percentage) {
+    percentage = Math.round(Number(percentage));
     $('#progressBar').attr('value', percentage);
-    $('#progressText').text(percentage+'%');
+    $('#progressText').text(percentage);
   },
 
 
   showProgressModal: function UI_showProgressModal() {
     $('#progressBar').attr('value', '0');
     $('#progressBar').attr('max', '100');
-    $('#progressText').text('0%');
+    $('#progressText').text('0');
     $('#opaque').toggle();
     $('#progressModal').toggle();
   },
