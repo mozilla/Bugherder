@@ -5,11 +5,11 @@ var mcMerge = {
   expand: false,
   remap: false,
 
-  stageTypes: [{name: 'fixes'},
-    {name: 'foundBackouts'},
+  stageTypes: [{name: 'foundBackouts'},
     {name: 'notFoundBackouts'},
     {name: 'merges'},
-    {name: 'others'}
+    {name: 'others'},
+    {name: 'fixes'}
   ],
 
 
