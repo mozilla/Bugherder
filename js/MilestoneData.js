@@ -3,11 +3,11 @@
 var MilestoneData = {
   milestones: {},
 
-  // useNext represents products that I'm reasonably
+  // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
   useNext: ['Core',
             'Fennec',
-            'Fennec Native',
+            'Firefox for Android',
             'Firefox',
             'MailNews Core',
             'Mozilla Localizations',
