@@ -1,6 +1,12 @@
 "use strict";
 
 var UI = {
+  modalID: null,
+  modalForm: null,
+  modalCancelAction: null,
+  modalSubmitAction: null,
+  modalCancelButton: null,
+
   hideAll: function UI_hideAll() {
     var selector = '.hideAll';
     $(selector).addClass('hiddenContent');
@@ -100,10 +106,53 @@ var UI = {
   },
 
 
+  onModalCancel: function UI_onModalCancel(e) {
+    e.preventDefault();
+    if (UI.modalForm)
+      $(UI.modalForm).unbind('submit', UI.onModalConfirm);
+    UI.hideModalForm();
+    if (UI.modalCancelAction)
+      UI.modalCancelAction(); 
+  },
+
+
+  onModalConfirm: function UI_onModalConfirm(e) {
+    e.preventDefault();
+    if (UI.cancelButton)
+      $(UI.cancelButton).unbind('click', UI.onModalCancel);
+    UI.hideModalForm();
+    if (UI.modalSubmitAction)
+      UI.modalSubmitAction();
+  },
+
+
+  hideModalForm: function UI_hideModalForm() {
+    $(UI.modalID).toggle();
+    $('#opaque').toggle();
+    UI.modalID = null;
+  },
+
+
+  showModalForm: function UI_showModalForm(id, formID, submitAction, cancelID, cancelAction) {
+    UI.modalID = '#' + id;
+    if (formID) {
+      UI.modalForm = '#' + formID;
+      if (submitAction)
+        UI.modalSubmitAction = submitAction;
+      $(UI.modalForm).one('submit', UI.onModalConfirm);
+    }
+    if (cancelID) {
+      UI.cancelButton = '#' + cancelID;
+      if (cancelAction)
+        UI.modalCancelAction = cancelAction;
+      $(UI.cancelButton).one('click', UI.onModalCancel);
+    }
+    $('#opaque').toggle();
+    $(UI.modalID).toggle();
+  },
+
+
   onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
-    e.preventDefault(); 
-    $('#crCancel').unbind('click', UI.onCredentialsCancel);
-    UI.hideCredentialsForm();
     ViewerController.onCredentialsEntered($('#username').val(), $('#password').val());
     $('#username').val('');
     $('#password').val('');
@@ -111,44 +160,23 @@ var UI = {
 
 
   onCredentialsCancel: function UI_onCredentialsCancel(e) {
-    e.preventDefault(); 
     $('#username').val('');
     $('#password').val('');
-    $('#credentialsForm').unbind('submit', UI.onCredentialsSubmit);
-    UI.hideCredentialsForm();
   },
 
 
   showCredentialsForm: function UI_showCredentialsForm() {
     $('#username').val('');
     $('#password').val('');
-    $('#credentialsForm').one('submit', UI.onCredentialsSubmit);
-    $('#crCancel').one('click', UI.onCredentialsCancel);
-    $('#opaque').toggle();
-    $('#credentialsModal').toggle();
+    UI.showModalForm('credentialsModal', 'credentialsForm', UI.onCredentialsSubmit,
+                     'crCancel', UI.onCredentialsCancel);
     $('#username')[0].focus();
   },
 
 
-  hideCredentialsForm: function UI_hideCredentialsForm() {
-    $('#credentialsModal').toggle();
-    $('#opaque').toggle();
-  },
-
-
   onAddBugSubmit: function UI_onAddBugSubmit(e) {
-    e.preventDefault(); 
-    $('#abCancel').unbind('click', UI.onAddBugCancel);
-    UI.hideBugLoadForm();
     var index = $('#addBugForm').attr('data-index');
     ViewerController.onAddBug(parseInt(index), $('#loadBug').val());
-  },
-
-
-  onAddBugCancel: function UI_onAddBugCancel(e) {
-    e.preventDefault(); 
-    $('#addBugForm').unbind('submit', UI.onAddBugSubmit);
-    UI.hideBugLoadForm();
   },
 
 
@@ -157,24 +185,12 @@ var UI = {
     $('#abTitle').text('Add bug to ' + cset);
     $('#loadBug').val('');
     $('#addBugForm').attr('data-index', index);
-    $('#addBugForm').one('submit', UI.onAddBugSubmit);
-    $('#abCancel').one('click', UI.onAddBugCancel);
-    $('#opaque').toggle();
-    $('#addBugModal').toggle();
+    UI.showModalForm('addBugModal', 'addBugForm', UI.onAddBugSubmit, 'abCancel');
     $('#loadBug')[0].focus();
   },
 
 
-  hideBugLoadForm: function UI_hideBugLoadForm() {
-    $('#addBugModal').toggle();
-    $('#opaque').toggle();
-  },
-
-
   onChangeBugSubmit: function UI_onChangeBugSubmit(e) {
-    e.preventDefault(); 
-    $('#cbCancel').unbind('click', UI.onChangeBugCancel);
-    UI.hideBugChangeForm();
     var index = $('#changeBugForm').attr('data-index');
     var bug = $('#changeBugForm').attr('data-bug');
     ViewerController.onChangeBug(parseInt(index), bug, $('#changeBug')[0].value);
@@ -182,9 +198,6 @@ var UI = {
 
 
   onChangeBugCancel: function UI_onChangeBugCancel(e) {
-    e.preventDefault(); 
-    $('#changeBugForm').unbind('submit', UI.onChangeBugSubmit);
-    UI.hideBugChangeForm();
     var cset = $('#changeBugForm').attr('data-cset');
     var bug = $('#changeBugForm').attr('data-bug');
     Viewer.addChangeButtonListener(cset, bug);
@@ -198,17 +211,9 @@ var UI = {
     $('#changeBugForm').attr('data-index', index);
     $('#changeBugForm').attr('data-bug', bug);
     $('#changeBugForm').attr('data-cset', cset);
-    $('#changeBugForm').one('submit', UI.onChangeBugSubmit);
-    $('#cbCancel').one('click', UI.onChangeBugCancel);
-    $('#opaque').toggle();
-    $('#changeBugModal').toggle();
+    UI.showModalForm('changeBugModal', 'changeBugForm', UI.onChangeBugSubmit,
+                     'cbCancel', UI.onChangeBugCancel);
     $('#changeBug')[0].focus();
-  },
-
-
-  hideBugChangeForm: function UI_hideBugChangeForm() {
-    $('#changeBugModal').toggle();
-    $('#opaque').toggle();
   },
 
 
