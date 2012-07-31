@@ -237,15 +237,26 @@ var UI = {
   },
 
 
+  onMessageKey: function UI_onMessageKey(e) {
+    if (e.metaKey || e.altKey || e.ctrlKey || e.which != 27)
+      return true;
+
+    e.preventDefault(); 
+    $('#mmOK').click();
+  },
+
+
   showMessageModal: function UI_showMessageModal(message) {
     $('#mmText').text(message);
 
     var onOK = function() {
       $('#messageModal').toggle();
+      $(document).unbind('keydown', UI.onMessageKey);
       $('#opaque').toggle();
     }
 
     $('#mmOK').one('click', onOK);
+    $(document).bind('keydown', UI.onMessageKey);
     $('#opaque').toggle();
     $('#messageModal').toggle();
     $('#mmOK')[0].focus();
