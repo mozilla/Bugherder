@@ -44,99 +44,99 @@ var Config = {
   mcSynonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"],
 
   treeInfo: {
-    "Mozilla-Inbound": {
+    "mozilla-inbound": {
       repo: "integration/mozilla-inbound",
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
-    "Jetpack": {
+    "jetpack": {
       repo: "projects/addon-sdk",
       synonyms: ["projects/addon-sdk", "addon-sdk"]
     },
-    "Build-System": {
+    "build-system": {
       repo: "projects/build-system",
       synonyms: ["build-system", "b-s", "bs"]
     },
-    "Fx-Team": {
+    "fx-team": {
       repo: "integration/fx-team",
       synonyms: ["fx-team"]
     },
-    "Graphics": {
+    "graphics": {
       repo: "projects/graphics",
       synonyms: ["projects/graphics", "graphics"]
     },
-    "Ionmonkey": {
+    "ionmonkey": {
       repo: "projects/ionmonkey",
       synonyms: ["projects/ionmonkey", "ionmonkey", "im"]
     },
-    "Jaegermonkey": {
+    "jaegermonkey": {
       repo: "projects/jaegermonkey",
       synonyms: ["projects/jaegermonkey", "jm"]
     },
-    "Profiling": {
+    "profiling": {
       repo: "projects/profiling",
       synonyms: ["profiling", "projects/profiling"]
     },
-    "Services-Central": {
+    "services-central": {
       repo: "services/services-central",
       synonyms: ["services-central", "s-c", "sc", "services/services-central"]
     },
-    "UX": {
+    "ux": {
       repo: "projects/ux",
       synonyms: ["ux", "projects/ux"]
     },
-    "Alder": {
+    "alder": {
       repo: "projects/alder",
       synonyms: ["alder", "projects/alder"]
     },
-    "Ash": {
+    "ash": {
       repo: "projects/ash",
       synonyms: ["ash", "projects/ash"]
     },
-    "Birch": {
+    "birch": {
       repo: "projects/birch",
       synonyms: ["projects/birch", "birch"]
     },
-    "Cedar": {
+    "cedar": {
       repo: "projects/cedar",
       synonyms: ["projects/cedar", "cedar"]
     },
-    "Elm": {
+    "elm": {
       repo: "projects/elm",
       synonyms: ["projects/elm", "elm"]
     },
-    "Holly": {
+    "holly": {
       repo: "projects/holly",
       synonyms: ["projects/holly", "holly"]
     },
-    "Larch": {
+    "larch": {
       repo: "projects/larch",
       synonyms: ["projects/larch", "larch"]
     },
-    "Maple": {
+    "maple": {
       repo: "projects/maple",
       synonyms: ["projects/maple", "maple"]
     },
-    "Oak": {
+    "oak": {
       repo: "projects/oak",
       synonyms: ["projects/oak", "oak"]
     },
-    "Pine": {
+    "pine": {
       repo: "projects/pine",
       synonyms: ["projects/pine", "pine"]
     },
-    "Accessibility": {
+    "accessibility": {
       repo: "projects/accessibility",
       synonyms: ["projects/accessibility", "accessibility"]
     },
-    "Devtools": {
+    "devtools": {
       repo: "projects/devtools",
       synonyms: ["projects/devtools", "devtools"]
     },
-    "Electrolysis": {
+    "electrolysis": {
       repo: "projects/electrolysis",
       synonyms: ["projects/electrolysis", "electrolysis", "e10s"]
     },
-    "Places": {
+    "places": {
       repo: "projects/places",
       synonyms: ["projects/places", "places"]
     }
