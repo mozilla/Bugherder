@@ -106,8 +106,25 @@ var UI = {
   },
 
 
+  onModalKey: function UI_onModalKey(e) {
+    if (e.metaKey || e.altKey || e.ctrlKey || e.which != 27)
+      return true;
+
+    e.preventDefault(); 
+    if (UI.modalForm)
+      $(UI.modalForm).unbind('submit', UI.onModalConfirm);
+    if (UI.cancelButton)
+      $(UI.cancelButton).unbind('click', UI.onModalCancel);
+    $(document).unbind('keydown', UI.onModalKey); 
+    UI.hideModalForm();
+    if (UI.modalCancelAction)
+      UI.modalCancelAction(); 
+  },
+
+
   onModalCancel: function UI_onModalCancel(e) {
     e.preventDefault();
+    $(document).bind('keydown', UI.onModalKey);
     if (UI.modalForm)
       $(UI.modalForm).unbind('submit', UI.onModalConfirm);
     UI.hideModalForm();
@@ -118,8 +135,10 @@ var UI = {
 
   onModalConfirm: function UI_onModalConfirm(e) {
     e.preventDefault();
-    if (UI.cancelButton)
+    if (UI.cancelButton) {
       $(UI.cancelButton).unbind('click', UI.onModalCancel);
+      $(document).unbind('keydown', UI.onModalKey); 
+    }
     UI.hideModalForm();
     if (UI.modalSubmitAction)
       UI.modalSubmitAction();
@@ -143,6 +162,7 @@ var UI = {
     }
     if (cancelID) {
       UI.cancelButton = '#' + cancelID;
+      $(document).bind('keydown', UI.onModalKey);
       if (cancelAction)
         UI.modalCancelAction = cancelAction;
       $(UI.cancelButton).one('click', UI.onModalCancel);
