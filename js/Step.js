@@ -588,9 +588,8 @@ Step.prototype.detachBugFromCset = function(index, bugID) {
   if (this.bugInfo[bugID].linkedChangesets.length == 0) {
     removeFromArr(this.securityBugs);
     removeFromArr(this.leaveOpenBugs);
-  }
-
-  if (this.bugInfo[bugID].linkedChangesets.length == 1)
+    delete this.bugInfo[bugID];
+  } else if (this.bugInfo[bugID].linkedChangesets.length == 1)
     removeFromArr(this.multiBugs);
 };
 
