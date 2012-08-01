@@ -8,6 +8,9 @@ var Config = {
   hgURL: "https://hg.mozilla.org/mozilla-central/",
   hgRevURL: "https://hg.mozilla.org/mozilla-central/rev/",
   hgPushlogURL: "https://hg.mozilla.org/mozilla-central/pushloghtml?changeset=",
+  hgMCURL: "https://hg.mozilla.org/mozilla-central/",
+  hgMCRevURL: "https://hg.mozilla.org/mozilla-central/rev/",
+  hgMCPushlogURL: "https://hg.mozilla.org/mozilla-central/pushloghtml?changeset=",
   showBugURL: "https://bugzilla.mozilla.org/show_bug.cgi?id=",
   versionURL: "php/getVersion.php",
 
@@ -25,9 +28,12 @@ var Config = {
   partialTestRE: /test\s+for/i,
   revertRangeRE: /revert(?:ing)?\s+to(?:\s+(?:rev(?:ision)?|c(?:hange)set))?\s+([\da-f]{12,40})/i,
   csetRangeRE: /\b([\da-f]{12,40})\s*(?:to|:|-|through)\s*([\da-f]{12,40})/i,
-  hgRevRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\//,
+  hgRevRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\//ig,
   hgRevFullRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\/[\da-f]{12}/ig,
-  hgPushlogRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/pushloghtml\?changeset=/,
+  hgPushlogRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/pushloghtml\?changeset=/ig,
+  hgMCRevRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\//ig,
+  hgMCRevFullRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\/[\da-f]{12}/ig,
+  hgMCPushlogRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/pushloghtml\?changeset=/ig,
   emailRE: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,   // I'm not looking for RFC 822 compliance here!
 
   // The many ways bug numbers are specified
@@ -145,6 +151,19 @@ var Config = {
 
 Config.bugNumberREs = [Config.bugRE1, Config.bugRE2, Config.bugRE3,
                        Config.bugRE4, Config.bugRE5, Config.bugRE6, Config.bugRE7];
+
+(function () {
+  var base = Config.hgBaseURL;
+  for (var treeName in Config.treeInfo) {
+    var repo = Config.treeInfo[treeName].repo; 
+    Config.treeInfo[treeName]['hgURL'] = base + repo + '/';
+    Config.treeInfo[treeName]['hgRevURL'] = base + repo + '/rev/';
+    Config.treeInfo[treeName]['hgPushlogURL'] = base + repo + '/pushloghtml?changeset=';
+    Config.treeInfo[treeName]['hgRevRE'] = new RegExp('https?:\/\/hg.mozilla.org\/' + repo + '\/rev\/');
+    Config.treeInfo[treeName]['hgRevFullRE'] = new RegExp('https?:\/\/hg.mozilla.org\/' + repo + '\/rev\/[\\da-f]{12}', 'ig');
+    Config.treeInfo[treeName]['hgPushlogRE'] = new RegExp('https?:\/\/hg.mozilla.org\/' + repo + '\/pushloghtml\\?changeset=', 'ig');
+  }
+})();
 
 // Detect input type="email" support
 $(document).ready(function() {
