@@ -23,12 +23,14 @@ var mcMerge = {
       }
 
       if (Config.supportsHistory) {
-        $(window).on('popstate', {mcMerge: self}, self.parseQuery);
+        $(window).on('popstate', {mcMerge: self}, function mcM_InitPopstate(e) {
+         self.parseQuery(e);
+        });
       }
       self.parseQuery();
     });
 
-    $(window).unload(function cleanUp() {
+    $(window).unload(function mcM_InitCleanUp() {
       delete Step.privilegedLoad;
       delete Step.privilegedUpdate;
       delete Step.username;
@@ -46,7 +48,7 @@ var mcMerge = {
 
     document.title = 'm-cMerge';
 
-    var formListener = function(e) {
+    var formListener = function mcM_acquireListener(e) {
       self.validateForm(e);
     };
 
@@ -224,11 +226,11 @@ var mcMerge = {
       this.go('error=buglist&cset='+this.cset, false);
 
     var self = this;
-    var loadCallback = function() {
+    var loadCallback = function mcM_loadBugsLoadCallback() {
      self.onBugLoad();
     };
 
-    var errorCallback = function(jqResponse, textStatus, errorThrown) {
+    var errorCallback = function mcM_loadBugsErrorCallback(jqResponse, textStatus, errorThrown) {
       self.ajaxError(jqResponse, textStatus, errorThrown);
     };
 
@@ -242,11 +244,11 @@ var mcMerge = {
     UI.showLoadingMessage('Loading milestone possibilities...');
     var self = this;
 
-    var versionsCallback = function() {
+    var versionsCallback = function mcM_loadVersionLoadCallback() {
       self.onbzVersionLoad();
     };
 
-    var errorCallback = function(jqResponse, textStatus, errorThrown) {
+    var errorCallback = function mcM_loadVersionErrorCallback(jqResponse, textStatus, errorThrown) {
       self.ajaxError(jqResponse, textStatus, errorThrown);
     };
 
@@ -266,11 +268,11 @@ var mcMerge = {
     UI.showLoadingMessage('Loading pushlog data...');
 
     var self = this;
-    var loadCallback = function(pushData) {
+    var loadCallback = function mcM_loadChangsetLoadCallback(pushData) {
      self.onPushlogLoad(cset);
     };
 
-    var errorCallback = function(jqResponse, textStatus, errorThrown) {
+    var errorCallback = function mcM_loadChangesetErrorCallback(jqResponse, textStatus, errorThrown) {
       self.ajaxError(jqResponse, textStatus, errorThrown, cset);
     };
 

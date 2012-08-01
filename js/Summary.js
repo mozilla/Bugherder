@@ -111,13 +111,13 @@ var Summary = {
 
     $('#viewerOutput').append('<div class="ctr"><h3 class="summaryHeading">Summary of activity</h3></div>');
 
-    steps.forEach(function(step){
+    steps.forEach(function step_viewSummaryMaker(step){
       $('#viewerOutput').append(this.makeSummaryForStep(step));
     }, this);
 
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
     if (onPrevious.fn) {
-      $('.prevButton').click(function (e) {
+      $('.prevButton').click(function Step_onPreviousClick(e) {
         onPrevious.fn();
       });
     } else {
@@ -125,7 +125,7 @@ var Summary = {
     }
 
     if (onNext.fn) {
-      $('.nextButton').click(function (e) {
+      $('.nextButton').click(function Step_onNextClick(e) {
         onNext.fn();
       });
     } else {

@@ -7,7 +7,7 @@ var BugData = {
     bugs = {id : bugs};
 
     var self = this;
-    var callback  = function(errmsg, data) {
+    var callback  = function BD_LoadCallback(errmsg, data) {
       if (errmsg)
         errorCallback(errmsg);
       else

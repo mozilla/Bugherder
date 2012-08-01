@@ -102,7 +102,7 @@ var ViewerController = {
 
     // Kick off load if not
     var self = this;
-    var loadCallback = function() {
+    var loadCallback = function vc_onAddBugLoadCallback() {
       self.addBug(index, input);
     };
     BugData.load(input, loadCallback, null);
@@ -142,7 +142,7 @@ var ViewerController = {
 
     // Kick off load if not
     var self = this;
-    var loadCallback = function() {
+    var loadCallback = function vc_onChangeBugLoadCallback() {
       self.addBug(index, input);
       self.removeBug(index, bug);
     };
@@ -213,14 +213,14 @@ var ViewerController = {
 
     var step = this.steps[this.currentStep];
     var self = this;
-    var onPreviousFn = function() {
+    var onPreviousFn = function vc_viewStepOnPrevious() {
       self.onPrevious();
     };
     var onPrevious = {label: 'Previous', fn: onPreviousFn};
     if (stepIndex == 0)
       onPrevious.fn = null;
 
-    var onNextfn = function() {
+    var onNextfn = function vc_viewStepOnNext() {
       self.onNext();
     };
     var onNext = {label: 'Next', fn: onNextfn};
@@ -233,12 +233,12 @@ var ViewerController = {
 
   viewSummary: function vc_viewSummary() {
     var self = this;
-    var onPreviousFn = function() {
+    var onPreviousFn = function vc_viewSummaryOnPrevious() {
       self.onPrevious();
     };
     var onPrevious = {label: 'Previous', fn: onPreviousFn};
 
-    var onNextfn = function() {
+    var onNextfn = function vc_viewSummaryOnNext() {
       self.onNext();
     };
     var onNext = {label: 'Next', fn: null};

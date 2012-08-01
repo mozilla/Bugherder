@@ -249,7 +249,7 @@ var UI = {
   showMessageModal: function UI_showMessageModal(message) {
     $('#mmText').text(message);
 
-    var onOK = function() {
+    var onOK = function UI_showMessageModal_onOK() {
       $('#messageModal').toggle();
       $(document).unbind('keydown', UI.onMessageKey);
       $('#opaque').toggle();
@@ -271,7 +271,7 @@ var UI = {
       $('#revSubmit').one('click', listener);
 
     // Hook up submit button
-    $('#changeset').one('keyup', function(e) {
+    $('#changeset').one('keyup', function UI_showFormKeyUp(e) {
       if (e.keyCode == 13)
         $('#revSubmit').click();
     });

@@ -50,12 +50,12 @@ function Step(name, callbacks, isBackout) {
 }
 
 
-Step.prototype.getName = function() {
+Step.prototype.getName = function Step_getName() {
   return this.name;
 };
 
 
-Step.prototype.canSubmit = function() {
+Step.prototype.canSubmit = function Step_canSubmit() {
   for (var bug in this.bugInfo) {
     var info = this.bugInfo[bug];
     if ((info.canResolve && info.shouldResolve))
@@ -73,17 +73,17 @@ Step.prototype.canSubmit = function() {
 };
 
 
-Step.prototype.getSentData = function() {
+Step.prototype.getSentData = function Step_getSentData() {
   return this.sent;
 };
 
 
-Step.prototype.hasSecurityBugs = function() {
+Step.prototype.hasSecurityBugs = function Step_hasSecurityBugs() {
   return this.securityBugs.length > 0;
 };
 
 
-Step.prototype.getSecurityBugs = function() {
+Step.prototype.getSecurityBugs = function Step_getSecurityBugs() {
   var secBugs = [];
   for (var cset in this.attachedBugs) {
     for (var b in this.attachedBugs[cset]) {
@@ -95,7 +95,7 @@ Step.prototype.getSecurityBugs = function() {
 };
 
 
-Step.prototype.createComment = function(text) {
+Step.prototype.createComment = function Step_createComment(text) {
   return {creation_time: new Date().toISOString(),
           creator: {email: Step.username},
           is_private: 0,
@@ -103,7 +103,7 @@ Step.prototype.createComment = function(text) {
 };
 
 
-Step.prototype.createBug = function(bugID, info) {
+Step.prototype.createBug = function Step_createBug(bugID, info) {
   text = text || null;
   var bug = {};
   var changed = false;
@@ -158,7 +158,7 @@ Step.prototype.createBug = function(bugID, info) {
 };
 
 
-Step.prototype.constructData = function() {
+Step.prototype.constructData = function Step_constructData() {
   this.sendData = [];
   for (var bug in this.bugInfo) {
     if (Step.remaps.items == 0 || bug in Step.remaps) {
@@ -172,7 +172,7 @@ Step.prototype.constructData = function() {
 };
 
 
-Step.prototype.onSubmitError = function(where, msg, i) {
+Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
   if (where == 'lct' && msg == 'HTTP status 400') {
     // There are a number of possibilities here:
     // - an invalid username or password was supplied
@@ -211,7 +211,7 @@ Step.prototype.onSubmitError = function(where, msg, i) {
 };
 
 
-Step.prototype.onSubmit = function() {
+Step.prototype.onSubmit = function Step_onSubmit() {
   UI.hide('errors');
   if ((typeof Step.privilegedUpdate == 'undefined') || (typeof Step.username == 'undefined') ||
       (typeof Step.privilegedLoad == 'undefined'))
@@ -221,12 +221,12 @@ Step.prototype.onSubmit = function() {
 };
 
 
-Step.prototype.onCredentialsAcquired = function(username) {
+Step.prototype.onCredentialsAcquired = function Step_onCredentialsAcquired(username) {
   this.beginSubmit();
 };
 
 
-Step.prototype.beginSubmit = function() {
+Step.prototype.beginSubmit = function Step_beginSubmit() {
   UI.showProgressModal();
   this.constructData();
   this.retries = [];
@@ -240,9 +240,9 @@ Step.prototype.beginSubmit = function() {
 };
 
 
-Step.prototype.startSubmit = function(i) {
+Step.prototype.startSubmit = function Step_startSubmit(i) {
   var self = this;
-  var callback = function(lct, ut) {
+  var callback = function Step_startSubmitCallback(lct, ut) {
     self.sendData[i].last_change_time = lct;
     self.sendData[i].update_token = ut;
     self.submit(i);
@@ -251,10 +251,10 @@ Step.prototype.startSubmit = function(i) {
 };
 
 
-Step.prototype.getLastChangeAndToken = function(i, callback) {
+Step.prototype.getLastChangeAndToken = function Step_getLastChangeAndToken(i, callback) {
   var self = this;
   var id = this.sendData[i].id;
-  var ourCallback  = function(errmsg, data) {
+  var ourCallback  = function Step_getLCATCallback(errmsg, data) {
     if (errmsg)
       self.onSubmitError('lct', errmsg, i, callback);
     else
@@ -265,23 +265,24 @@ Step.prototype.getLastChangeAndToken = function(i, callback) {
 };
 
 
-Step.prototype.submit = function(i) {
+Step.prototype.submit = function Step_submit(i) {
   // we start with an utterly unsophisticated hack for debugging/testing
   if (Step.remaps.items > 0 && Step.remaps.midair)
     alert('MID-AIR TIME!');
 
   var self = this;
-  var callback = function(errmsg, data) {
+  var callback = function Step_submitCallback(errmsg, data) {
     if (errmsg)
       self.onSubmitError('submit', errmsg, i, callback);
     else
       self.postSubmit(i);
   };
+
   Step.privilegedUpdate(this.sendData[i].id, this.sendData[i], callback);
 };
 
 
-Step.prototype.postSubmit = function(i) {
+Step.prototype.postSubmit = function Step_postSubmit(i) {
   // If this was a retry, remove it from the retries array - we succeeded!
   if (this.retries.length > 0 && this.retries[this.retries.length - 1] == i)
     this.retries.pop();
@@ -334,7 +335,7 @@ Step.prototype.postSubmit = function(i) {
 };
 
 
-Step.prototype.continueSubmit = function(i) {
+Step.prototype.continueSubmit = function Step_continueSubmit(i) {
   if (i + 1 >= this.sendData.length) {
     UI.updateProgressModal(100);
     if (this.retries.length > 0) {
@@ -349,7 +350,7 @@ Step.prototype.continueSubmit = function(i) {
 };
 
 
-Step.prototype.adjustWhiteboard = function(whiteboard) {
+Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard) {
   // It appears some people still do this, so we may as well correct it
   var newWhiteboard = whiteboard.replace('[inbound]','');
 
@@ -361,7 +362,7 @@ Step.prototype.adjustWhiteboard = function(whiteboard) {
 
 
 // Associate a bug number with a particular push
-Step.prototype.attachBugToCset = function(index, bugID) {
+Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   var attached = {};
   attached.comment = PushData.allPushes[index].hgLink;
 
@@ -425,7 +426,7 @@ Step.prototype.attachBugToCset = function(index, bugID) {
 
 // Returns an array of strings representing the bug numbers
 // associated with the given push
-Step.prototype.getAttachedBugs = function(index) {
+Step.prototype.getAttachedBugs = function Step_getAttachedBugs(index) {
   var result = []
 
   if (index in this.attachedBugs) {
@@ -439,7 +440,7 @@ Step.prototype.getAttachedBugs = function(index) {
 
 // Returns true if the given string bugID representing a bug number
 // is associated with the push at the given index
-Step.prototype.isAttached = function(index, bugID) {
+Step.prototype.isAttached = function Step_isAttached(index, bugID) {
   if (!(index in this.attachedBugs))
     return false;
   if (!(bugID in this.attachedBugs[index]))
@@ -449,7 +450,7 @@ Step.prototype.isAttached = function(index, bugID) {
 };
 
 
-Step.prototype.setShouldResolve = function(bugID, should) {
+Step.prototype.setShouldResolve = function Step_setShouldResolve(bugID, should) {
   if (!(bugID in this.bugInfo))
     return;
 
@@ -457,7 +458,7 @@ Step.prototype.setShouldResolve = function(bugID, should) {
 };
 
 
-Step.prototype.toggleShouldResolve = function(bugID) {
+Step.prototype.toggleShouldResolve = function Step_toggleShouldResolve(bugID) {
   if (!(bugID in this.bugInfo))
     return;
 
@@ -466,7 +467,7 @@ Step.prototype.toggleShouldResolve = function(bugID) {
 };
 
 
-Step.prototype.shouldResolve = function(bugID) {
+Step.prototype.shouldResolve = function Step_shouldResolve(bugID) {
   if (!(bugID in this.bugInfo))
     return false;
 
@@ -474,7 +475,7 @@ Step.prototype.shouldResolve = function(bugID) {
 };
 
 
-Step.prototype.canResolve = function(bugID) {
+Step.prototype.canResolve = function Step_canResolve(bugID) {
   if (!(bugID in this.bugInfo))
     return false;
 
@@ -482,7 +483,7 @@ Step.prototype.canResolve = function(bugID) {
 };
 
 
-Step.prototype.canSetMilestone = function(bugID) {
+Step.prototype.canSetMilestone = function Step_canSetMilestone(bugID) {
   if (!(bugID in this.bugInfo))
     return false;
 
@@ -490,7 +491,7 @@ Step.prototype.canSetMilestone = function(bugID) {
 };
 
 
-Step.prototype.getMilestone = function(bugID) {
+Step.prototype.getMilestone = function Step_getMilestone(bugID) {
   if (!(bugID in this.bugInfo))
     return '---';
 
@@ -498,7 +499,7 @@ Step.prototype.getMilestone = function(bugID) {
 };
 
 
-Step.prototype.setMilestone = function(bugID, newVal) {
+Step.prototype.setMilestone = function Step_setMilestone(bugID, newVal) {
   if (!(bugID in this.bugInfo))
     return;
 
@@ -506,7 +507,7 @@ Step.prototype.setMilestone = function(bugID, newVal) {
 };
 
 
-Step.prototype.setShouldComment = function(index, bugID, should) {
+Step.prototype.setShouldComment = function Step_setShouldComment(index, bugID, should) {
   if (!this.isAttached(index, bugID))
     return;
 
@@ -514,7 +515,7 @@ Step.prototype.setShouldComment = function(index, bugID, should) {
 };
 
 
-Step.prototype.shouldComment = function(index, bugID) {
+Step.prototype.shouldComment = function Step_shouldComment(index, bugID) {
   if (!this.isAttached(index, bugID))
     return false;
 
@@ -522,7 +523,7 @@ Step.prototype.shouldComment = function(index, bugID) {
 };
 
 
-Step.prototype.toggleShouldComment = function(index, bugID) {
+Step.prototype.toggleShouldComment = function Step_toggleShouldComment(index, bugID) {
   if (!this.isAttached(index, bugID))
     return;
 
@@ -531,7 +532,7 @@ Step.prototype.toggleShouldComment = function(index, bugID) {
 };
 
 
-Step.prototype.setComment = function(index, bugID, comment) {
+Step.prototype.setComment = function Step_shouldComment(index, bugID, comment) {
   if (!this.isAttached(index, bugID))
     return;
 
@@ -539,7 +540,7 @@ Step.prototype.setComment = function(index, bugID, comment) {
 };
 
 
-Step.prototype.getComment = function(index, bugID) {
+Step.prototype.getComment = function Step_getComment(index, bugID) {
   if (!this.isAttached(index, bugID))
     return '';
 
@@ -547,7 +548,7 @@ Step.prototype.getComment = function(index, bugID) {
 };
 
 
-Step.prototype.canComment = function(index, bugID) {
+Step.prototype.canComment = function Step_canComment(index, bugID) {
   if (!this.isAttached(index, bugID))
     return false;
 
@@ -555,7 +556,7 @@ Step.prototype.canComment = function(index, bugID) {
 };
 
 
-Step.prototype.getProp = function(index, bugID, prop) {
+Step.prototype.getProp = function Step_getProp(index, bugID, prop) {
   if (prop == 'shouldResolve')
     return this.shouldResolve(bugID);
   if (prop == 'canResolve')
@@ -570,7 +571,7 @@ Step.prototype.getProp = function(index, bugID, prop) {
 
 
 // Disassociate a bug with the changeset at the given index
-Step.prototype.detachBugFromCset = function(index, bugID) {
+Step.prototype.detachBugFromCset = function Step_detachBugFromCset(index, bugID) {
   if (!this.isAttached(index, bugID))
     return;
 
@@ -596,7 +597,7 @@ Step.prototype.detachBugFromCset = function(index, bugID) {
 
 // Convenience function for constructing correctly pluralised text
 // for the help text, based on the contents of the given array
-Step.prototype.constructTextFor = function(arr, postText, verb, expandAll) {
+Step.prototype.constructTextFor = function Step_constructTextFor(arr, postText, verb, expandAll) {
   var isare = {singular: 'is', plural: 'are'};
   verb = verb || isare;
   expandAll = expandAll || false;
@@ -635,7 +636,7 @@ Step.prototype.constructTextFor = function(arr, postText, verb, expandAll) {
 //   - "leave open" bugs (where the assignee doesn't want the bug resolved
 //   - "security" bugs (bugs m-cMerge couldn't access)
 //   - "has milestone" bugs (bugs that can be resolved, but already had a milestone)
-Step.prototype.getAdditionalHelpText = function() {
+Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   var text = '';
 
   var multiPost = ' associated with multiple changesets: the individual comments will be coalesced into a single comment.';
@@ -666,18 +667,18 @@ Step.prototype.getAdditionalHelpText = function() {
 };
 
 
-Step.prototype.setStepNumber = function(num) {
+Step.prototype.setStepNumber = function Step_setStepNumber(num) {
   this.stepNumber = num;
 };
 
 
-Step.prototype.setMaxStepNumber = function(num) {
+Step.prototype.setMaxStepNumber = function Step_setMaxStepNumber(num) {
   this.maxStepNumber = num;
 };
 
 
 // Return the user-visible step name to be shown for this step
-Step.prototype.getHeading = function(addMax) {
+Step.prototype.getHeading = function Step_getHeading(addMax) {
   addMax = addMax || true;
 
   var res = this.name;
@@ -696,7 +697,7 @@ Step.prototype.getHeading = function(addMax) {
 
 
 // Return the user-visible help text to be shown for this step
-Step.prototype.getHelpText = function() {
+Step.prototype.getHelpText = function Step_getHelpText() {
   var helpText = '';
   if (this.name in Step.helpTexts)
     helpText = Step.helpTexts[this.name];

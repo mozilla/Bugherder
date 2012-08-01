@@ -32,7 +32,7 @@ var MilestoneData = {
 
   init: function MD_init(loadCallback, errorCallback) {
     var self = this;
-    var callback  = function(errmsg, data) {
+    var callback  = function MD_initCallback(errmsg, data) {
       if (errmsg)
         errorCallback(errmsg);
       else

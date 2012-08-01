@@ -170,7 +170,7 @@ var Remapper = {
 
   addSubmitListener: function rm_AddSubmitListener() {
     var self = this;
-    var submitCallback = function(e) {
+    var submitCallback = function rm_AddSubmitCallback(e) {
       e.preventDefault();
 
       self.onSubmit();

@@ -519,7 +519,7 @@ var Viewer = {
     if (attachedBugs.length == 0)
       return pushHTML +' </div>';
 
-    pushHTML += attachedBugs.map(function(j) {return this.makeBugHTML(index, j);},this).join('');
+    pushHTML += attachedBugs.map(function viewer_addChangsetBugHTMLMaker(j) {return this.makeBugHTML(index, j);},this).join('');
     pushHTML += '</div>';
     return pushHTML;
   },
@@ -543,11 +543,11 @@ var Viewer = {
     var len = pushes.length;
 
     if (!isBackedOut) {
-      var html = pushes.map(function(i, ind, arr) {return this.addChangeset(i, ind == arr.length - 1);}, this).join('');
+      var html = pushes.map(function viewer_ViewChangesetMaker(i, ind, arr) {return this.addChangeset(i, ind == arr.length - 1);}, this).join('');
       $('#viewerOutput').append(html);
     } else {
-      var html = pushes.map(function(i, ind, arr) {
-        var h = PushData.allPushes[i].affected.map(function(j) {return this.addChangeset(j, false, 'backedout');}, this).join('');
+      var html = pushes.map(function viewer_ViewChangesetMaker2(i, ind, arr) {
+        var h = PushData.allPushes[i].affected.map(function viewer_ViewBackoutMaker(j) {return this.addChangeset(j, false, 'backedout');}, this).join('');
         return h + this.makeBackoutBannerHTML() + this.addChangeset(i, ind == arr.length - 1, 'backout');
       }, this).join('');
       $('#viewerOutput').append(html);
@@ -566,14 +566,14 @@ var Viewer = {
     $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
     if (onPrevious.fn) {
-      $('.prevButton').click(function (e) {
+      $('.prevButton').click(function viewer_ViewOnPrevious(e) {
         onPrevious.fn();
       });
     } else {
       $('.prevButton').attr('disabled', true);
     }
     if (onNext.fn) {
-      $('.nextButton').click(function (e) {
+      $('.nextButton').click(function viewer_ViewOnNext(e) {
         onNext.fn();
       });
     } else {
@@ -581,11 +581,11 @@ var Viewer = {
     }
 
     var self = this;
-    $('#expandButton').click(function (e) {
+    $('#expandButton').click(function viewer_ViewExpandButtonClick(e) {
       self.onExpandButtonClick(e);
     });
 
-    $('#submitButton').click(function (e) {
+    $('#submitButton').click(function viewer_ViewSubmitButtonClick(e) {
       self.onSubmitButtonClick(e);
     });
 
