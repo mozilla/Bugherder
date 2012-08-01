@@ -7,6 +7,19 @@ var UI = {
   modalSubmitAction: null,
   modalCancelButton: null,
 
+
+  // Encode text for HTML insertion per OWASP guidelines
+  htmlEncode: function UI_makeHTMLencode(input) {
+    input = input.replace('&', '&amp;', 'g');
+    input = input.replace('<', '&lt;', 'g');
+    input = input.replace('>', '&gt;', 'g');
+    input = input.replace('"', '&quot;', 'g');
+    input = input.replace("'", '&#x27;', 'g');
+    input = input.replace('/', '&#x2f;', 'g');
+    return input;
+  },
+
+
   hideAll: function UI_hideAll() {
     var selector = '.hideAll';
     $(selector).addClass('hiddenContent');

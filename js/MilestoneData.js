@@ -19,17 +19,6 @@ var MilestoneData = {
             'Toolkit'],
 
 
-  htmlEncode: function MD_HTMLencode(desc) {
-    desc = desc.replace('&', '&amp;', 'g');
-    desc = desc.replace('<', '&lt;', 'g');
-    desc = desc.replace('>', '&gt;', 'g');
-    desc = desc.replace('"', '&quot;', 'g');
-    desc = desc.replace("'", '&#x27;', 'g');
-    desc = desc.replace('/', '&#x2f;', 'g');
-    return desc;
-  },
-
-
   init: function MD_init(loadCallback, errorCallback) {
     var self = this;
     var callback  = function MD_initCallback(errmsg, data) {
@@ -50,7 +39,7 @@ var MilestoneData = {
       for (var product in data['product']) {
         var values = data.product[product].target_milestone;
         productMilestones[product] = {}
-        productMilestones[product].values = values.map(this.htmlEncode);
+        productMilestones[product].values = values.map(UI.htmlEncode);
         var dashIndex = values.indexOf('---');
         if (dashIndex != -1) {
           if (dashIndex + 1 < values.length && this.useNext.indexOf(product) != -1)

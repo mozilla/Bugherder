@@ -410,30 +410,18 @@ var PushData = {
   },
 
 
-  // Encode text for HTML insertion per OWASP guidelines
-  htmlEncode: function PD_makeHTMLencode(desc) {
-    desc = desc.replace('&', '&amp;', 'g');
-    desc = desc.replace('<', '&lt;', 'g');
-    desc = desc.replace('>', '&gt;', 'g');
-    desc = desc.replace('"', '&quot;', 'g');
-    desc = desc.replace("'", '&#x27;', 'g');
-    desc = desc.replace('/', '&#x2f;', 'g');
-    return desc;
-  },
-
-
   // Create a push object, and flag it as a merge or backout if necessary
   makePush: function PD_makePush(cset) {
     var push = {};
     push.cset = cset.node.substring(0,12);
     push.hgLink = Config.hgRevURL + push.cset;
-    push.desc = this.htmlEncode(cset.desc);
+    push.desc = UI.htmlEncode(cset.desc);
 
     var author = cset.author;
     var index = author.indexOf(' <');
     if (author.indexOf(' <') != -1)
       author = author.substr(0, index);
-    push.author = this.htmlEncode(author);
+    push.author = UI.htmlEncode(author);
 
     // Have a stab at working out the bug number. This will return the first possibility
     // it finds - which may not in fact be the bug number! It may also turn out to be the
