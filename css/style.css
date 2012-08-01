@@ -152,6 +152,15 @@ progress {
   border: 1px solid black;
 }
 
+.whiteboardTA {
+  width: 100%;
+  border: none;
+}
+
+.grid-3.afterWhiteboard {
+  vertical-align: bottom;
+}
+
 .loadingOverlay .ui-dialog-titlebar-close {
   display: none;
 }

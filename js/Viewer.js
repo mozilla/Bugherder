@@ -31,6 +31,11 @@ var Viewer = {
   },
 
 
+  addWhiteboardChangeListener: function viewer_addWhiteboardChangeListener(cset, bug) {
+    $('#' + this.getWhiteboardID(cset, bug)).on('input', this.onWhiteboardInput);
+  },
+
+
   addMilestoneChangeListener: function viewer_addMilestoneChangeListener(cset, bug) {
     $('#' + this.getMilestonesID(cset, bug)).on('change', this.onMilestoneChange);
   },
@@ -49,6 +54,7 @@ var Viewer = {
     this.addResolveCheckListener(cset, bugID);
     this.addViewHideListener(cset, bugID);
     this.addCommentChangeListener(cset, bugID);
+    this.addWhiteboardChangeListener(cset, bugID);
     this.addMilestoneChangeListener(cset, bugID);
     this.updateSubmitButton();
   },
@@ -121,6 +127,23 @@ var Viewer = {
   },
 
 
+  onWhiteboardInput: function viewer_onWhiteboardInput(e) {
+    e.preventDefault();
+    var target = e.target;
+
+    if (!target.hasAttribute('data-index') ||
+        !target.hasAttribute('data-bug')) {
+      UI.showErrorMessage('Whiteboard changed with no data!');
+      return;
+    }
+
+    var index = target.getAttribute('data-index');
+    var bug = target.getAttribute('data-bug');
+    $('.' + bug + 'whiteboard').val(target.value); 
+    ViewerController.onWhiteboardInput(index, bug, target.value);
+  },
+
+
   onResolveCheckClick: function viewer_onResolveCheckClick(e) {
     e.preventDefault();
     var target = e.target;
@@ -139,8 +162,9 @@ var Viewer = {
 
     // If we've turned it off, also turn off milestone selection
     // (we don't support setting the milestone without setting the
-    // resolution)
+    // resolution). Likewise for the whiteboard.
     $('.'+bug+'Milestone').attr('disabled', !this.checked);
+    $('.'+bug+'whiteboard').attr('disabled', !this.checked);
 
     ViewerController.onResolveCheckClick(bug, this.checked);
   },
@@ -258,6 +282,11 @@ var Viewer = {
   },
 
 
+  getWhiteboardID: function viewer_getWhiteboardID(cset, id) {
+    return cset + id + 'Whiteboard';
+  },
+
+
   getBugDivID: function viewer_getBugDivID(cset) {
     return cset + 'Bugs';
   },
@@ -342,6 +371,20 @@ var Viewer = {
   },
 
 
+  makeWhiteboardHTML: function viewer_makeWhiteBoardHTML(cset, index, id) {
+    var bug = BugData.bugs[id];
+    var html = '<textarea class="whiteboardTA ' + id + 'whiteboard" rows="3" id="' + this.getWhiteboardID(cset, id);
+    html += '" ' + this.makeDataHTML(index, id);
+    if (!this.step.canResolve(id) || !this.step.shouldResolve(id))
+      html += ' disabled="true"';
+    html += '>';
+    if (bug.whiteboard)
+      html += bug.whiteboard.replace(/]/g, ']\n');
+    html += '</textarea>';
+    return html;
+  },
+
+
   makeBugHTML: function viewer_makeBugHTML(index, id) {
     var html = '';
 
@@ -376,17 +419,14 @@ var Viewer = {
     if (bug) {
       html += '       <div class="grid-3">Whiteboard:</div>';
       html += '       <div class="grid-3 whiteboard">';
-      if (bug.whiteboard)
-        html += bug.whiteboard.replace(/]/g, ']<br>');
-      else
-        html += '&nbsp;';
+      html += this.makeWhiteboardHTML(cset, index, id);
       html += '       </div>';
     } else
       html += '<div class="grid-3"></div><div class="grid-3"></div>';
-    html += '<div class="grid-3">';
+    html += '<div class="grid-3 afterWhiteboard">';
     html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
     html += this.makeDataHTML(index, id) + '>View/hide comment</span></div>';
-    html += '<div class="grid-3">Comment: ';
+    html += '<div class="grid-3 afterWhiteboard">Comment: ';
     html += this.makeCheckboxHTML(cset, index, id, 'comment');
     html += ' Resolve: ';
     html += this.makeCheckboxHTML(cset, index, id, 'resolve');
@@ -559,6 +599,7 @@ var Viewer = {
     $('.changeButton').one('click', this.onChangeButtonClick);
     $('.viewhide').click(this.onViewHideClick);
     $('.comment').on('input', this.onCommentInput);
+    $('.whiteboardTA').on('input', this.onWhiteboardInput);
     $('.resolveCheck').on('change', this.onResolveCheckClick);
     $('.commentCheck').on('change', this.onCommentCheckClick);
     $('.milestone').on('change', this.onMilestoneChange);

@@ -532,7 +532,7 @@ Step.prototype.toggleShouldComment = function Step_toggleShouldComment(index, bu
 };
 
 
-Step.prototype.setComment = function Step_shouldComment(index, bugID, comment) {
+Step.prototype.setComment = function Step_setComment(index, bugID, comment) {
   if (!this.isAttached(index, bugID))
     return;
 
@@ -553,6 +553,15 @@ Step.prototype.canComment = function Step_canComment(index, bugID) {
     return false;
 
   return this.attachedBugs[index][bugID].canComment;
+};
+
+
+Step.prototype.setWhiteboard = function Step_setWhiteboard(index, bugID, whiteboard) {
+  if (!this.isAttached(index, bugID))
+    return;
+
+  if (bugID in BugData.bugs)
+    BugData.bugs[bugID].whiteboard = whiteboard;
 };
 
 

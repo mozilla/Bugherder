@@ -167,6 +167,11 @@ var ViewerController = {
   },
 
 
+  onWhiteboardInput: function vc_onWhiteboardInput(index, bug, newVal) {
+    this.steps[this.currentStep].setWhiteboard(index, bug, newVal.replace(/\n/g, ''));
+  },
+
+
   onMilestoneChange: function vc_onMilestoneChange(bug, newVal) {
     this.steps[this.currentStep].setMilestone(bug, newVal);
   },
