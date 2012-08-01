@@ -222,8 +222,10 @@ var mcMerge = {
 
     // There were no bug numbers found? Might happen when called with a
     // non-merge "no bug" changeset
-    if (!bugs)
-      this.go('error=buglist&cset='+this.cset, false);
+    if (!bugs) {
+      this.updateUI();
+      return;
+    }
 
     var self = this;
     var loadCallback = function mcM_loadBugsLoadCallback() {
