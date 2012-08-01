@@ -162,9 +162,8 @@ var Viewer = {
 
     // If we've turned it off, also turn off milestone selection
     // (we don't support setting the milestone without setting the
-    // resolution). Likewise for the whiteboard.
+    // resolution).
     $('.'+bug+'Milestone').attr('disabled', !this.checked);
-    $('.'+bug+'whiteboard').attr('disabled', !this.checked);
 
     ViewerController.onResolveCheckClick(bug, this.checked);
   },
@@ -374,10 +373,7 @@ var Viewer = {
   makeWhiteboardHTML: function viewer_makeWhiteBoardHTML(cset, index, id) {
     var bug = BugData.bugs[id];
     var html = '<textarea class="whiteboardTA ' + id + 'whiteboard" rows="3" id="' + this.getWhiteboardID(cset, id);
-    html += '" ' + this.makeDataHTML(index, id);
-    if (!this.step.canResolve(id) || !this.step.shouldResolve(id))
-      html += ' disabled="true"';
-    html += '>';
+    html += '" ' + this.makeDataHTML(index, id) + '>';
     if (bug.whiteboard)
       html += bug.whiteboard.replace(/]/g, ']\n');
     html += '</textarea>';

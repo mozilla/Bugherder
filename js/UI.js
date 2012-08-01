@@ -334,10 +334,13 @@ var UI = {
 
 
   buildMergeVerification: function UI_displayMergeVerification(sourceRepo) {
-    var html = 'Merge ';
-    if (sourceRepo)
-      html += 'from <a href="' + Config.hgBaseURL + Config.treeInfo[sourceRepo].repo + '" target="_blank">' + sourceRepo.toLowerCase() + '</a> ';
-    html += 'to <a href="' + Config.hgURL + '" target="_blank">mozilla-central</a>';
+    var html = '';
+    if (sourceRepo) {
+      html += 'Merge from <a href="' + Config.hgBaseURL + Config.treeInfo[sourceRepo].repo + '" target="_blank">' + sourceRepo.toLowerCase() + '</a> ';
+      html += 'to <a href="' + Config.hgURL + '" target="_blank">mozilla-central</a>';
+    } else {
+      html += 'Push to <a href="' + Config.hgURL + '" target="_blank">' + Config.treeName + '</a>';
+    }
     return html;
   },
 

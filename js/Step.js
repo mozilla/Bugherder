@@ -104,7 +104,6 @@ Step.prototype.createComment = function Step_createComment(text) {
 
 
 Step.prototype.createBug = function Step_createBug(bugID, info) {
-  text = text || null;
   var bug = {};
   var changed = false;
 
@@ -140,10 +139,12 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
     // Remove checkin-needed if present in keywords
     var keywords = BugData.bugs[bugID].keywords;
-    var checkinIndex = keywords.indexOf('checkin-needed');
-    if (checkinIndex != -1) {
-      keywords.splice(checkinIndex, 1);
-      bug.keywords = keywords;
+    if (Config.treeName == 'mozilla-central') {
+      var checkinIndex = keywords.indexOf('checkin-needed');
+      if (checkinIndex != -1) {
+        keywords.splice(checkinIndex, 1);
+        bug.keywords = keywords;
+      }
     }
 
     if (bugID in Step.remaps) {
@@ -351,11 +352,21 @@ Step.prototype.continueSubmit = function Step_continueSubmit(i) {
 
 
 Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard) {
-  // It appears some people still do this, so we may as well correct it
-  var newWhiteboard = whiteboard.replace('[inbound]','');
+  var newWhiteboard = whiteboard;
 
-  // Remove annotations on fx-team merges
-  newWhiteboard = newWhiteboard.replace('[fixed-in-fx-team]','');
+  if (Config.treeName == 'mozilla-central') {
+    // It appears some people still do this, so we may as well correct it
+    newWhiteboard = whiteboard.replace('[inbound]','');
+
+    // Remove annotations on fx-team merges
+    newWhiteboard = newWhiteboard.replace('[fixed-in-fx-team]','');
+  }
+
+  if (Config.treeName != 'mozilla-central' && 'additions' in Config.treeInfo[Config.treeName]) {
+    var addition = Config.treeInfo[Config.treeName].additions;
+    if (newWhiteboard.indexOf(addition) == -1)
+      newWhiteboard = newWhiteboard + addition;
+  }
 
   return newWhiteboard;
 };
@@ -364,6 +375,8 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard) {
 // Associate a bug number with a particular push
 Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   var attached = {};
+  var isMC = Config.treeName == 'mozilla-central';
+
   attached.comment = PushData.allPushes[index].hgLink;
 
   if (bugID in BugData.bugs) {
@@ -380,7 +393,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   if (bug) {
     leaveOpen = Config.leaveOpenRE.test(bug.whiteboard);
     hasMilestone = bug.milestone != '---';
-    if (hasMilestone || leaveOpen)
+    if (!isMC || hasMilestone || leaveOpen)
       milestone = bug.milestone;
     else {
       var defaultMilestone = MilestoneData.milestones[bug.product].defaultIndex;
@@ -394,6 +407,12 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                                           bug.canResolve && !leaveOpen,
                            linkedChangesets: [],
                            milestone: milestone};
+
+    // Don't resolve bugs for integration repos
+    if (Config.treeName != 'mozilla-central') {
+      this.bugInfo[bugID].canResolve = false;
+      this.bugInfo[bugID].shouldResolve = false;
+    }
 
     // Adjust the whiteboard the first time we see this bug
     if (bug)
@@ -417,9 +436,9 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
     this.multiBugs.push(bugID);
   if (!bug && this.securityBugs.indexOf(bugID) == -1)
     this.securityBugs.push(bugID);
-  if (leaveOpen && this.leaveOpenBugs.indexOf(bugID) == -1)
+  if (isMC && leaveOpen && this.leaveOpenBugs.indexOf(bugID) == -1)
     this.leaveOpenBugs.push(bugID);
-  if (hasMilestone && this.hasMilestones.indexOf(bugID) == -1 &&
+  if (isMC && hasMilestone && this.hasMilestones.indexOf(bugID) == -1 &&
       this.bugInfo[bugID].canResolve)
     this.hasMilestones.push(bugID);
 };

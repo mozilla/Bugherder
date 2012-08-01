@@ -4,6 +4,7 @@ var Config = {
   supportsHistory : !!(window.history && history.pushState),
   inMaintenanceMode : false,
 
+  treeName: 'mozilla-central',
   hgBaseURL: "https://hg.mozilla.org/",
   hgURL: "https://hg.mozilla.org/mozilla-central/",
   hgRevURL: "https://hg.mozilla.org/mozilla-central/rev/",
@@ -64,7 +65,8 @@ var Config = {
     },
     "fx-team": {
       repo: "integration/fx-team",
-      synonyms: ["fx-team"]
+      synonyms: ["fx-team"],
+      additions: "[fixed-in-fx-team]"
     },
     "graphics": {
       repo: "projects/graphics",
@@ -84,7 +86,8 @@ var Config = {
     },
     "services-central": {
       repo: "services/services-central",
-      synonyms: ["services-central", "s-c", "sc", "services/services-central"]
+      synonyms: ["services-central", "s-c", "sc", "services/services-central"],
+      additions: "[fixed in services]"
     },
     "ux": {
       repo: "projects/ux",

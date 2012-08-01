@@ -4,6 +4,7 @@ var mcMerge = {
   debug: false,
   expand: false,
   remap: false,
+  tree: null,
 
   stageTypes: [{name: 'foundBackouts'},
     {name: 'notFoundBackouts'},
@@ -62,7 +63,10 @@ var mcMerge = {
   // Display an appropriate error, then display the cset form
   errorPage: function mcM_errorPage(params) {
     var errorType = params['error'];
-    var cset = 'cset' in params ? ' ' + params['cset'] : '';
+    var errorText = 'Unknown error';
+    var cset = 'cset' in params ? ' ' + UI.htmlEncode(params['cset']) : '';
+    var treeName = 'tree' in params ? ' ' + UI.htmlEncode(params['tree']) : '';
+
     var dataType = 'pushlog';
     if (this.loading == 'bz')
       dataType = 'bugzilla';
@@ -70,22 +74,25 @@ var mcMerge = {
       dataType = 'target milestone';
 
     if (errorType == 'invalid')
-      var errorText = 'You entered an invalid changeset ID: IDs should either be 12-40 hexadecimal characters, or "tip"';
+      errorText = 'You entered an invalid changeset ID: IDs should either be 12-40 hexadecimal characters, or "tip"';
 
     if (errorType == 'fetch')
-      var errorText = 'Unable to fetch ' + dataType + ' data for changeset' + cset + '.';
+      errorText = 'Unable to fetch ' + dataType + ' data for changeset' + cset + '.';
 
     if (errorType == 'timeout')
-      var errorText = 'Request timed out when trying to fetch ' + dataType + ' data for changeset' + cset + '.';
+      errorText = 'Request timed out when trying to fetch ' + dataType + ' data for changeset' + cset + '.';
 
     if (errorType == 'buglist')
-      var errorText = 'No bugs found for changeset' + cset + '.';
+      errorText = 'No bugs found for changeset' + cset + '.';
 
     if (errorType == 'bugs')
-      var errorText = 'Unable to load bugzilla data for changeset' + cset + '.';
+      errorText = 'Unable to load bugzilla data for changeset' + cset + '.';
 
     if (errorType == 'version')
-      var errorText = 'Unable to load target milestone possibilities for changeset' + cset + '.';
+      errorText = 'Unable to load target milestone possibilities for changeset' + cset + '.';
+
+    if (errorType == 'treename')
+      errorText = 'Unknown repository' + treeName + '.';
 
     this.acquireChangeset(errorText);
   },
@@ -196,7 +203,8 @@ var mcMerge = {
       return;
     }
 
-    UI.sourceRepo = this.findSourceRepo();
+    if (!this.tree)
+      UI.sourceRepo = this.findSourceRepo();
 
     // Stash the changeset requested for future error messages
     this.cset = cset;
@@ -355,13 +363,37 @@ var mcMerge = {
         input = input.substring(reres[0].length);
     }
 
-    if (this.validateChangeset(input))
+    if (this.validateChangeset(input)) {
       this.go('cset='+input, false);
-    else {
-      // Don't fill history stack with multiple error pages
-      var replace = document.location.href.indexOf('error') != -1;
-      this.go('error=invalid', replace);
+      return;
+    } else {
+      var tree = null;
+
+      for (var treeName in Config.treeInfo) {
+        reres = Config.treeInfo[treeName].hgRevRE.exec(input);
+        if (reres) {
+          input = input.substring(reres[0].length);
+          tree = treeName;
+          break;
+        } else {
+          reres = Config.treeInfo[treeName].hgPushlogRE.exec(input);
+          if (reres) {
+            input = input.substring(reres[0].length);
+            tree = treeName;
+            break;
+          }
+        }
+      }
+
+      if (tree && this.validateChangeset(input)) {
+        this.go('cset='+input + '&tree=' + tree, false);
+        return;
+      }
     }
+
+    // Don't fill history stack with multiple error pages
+    var replace = document.location.href.indexOf('error') != -1;
+    this.go('error=invalid', replace);
   },
 
 
@@ -388,10 +420,40 @@ var mcMerge = {
         this.expand = (paramsObj['expand'] == '1');
       if ('remap' in paramsObj)
         this.remap = (paramsObj['remap'] == '1');
+
       if ('error' in paramsObj)
         return self.errorPage(paramsObj);
-      if ('cset' in paramsObj)
-        return self.loadChangeset(paramsObj['cset']);
+
+      if ('cset' in paramsObj) {
+        var cset = paramsObj['cset'];
+
+        if ('tree' in paramsObj) {
+          var treeName = paramsObj['tree'];
+          if (!(treeName in Config.treeInfo) && treeName != 'mozilla-central') {
+            var replace = document.location.href.indexOf('error') != -1;
+            this.go('error=treename&tree=' + treeName, replace);
+            return;
+          }
+          if (treeName == 'mozilla-central') {
+            this.go('cset=' + cset, true);
+            return;
+          }
+
+          this.tree = treeName;
+          Config.hgURL = Config.treeInfo[treeName].hgURL;
+          Config.hgRevURL = Config.treeInfo[treeName].hgRevURL;
+          Config.hgPushlogURL = Config.treeInfo[treeName].hgPushlogURL;
+          Config.treeName = treeName;
+        } else {
+          this.tree = null;
+          Config.hgURL = Config.hgMCURL;
+          Config.hgRevURL = Config.hgMCRevURL;
+          Config.hgPushlogURL = Config.hgMCPushlogURL;
+          Config.treeName = 'mozilla-central';
+        }
+
+        return self.loadChangeset(cset);
+      }
     }
     return self.acquireChangeset();
   },
