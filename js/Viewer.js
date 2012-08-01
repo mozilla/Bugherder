@@ -277,7 +277,7 @@ var Viewer = {
     html += this.getMilestonesID(cset, id);
     html += '" class="milestone ' + id + 'Milestone"';
     html += ' ' + this.makeDataHTML(index, id);
-    if (!this.step.canResolve(id) || !this.step.canSetMilestone(id))
+    if (!this.step.canResolve(id) || !this.step.shouldResolve(id) || !this.step.canSetMilestone(id))
       html += ' disabled="true"';
     html += '>';
     var product = BugData.bugs[id].product;
