@@ -25,6 +25,10 @@ var mcMerge = {
 
       if (Config.supportsHistory) {
         $(window).on('popstate', {mcMerge: self}, function mcM_InitPopstate(e) {
+         // Chrome!
+         if (!e.state)
+           return;
+
          self.parseQuery(e);
         });
       }
