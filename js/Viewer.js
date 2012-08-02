@@ -413,20 +413,21 @@ var Viewer = {
       html += "<em>Unable to load bug " + id + " - security bug?</em>";
     html += '</div>'
     if (bug) {
-      html += '       <div class="grid-3">Whiteboard:</div>';
-      html += '       <div class="grid-3 whiteboard">';
+      html += '       <div class="grid-6 whiteboard">Whiteboard:';
       html += this.makeWhiteboardHTML(cset, index, id);
       html += '       </div>';
     } else
-      html += '<div class="grid-3"></div><div class="grid-3"></div>';
-    html += '<div class="grid-3 afterWhiteboard">';
-    html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
-    html += this.makeDataHTML(index, id) + '>View/hide comment</span></div>';
-    html += '<div class="grid-3 afterWhiteboard">Comment: ';
+      html += '<div class="grid-6"></div>';
+    html += '<div class="grid-6 afterWhiteboard">';
+    html += '<span class="afterWhiteboard">';
+    html += 'Comment: ';
     html += this.makeCheckboxHTML(cset, index, id, 'comment');
     html += ' Resolve: ';
     html += this.makeCheckboxHTML(cset, index, id, 'resolve');
-    html += '</div>';
+    html += '</span><br><br><span class="afterWhiteboard">&nbsp;</span><br>';
+    html += '<span class="afterWhiteboard">';
+    html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
+    html += this.makeDataHTML(index, id) + '>View/hide comment</span></span></div>';
     html += '<div class="grid-12 commentDiv" id ="' + this.getCommentID(cset, id) + '">';
     html += this.makeCommentHTML(cset, index, id);
     html += '</div>';

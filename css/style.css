@@ -148,17 +148,17 @@ progress {
   color: red; 
 }
 
-.whiteboard {
+.whiteboardTA {
+  width: 100%;
   border: 1px solid black;
 }
 
-.whiteboardTA {
+.span.afterWhiteboard {
   width: 100%;
-  border: none;
 }
 
-.grid-3.afterWhiteboard {
-  vertical-align: bottom;
+.grid-6.afterWhiteboard {
+  text-align: right;
 }
 
 .loadingOverlay .ui-dialog-titlebar-close {
