@@ -281,13 +281,7 @@ var UI = {
 
     // Hook up click listener
     if (typeof listener == 'function')
-      $('#revSubmit').one('click', listener);
-
-    // Hook up submit button
-    $('#changeset').one('keyup', function UI_showFormKeyUp(e) {
-      if (e.keyCode == 13)
-        $('#revSubmit').click();
-    });
+      $('#csetForm').one('submit', listener);
 
     this.show('getCset');
   },
