@@ -247,6 +247,11 @@ progress {
 
 .grid-12.commentDiv {
   display: none;
+  padding-right: 10px;
+}
+
+.comment {
+  width: 100%;
 }
 
 .ctr {
