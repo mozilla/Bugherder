@@ -55,6 +55,22 @@ var Config = {
       repo: "integration/mozilla-inbound",
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
+    "mozilla-aurora": {
+      repo: "releases/mozilla-aurora",
+      synonyms: ["releases/mozilla-aurora", "mozilla-aurora"]
+    },
+    "mozilla-beta": {
+      repo: "releases/mozilla-beta",
+      synonyms: ["releases/mozilla-beta", "mozilla-beta"]
+    },
+    "mozilla-release": {
+      repo: "releases/mozilla-release",
+      synonyms: ["releases/mozilla-release", "mozilla-release"]
+    },
+    "mozilla-esr10": {
+      repo: "releases/mozilla-esr10",
+      synonyms: ["releases/mozilla-esr10", "mozilla-esr10"]
+    },
     "jetpack": {
       repo: "projects/addon-sdk",
       synonyms: ["projects/addon-sdk", "addon-sdk"]
