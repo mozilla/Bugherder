@@ -27,7 +27,7 @@ var Config = {
   revertRE: /revert(ing)?/i,
   partialRevertRE: /(?:from|in)(?:\s+(?:rev(?:ision)?|c(?:hange)?set))?\s+([\da-f]{12,40})/i,
   partialTestRE: /test\s+for/i,
-  revertRangeRE: /revert(?:ing)?\s+to(?:\s+(?:rev(?:ision)?|c(?:hange)set))?\s+([\da-f]{12,40})/i,
+  revertRangeRE: /revert(?:ing)?\s+(?:\S+\s+)?to(?:\s+(?:rev(?:ision)?|c(?:hange)set))?\s+([\da-f]{12,40})/i,
   csetRangeRE: /\b([\da-f]{12,40})\s*(?:to|:|-|through)\s*([\da-f]{12,40})/i,
   hgRevRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\//ig,
   hgRevFullRE: /https?:\/\/hg.mozilla.org\/mozilla-central\/rev\/[\da-f]{12}/ig,
