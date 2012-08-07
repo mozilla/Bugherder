@@ -16,7 +16,7 @@ var mcMerge = {
 
   init: function mcM_Init() {
     var self = this;
-    $(document).ready(function onDocReady() {
+    $(window).load(function onDocReady() {
       if (Config.inMaintenanceMode) {
         $('#errorText').text('mcMerge is down for maintenance!');
         UI.show('errors');
@@ -24,13 +24,12 @@ var mcMerge = {
       }
 
       if (Config.supportsHistory) {
-        $(window).on('popstate', {mcMerge: self}, function mcM_InitPopstate(e) {
-         // Chrome!
-         if (!e.state)
-           return;
-
-         self.parseQuery(e);
-        });
+        // Set the popstate handler on a timeout, to avoid the inital load popstate in Webkit
+        window.setTimeout(function mcM_onLoadTimeout() {
+          $(window).on('popstate', {mcMerge: self}, function mcM_InitPopstate(e) {
+           self.parseQuery(e);
+          });
+        }, 1);
       }
       self.parseQuery();
     });
@@ -219,7 +218,7 @@ var mcMerge = {
 
   // Build the list of bugs we're interested in, kick off the async load
   loadBugs: function mcM_loadBugs() {
-    if (!PushData.allPushes || !PushData.fixes)
+    if (!PushData.allPushes || !PushData.fixes || !PushData.notFoundBackouts)
       return;
 
     this.loading = 'bz';
@@ -231,6 +230,22 @@ var mcMerge = {
       bugs += ',';
     bugs += PushData.backedOut.map(this.getBug, this).join(',');
 
+
+    // Parse commit messages and load backout bugs when the push only contains backouts
+    if (PushData.safeToReopen() && bugs == '' && PushData.notFoundBackouts.length > 0) {
+      var reResult;
+      for (var i = 0; i < PushData.notFoundBackouts.length; i++) {
+        var ind = PushData.notFoundBackouts[i];
+        PushData.allPushes[ind].backoutBugs = [];
+        Config.bugNumRE.lastIndex = 0;
+         while (reResult = Config.bugNumRE.exec(PushData.allPushes[ind].desc))
+          if (PushData.allPushes[ind].backoutBugs.indexOf(reResult[0]) == -1)
+            PushData.allPushes[ind].backoutBugs.push(reResult[0]);
+        if (bugs != '')
+          bugs += ',';
+        bugs += PushData.allPushes[ind].backoutBugs.join(',');
+      }
+    }
 
     // There were no bug numbers found? Might happen when called with a
     // non-merge "no bug" changeset

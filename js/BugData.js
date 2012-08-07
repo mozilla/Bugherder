@@ -32,6 +32,7 @@ var BugData = {
     if (typeof bug.id == 'string')
       bug.id = UI.htmlEncode(bug.id);
     bug.product = bugObj.product;
+    bug.canReopen = bug.resolution == 'FIXED';
     this.bugs[bugObj.id] = bug;
   },
 

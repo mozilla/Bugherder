@@ -3,7 +3,12 @@
 var Summary = {
   makeSummaryForData: function summary_makeSummaryForData(data) {
     var html = '<tr><td>' + UI.linkifyBug(data.id) + '</td><td>';
-    if ('status' in data)
+    if ('status' in data && data.status == 'RESOLVED')
+      html += 'Y';
+    else
+      html += 'N';
+    html += '</td><td>';
+    if ('status' in data && data.status == 'REOPENED')
       html += 'Y';
     else
       html += 'N';
@@ -35,7 +40,7 @@ var Summary = {
     }
 
     html += '<br><table class="summaryTable"><tr class="thead"><td>Bug</td><td>Resolved?</td>';
-    html += '<td>Target Milestone</td><td>Comment</td></tr>';
+    html += '<td>Reopened?</td><td>Target Milestone</td><td>Comment</td></tr>';
     html += sent.map(function(data) {return this.makeSummaryForData(data);}, this).join('');
     html += '</table>';
     return html;

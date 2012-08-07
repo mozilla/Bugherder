@@ -103,6 +103,26 @@
       </div>
     </div>
 
+    <div class="modal modalForm hideAll" id="explanationModal">
+      <div id="exTitle" class="modalTitle">Add explanation for backout</div>
+      <div id="exContent" class="modalContent">
+        <form method="GET" action = "" id="explanationForm">
+          <p>
+           Enter explanatory text for this backout:<br />
+          <textarea name="Bug number" id="explanation"></textarea><br />
+          <label for="useForAlL">
+            <input type="checkbox" id="useForAll" checked="checked" />
+            Prepend this text to all remaining backout comments
+          </label>
+          </p>
+          <div class="divRight">
+            <input type="submit" value="OK"/>
+            <button id="exCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="modal modalForm hideAll" id="credentialsModal">
       <div id="crTitle" class="modalTitle">Enter your Bugzilla credentials</div>
       <div id="crContent" class="modalContent">

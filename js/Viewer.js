@@ -21,7 +21,12 @@ var Viewer = {
   },
 
 
-  addViewHideListener: function viewer_addResolveCheckListener(cset, bug) {
+  addReopenCheckListener: function viewer_addReopenCheckListener(cset, bug) {
+    $('#' + this.getReopenCheckID(cset, bug)).on('change', this.onReopenCheckClick);
+  },
+
+
+  addViewHideListener: function viewer_addViewHideListener(cset, bug) {
     $('#' + this.getViewHideID(cset, bug)).click(this.onViewHideClick);
   },
 
@@ -52,6 +57,7 @@ var Viewer = {
     this.addChangeButtonListener(cset, bugID);
     this.addCommentCheckListener(cset, bugID);
     this.addResolveCheckListener(cset, bugID);
+    this.addReopenCheckListener(cset, bugID);
     this.addViewHideListener(cset, bugID);
     this.addCommentChangeListener(cset, bugID);
     this.addWhiteboardChangeListener(cset, bugID);
@@ -158,7 +164,7 @@ var Viewer = {
     var bug = target.getAttribute('data-bug');
 
     // Update all other instances of this bug
-    $('.'+bug+'resolvecheck').prop('checked', this.checked);
+    $('.'+bug+'resolvecheck').attr('checked', this.checked);
 
     // If we've turned it off, also turn off milestone selection
     // (we don't support setting the milestone without setting the
@@ -166,6 +172,29 @@ var Viewer = {
     $('.'+bug+'Milestone').attr('disabled', !this.checked);
 
     ViewerController.onResolveCheckClick(bug, this.checked);
+  },
+
+
+  onReopenCheckClick: function viewer_onReopenCheckClick(e) {
+    e.preventDefault();
+    var target = e.target;
+
+    if (!target.hasAttribute('data-index') ||
+        !target.hasAttribute('data-bug')) {
+      UI.showErrorMessage("Reopen checkbox clicked with no data!");
+      return;
+    }
+
+    var index = target.getAttribute('data-index');
+    var bug = target.getAttribute('data-bug');
+
+    // Update all other instances of this bug
+    $('.'+bug+'reopencheck').attr('checked', this.checked);
+
+    // If we've turned it on, also turn on commenting - I don't think
+    // you would ever backout a bug without an explanation!
+    Viewer.unsetComments(bug, this.checked);
+    ViewerController.onReopenCheckClick(bug, this.checked);
   },
 
 
@@ -182,6 +211,28 @@ var Viewer = {
     var index = target.getAttribute('data-index');
     var bug = target.getAttribute('data-bug');
     ViewerController.onCommentCheckClick(index, bug, this.checked);
+
+    // Comments and reopening are dependent
+    if (ViewerController.getCurrentStep().canReopen(bug)) {
+      Viewer.unsetComments(bug, this.checked);
+      var elems = $('.' + bug + 'reopencheck');
+      if (elems.length > 0 && elems.attr('checked') != this.checked)
+        elems[0].click();
+    }
+  },
+
+
+  unsetComments: function viewer_unsetComments(bug, checked) {
+    var elems = $('.' + bug + 'commentcheck');
+    var l = elems.length;
+    for (var i = 0; i < l; i++) {
+      var elem = elems[i];
+      if (elem.getAttribute('checked') != checked) {
+        var index = elem.getAttribute('data-index');
+        ViewerController.onCommentCheckClick(index, bug, checked);
+      }
+    }
+    elems.attr('checked', checked);
   },
 
 
@@ -258,6 +309,11 @@ var Viewer = {
 
   getResolveCheckID: function viewer_getResolveCheckID(cset, id) {
     return cset + id + 'ResolveCheck';
+  },
+
+
+  getReopenCheckID: function viewer_getReopenCheckID(cset, id) {
+    return cset + id + 'ReopenCheck';
   },
 
 
@@ -350,8 +406,9 @@ var Viewer = {
     html += this.makeDataHTML(index, id);
     if (this.step.isAttached(index, id) && this.step.getProp(index, id, shouldProp))
       html  += ' checked="checked"';
-    if (!this.step.isAttached(index, id) || !this.step.getProp(index, id, canProp))
+    if (!this.step.isAttached(index, id) || !this.step.getProp(index, id, canProp)) {
       html  += ' disabled="disabled"';
+    }
     html += ' />';
     return html;
   },
@@ -424,7 +481,14 @@ var Viewer = {
     html += this.makeCheckboxHTML(cset, index, id, 'comment');
     html += ' Resolve: ';
     html += this.makeCheckboxHTML(cset, index, id, 'resolve');
-    html += '</span><br><br><span class="afterWhiteboard">&nbsp;</span><br>';
+    html += '</span>';
+    if (this.step.canReopen(id)) {
+      html += '<br><span class="afterWhiteboard">Reopen: ';
+      html += this.makeCheckboxHTML(cset, index, id, 'reopen');
+      html += '</span>';
+    } else
+      html += '<br>';
+    html += '<br><br>';
     html += '<span class="afterWhiteboard">';
     html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
     html += this.makeDataHTML(index, id) + '>View/hide comment</span></span></div>';
@@ -599,6 +663,7 @@ var Viewer = {
     $('.whiteboardTA').on('input', this.onWhiteboardInput);
     $('.resolveCheck').on('change', this.onResolveCheckClick);
     $('.commentCheck').on('change', this.onCommentCheckClick);
+    $('.reopenCheck').on('change', this.onReopenCheckClick);
     $('.milestone').on('change', this.onMilestoneChange);
 
     $('#viewerOutput').append(this.makeSubmitHTML());

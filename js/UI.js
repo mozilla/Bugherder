@@ -110,10 +110,13 @@ var UI = {
   },
 
 
-  showProgressModal: function UI_showProgressModal() {
-    $('#progressBar').attr('value', '0');
-    $('#progressBar').attr('max', '100');
-    $('#progressText').text('0');
+  showProgressModal: function UI_showProgressModal(noReset) {
+    noReset = noReset || false;
+    if (!noReset) {
+      $('#progressBar').attr('value', '0');
+      $('#progressBar').attr('max', '100');
+      $('#progressText').text('0');
+    }
     $('#opaque').toggle();
     $('#progressModal').toggle();
   },
@@ -182,6 +185,33 @@ var UI = {
     }
     $('#opaque').toggle();
     $(UI.modalID).toggle();
+  },
+
+
+  onExplanationSubmit: function UI_onExplanationSubmit(e, callback) {
+    var text = $('#explanation').val();
+    if (text != '' && text[text.length - 1] != '\n')
+      text = text + '\n';
+    var useForAll = $('#useForAll').prop('checked');
+    UI.showProgressModal(true);
+    callback(text, useForAll);
+  },
+
+
+  onExplanationCancel: function UI_onExplanationCancel(e, callback) {
+    UI.showProgressModal(true);
+    callback('', false);
+  },
+
+
+  acquireExplanation: function UI_acquireExplanation(callback, bug) {
+    $('#explanation').val('');
+    $('#useForAll').prop('checked', false);
+    $('#exTitle').text('Add explanation for backout of ' + bug);
+    UI.hideProgressModal();
+    UI.showModalForm('explanationModal', 'explanationForm', function(e) {UI.onExplanationSubmit(e, callback);},
+                     'exCancel', function(e) {UI.onExplanationCancel(e, callback);});
+    $('#explanation')[0].focus();
   },
 
 

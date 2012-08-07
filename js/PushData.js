@@ -50,6 +50,12 @@ var PushData = {
   },
 
 
+  // Check whether to handle backouts
+  safeToReopen: function PD_safeToReopen() {
+    return this.fixes.length == 0 && this.backedOut.length == 0 && this.foundBackouts.length == 0;
+  },
+
+
   // Make a naive attempt at guessing the bug number from the push's description
   getBugNumber: function PD_getBugNumber(push) {
     // How shall I specify a bug number?

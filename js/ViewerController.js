@@ -3,9 +3,15 @@
 var ViewerController = {
   init: function vc_Init(remap) {
     this.remap = remap;
-    this.currentStage = -1;
+    this.currentStep = -1;
     this.maxStep = -1;
     this.steps = [];
+  },
+
+
+  getCurrentStep: function vc_getCurrentStep() {
+    if (this.currentStep != -1)
+      return this.steps[this.currentStep];
   },
 
 
@@ -158,6 +164,12 @@ var ViewerController = {
 
   onResolveCheckClick: function vc_onResolveCheckClick(bug, newVal) {
     this.steps[this.currentStep].setShouldResolve(bug, newVal);
+    Viewer.updateSubmitButton();
+  },
+
+
+  onReopenCheckClick: function vc_onReopenCheckClick(bug, newVal) {
+    this.steps[this.currentStep].setShouldReopen(bug, newVal);
     Viewer.updateSubmitButton();
   },
 

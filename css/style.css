@@ -192,6 +192,8 @@ progress {
 }
 
 .modalContent {
+  font-family: "Open Sans", sans-serif;
+  font-size: smaller;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -295,6 +297,10 @@ div.ctr {
 #headline, #helpText {
   margin: 0;
   padding: 0;
+}
+
+#explanation {
+  width: 100%;
 }
 
 #submitButton {

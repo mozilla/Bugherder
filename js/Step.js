@@ -17,11 +17,15 @@ function Step(name, callbacks, isBackout) {
     var len = arr.length;
     for (var i = 0; i < len; i++) {
       var push = PushData.allPushes[arr[i]];
-      if (!push.bug)
-        continue;
-
-      self.attachedBugs[arr[i]] = {};
-      self.attachBugToCset(arr[i], push.bug);
+      if (push.bug) {
+        self.attachedBugs[arr[i]] = {};
+        self.attachBugToCset(arr[i], push.bug);
+      } else if (push.backoutBugs && push.backoutBugs.length > 0) {
+        self.attachedBugs[arr[i]] = {};
+        var l2 = push.backoutBugs.length;
+        for (var j = 0; j < l2; j++)
+          self.attachBugToCset(arr[i], push.backoutBugs[j]);
+      }
     }
   }
 
@@ -32,6 +36,8 @@ function Step(name, callbacks, isBackout) {
   this.attachedBugs = {};
   this.bugInfo = {};
   this.sent = [];
+  this.prependChosen = false;
+  this.prependText = '';
 
   // The following are used for additional help text
   this.leaveOpenBugs = [];
@@ -115,6 +121,10 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
       bug.target_milestone = info.milestone;
       bug.product = BugData.bugs[bugID].product;
     }
+  } else if (info.canReopen && info.shouldReopen) {
+    bug.resolution = '';
+    bug.status = 'REOPENED';
+    changed = true;
   }
 
   var comments = [];
@@ -232,6 +242,8 @@ Step.prototype.beginSubmit = function Step_beginSubmit() {
   this.constructData();
   this.retries = [];
   this.successful = 0;
+  this.prependChosen = false;
+  this.prependText = '';
   if (this.sendData.length == 0) {
     UI.hideProgressModal();
     return;
@@ -242,6 +254,32 @@ Step.prototype.beginSubmit = function Step_beginSubmit() {
 
 
 Step.prototype.startSubmit = function Step_startSubmit(i) {
+  var self = this;
+
+  // Offer the chance to add a backout explanation where appropriate
+  if (this.name == 'notFoundBackouts' && 'comments' in this.sendData[i] &&
+      this.sendData[i].comments[0].text.indexOf(Config.hgBaseURL) == 0) {
+    if (this.prependChosen) {
+      this.sendData[i].comments[0].text = this.prependText + this.sendData[i].comments[0].text
+      this.midSubmit(i);
+    } else {
+      var self = this;
+      var callback = function Step_onExplanationAcquired(text, useForAll) {
+        if (useForAll) {
+          self.prependChosen = true;
+          self.prependText = text;
+        }
+        self.sendData[i].comments[0].text = text + self.sendData[i].comments[0].text
+        self.midSubmit(i);
+      };
+      UI.acquireExplanation(callback, this.sendData[i].id);
+    }
+  } else
+    this.midSubmit(i);
+};
+
+
+Step.prototype.midSubmit = function Step_midSubmit(i) {
   var self = this;
   var callback = function Step_startSubmitCallback(lct, ut) {
     self.sendData[i].last_change_time = lct;
@@ -316,6 +354,8 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
       BugData.bugs[bugID].milestone = sent.target_milestone;
     info.canResolve = false;
     info.shouldResolve = false;
+    BugData.bugs[bugID].canReopen = false;
+    info.canReopen = false;
   }
 
 
@@ -351,10 +391,10 @@ Step.prototype.continueSubmit = function Step_continueSubmit(i) {
 };
 
 
-Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard) {
+Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, backingOut) {
   var newWhiteboard = whiteboard;
 
-  if (Config.treeName == 'mozilla-central') {
+  if (Config.treeName == 'mozilla-central' || backingOut) {
     // It appears some people still do this, so we may as well correct it
     newWhiteboard = whiteboard.replace('[inbound]','');
 
@@ -406,17 +446,27 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                            shouldResolve: bug && !(PushData.allPushes[index].backedOut) &&
                                           bug.canResolve && !leaveOpen,
                            linkedChangesets: [],
+                           canReopen: false,
+                           shouldReopen: false,
                            milestone: milestone};
 
     // Don't resolve bugs for integration repos
     if (Config.treeName != 'mozilla-central') {
       this.bugInfo[bugID].canResolve = false;
       this.bugInfo[bugID].shouldResolve = false;
+       
+    }
+
+    // Handle backouts when safe to do so
+    if (PushData.safeToReopen() && bug && bug.canReopen) {
+      this.bugInfo[bugID].canReopen = true;
+      this.bugInfo[bugID].shouldReopen = true;
+      attached.shouldComment = true;
     }
 
     // Adjust the whiteboard the first time we see this bug
     if (bug)
-      bug.whiteboard = this.adjustWhiteboard(bug.whiteboard);
+      bug.whiteboard = this.adjustWhiteboard(bug.whiteboard, this.bugInfo[bugID].canReopen);
   }
 
   attached.canComment = !!bug; // reserved for future use :-)
@@ -499,6 +549,30 @@ Step.prototype.canResolve = function Step_canResolve(bugID) {
     return false;
 
   return this.bugInfo[bugID].canResolve;
+};
+
+
+Step.prototype.shouldReopen = function Step_shouldReopen(bugID) {
+  if (!(bugID in this.bugInfo))
+    return false;
+
+  return this.bugInfo[bugID].shouldReopen;
+};
+
+
+Step.prototype.canReopen = function Step_canReopen(bugID) {
+  if (!(bugID in this.bugInfo))
+    return false;
+
+  return this.bugInfo[bugID].canReopen;
+};
+
+
+Step.prototype.setShouldReopen = function Step_setShouldReopen(bugID, should) {
+  if (!(bugID in this.bugInfo))
+    return;
+
+  this.bugInfo[bugID].shouldReopen = should;
 };
 
 
@@ -593,6 +667,10 @@ Step.prototype.getProp = function Step_getProp(index, bugID, prop) {
     return this.shouldComment(index, bugID);
   if (prop == 'canComment')
     return this.canComment(index, bugID);
+  if (prop == 'shouldReopen')
+    return this.shouldReopen(bugID);
+  if (prop == 'canReopen')
+    return this.canReopen(bugID);
 
   return false;
 };
