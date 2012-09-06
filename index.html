@@ -39,7 +39,7 @@
           Please enter the URL or hex changeset ID of a changeset from the merge:
         </p>
         <form id="csetForm" action="">
-          <input type="text" id="changeset"></input>
+          <input type="text" id="changeset" />
           <input type="submit" value="Submit" id="revSubmit" />
         </form>
       </div>
@@ -66,7 +66,7 @@
       <div id="pmTitle" class="modalTitle">Working...</div>
       <div id="pmContent" class="modalContent">
         <div class="ctr"><span id="progressText">0</span>% complete</div>
-        <progress max="100" val="0" id="progressBar">
+        <progress max="100" value="0" id="progressBar">
         </progress>
       </div>
     </div>
@@ -110,7 +110,7 @@
           <p>
            Enter explanatory text for this backout:<br />
           <textarea name="Bug number" id="explanation"></textarea><br />
-          <label for="useForAlL">
+          <label for="useForAll">
             <input type="checkbox" id="useForAll" checked="checked" />
             Prepend this text to all remaining backout comments
           </label>
