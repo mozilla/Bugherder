@@ -314,6 +314,7 @@ var UI = {
       $('#csetForm').one('submit', listener);
 
     this.show('getCset');
+    $('#changeset').focus();
   },
 
 

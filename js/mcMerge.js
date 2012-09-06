@@ -44,7 +44,7 @@ var mcMerge = {
 
   // Show the initial cset form, optionally with an error, and
   // setup a listener to validate input
-  acquireChangeset: function mcM_showForm(errorText) {
+  acquireChangeset: function mcM_acquireChangeset(errorText) {
     delete this.cset;
     delete this.loading;
 
