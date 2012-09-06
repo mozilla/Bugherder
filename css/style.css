@@ -2,7 +2,7 @@
   font-family: 'Open sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Open sans') url('opensans.woff');
+  src: local('Open sans'), url('opensans.woff');
 }
 
 body {
