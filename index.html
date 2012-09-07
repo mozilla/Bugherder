@@ -38,7 +38,7 @@
         <p id="formText">
           Please enter the URL or hex changeset ID of a changeset from the merge:
         </p>
-        <form id="csetForm" action="">
+        <form id="csetForm">
           <input type="text" id="changeset" autofocus />
           <input type="submit" value="Submit" id="revSubmit" />
         </form>
@@ -74,7 +74,7 @@
     <div class="modal modalForm hideAll" id="addBugModal">
       <div id="abTitle" class="modalTitle">Add bug</div>
       <div id="abContent" class="modalContent">
-        <form method="GET" action = "" id="addBugForm">
+        <form id="addBugForm">
           <p>
            Enter the bug number you wish to add:<br />
           <input type="text" name="Bug number" id="loadBug" />
@@ -90,7 +90,7 @@
     <div class="modal modalForm hideAll" id="changeBugModal">
       <div id="cbTitle" class="modalTitle">Change bug</div>
       <div id="cbContent" class="modalContent">
-        <form method="GET" action = "" id="changeBugForm">
+        <form id="changeBugForm">
           <p>
            Enter a new bug number:<br />
           <input type="text" name="Bug number" id="changeBug" />
@@ -106,7 +106,7 @@
     <div class="modal modalForm hideAll" id="explanationModal">
       <div id="exTitle" class="modalTitle">Add explanation for backout</div>
       <div id="exContent" class="modalContent">
-        <form method="GET" action = "" id="explanationForm">
+        <form id="explanationForm">
           <p>
            Enter explanatory text for this backout:<br />
           <textarea name="Bug number" id="explanation"></textarea><br />
@@ -126,7 +126,7 @@
     <div class="modal modalForm hideAll" id="credentialsModal">
       <div id="crTitle" class="modalTitle">Enter your Bugzilla credentials</div>
       <div id="crContent" class="modalContent">
-        <form method="GET" action="" id="credentialsForm">
+        <form id="credentialsForm">
           <p>Please provide your bugzilla login:<br />
           Username: <input type="email" name="username" id="username" /><br />
           Password: <input type="password" name="password" id="password" />
