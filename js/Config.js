@@ -50,6 +50,14 @@ var Config = {
 
   mcSynonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"],
 
+  rewriteTrees: {
+    "thunderbird-trunk": "comm-central",
+    "thunderbird-aurora": "comm-aurora",
+    "thunderbird-beta": "comm-beta",
+    "thunderbird-release": "comm-release",
+    "thunderbird-esr10": "comm-esr10",
+  },
+
   treeInfo: {
     "mozilla-inbound": {
       repo: "integration/mozilla-inbound",
@@ -164,6 +172,26 @@ var Config = {
     "places": {
       repo: "projects/places",
       synonyms: ["projects/places", "places"]
+    },
+    "comm-central": {
+      repo: "comm-central",
+      synonyms: ["comm-central", "c-c"]
+    },
+    "comm-aurora": {
+      repo: "releases/comm-aurora",
+      synonyms: ["releases/comm-aurora", "comm-aurora"]
+    },
+    "comm-beta": {
+      repo: "releases/comm-beta",
+      synonyms: ["releases/comm-beta", "comm-beta"]
+    },
+    "comm-release": {
+      repo: "releases/comm-release",
+      synonyms: ["releases/comm-release", "comm-release"]
+    },
+    "comm-esr10": {
+      repo: "releases/comm-esr10",
+      synonyms: ["releases/comm-esr10", "comm-esr10"]
     }
   }
 };

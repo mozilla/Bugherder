@@ -448,11 +448,19 @@ var mcMerge = {
 
         if ('tree' in paramsObj) {
           var treeName = paramsObj['tree'].toLowerCase();
-          if (!(treeName in Config.treeInfo) && treeName != 'mozilla-central' && treeName != 'firefox') {
+          if (!(treeName in Config.treeInfo) && !(treeName in Config.rewriteTrees) &&
+                treeName != 'mozilla-central' && treeName != 'firefox') {
             var replace = document.location.href.indexOf('error') != -1;
             this.go('error=treename&tree=' + treeName, replace);
             return;
           }
+
+          if (treeName in Config.rewriteTrees) {
+            var newTree = Config.rewriteTrees[treeName];
+            this.go('cset=' + cset + '&tree=' + newTree, true);
+            return;
+          }
+
           if (treeName == 'mozilla-central' || treeName == 'firefox') {
             this.go('cset=' + cset, true);
             return;
