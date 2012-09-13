@@ -10,12 +10,10 @@ try {
     "mozilla-aurora" => "releases/mozilla-aurora/",
     "mozilla-beta" => "releases/mozilla-beta/",
     "mozilla-release" =>  "releases/mozilla-release/",
-    "mozilla-esr10" => "releases/mozilla-esr10/",
     "comm-central" => "comm-central/",
     "comm-aurora" => "releases/comm-aurora/",
     "comm-beta" => "releases/comm-beta/",
     "comm-release" => "releases/comm-release/",
-    "comm-esr10" => "releases/comm-esr10/"
   );
 
   if (!(array_key_exists("tree", $_GET)) OR !(array_key_exists("cset", $_GET))) {
@@ -23,11 +21,6 @@ try {
   }
 
   $tree = strtolower($_GET["tree"]);
-
-  // Error out if it's not a tree that we think needs tracked
-  if (!(array_key_exists($tree, $validTrees))) {
-    exit(json_encode(array("error" => "unknown tree")));
-  }
 
   // The cset is irrelevant for ESR trees - we can go ahead and calculate the flag names now
   if (preg_match("/-esr([1-9][\d]*)$/", $tree, $esrMatch) === 1) {
@@ -38,6 +31,11 @@ try {
       exit(json_encode(array("tracking" => "tracking_thunderbird_esr" . $ver, "status" => "status_thunderbird_esr" . $ver)));
     }
     exit(json_encode(array("error" => "unknown esr tree")));
+  }
+
+  // Error out if it's not a tree that we think needs tracked
+  if (!(array_key_exists($tree, $validTrees))) {
+    exit(json_encode(array("error" => "unknown tree")));
   }
 
   // Error out if the cset isn't in the correct format
