@@ -198,7 +198,7 @@ var mcMerge = {
 
 
   // Callback following load of pushlog data. Kicks off loading of current version from m-c
-  onPushlogLoad: function mcM_onPushlogLoad(pushData, cset) {
+  onPushlogLoad: function mcM_onPushlogLoad(cset) {
     UI.hideLoadingMessage();
 
     if (!PushData.allPushes || PushData.allPushes.length == 0) {
