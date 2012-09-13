@@ -44,8 +44,13 @@ try {
     exit(json_encode(array("error" => "invalid cset")));
   }
 
+  $fileLocation = "/browser/config/version.txt";
+  if (strpos($tree, "comm") === 0) {
+    $fileLocation = "/mail/config/version.txt";
+  }
+
   // Read the version from version.txt in the relevant repo
-  $versionURL = $baseURL . $validTrees[$tree] . "raw-file/" . $cset . "/browser/config/version.txt";
+  $versionURL = $baseURL . $validTrees[$tree] . "raw-file/" . $cset . $fileLocation;
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $versionURL);
