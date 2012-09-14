@@ -158,12 +158,14 @@ var ViewerController = {
 
   onCommentCheckClick: function vc_onCommentCheckClick(index, bug, newVal) {
     this.steps[this.currentStep].setShouldComment(index, bug, newVal);
+    Viewer.updateHelpText();
     Viewer.updateSubmitButton();
   },
 
 
   onResolveCheckClick: function vc_onResolveCheckClick(bug, newVal) {
     this.steps[this.currentStep].setShouldResolve(bug, newVal);
+    Viewer.updateHelpText();
     Viewer.updateSubmitButton();
   },
 

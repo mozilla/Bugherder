@@ -2,8 +2,14 @@
 
 var BugData = {
   bugs: {},
+  trackingFlag: null,
 
   load: function BD_load(bugs, loadCallback, errorCallback) {
+    if (mcMerge.trackingFlag)
+      this.trackingFlag = 'cf_' + mcMerge.trackingFlag;
+    if (mcMerge.statusFlag)
+      this.statusFlag = 'cf_' + mcMerge.statusFlag;
+
     bugs = {id : bugs};
 
     var self = this;
@@ -33,6 +39,12 @@ var BugData = {
       bug.id = UI.htmlEncode(bug.id);
     bug.product = bugObj.product;
     bug.canReopen = bug.resolution == 'FIXED';
+    bug.isTracked = false;
+    if (this.trackingFlag && bugObj[this.trackingFlag] == '+')
+      bug.isTracked = true;
+    bug.statusFlag = '---';
+    if (this.statusFlag)
+      bug.statusFlag = bugObj[this.statusFlag];
     this.bugs[bugObj.id] = bug;
   },
 

@@ -44,6 +44,7 @@ function Step(name, callbacks, isBackout) {
   this.multiBugs = [];
   this.securityBugs = [];
   this.hasMilestones = [];
+  this.trackedBugs = [];
 
   var options = {};
   if (Step.remaps.items > 0)
@@ -155,6 +156,12 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
         keywords.splice(checkinIndex, 1);
         bug.keywords = keywords;
       }
+    }
+
+    // Set status flag if appropriate
+    if (info.canSetStatus && info.shouldSetStatus) {
+      var fieldName = 'cf_' + mcMerge.statusFlag;
+      bug[fieldName] = 'fixed';
     }
 
     if (bugID in Step.remaps) {
@@ -372,6 +379,13 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
     }
   }
 
+  // Disallow setting status- if we just sent it
+  if ('cf_' + mcMerge.statusFlag in sent) {
+    info.canSetStatus = false;
+    info.shouldSetStatus = false;
+    BugData.bugs[bugID].statusFlag = sent['cf_' + mcMerge.statusFlag];
+  }
+
   this.continueSubmit(i);
 };
 
@@ -412,6 +426,41 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
 };
 
 
+// Update the shouldSetStatus field for a bug
+Step.prototype.checkShouldSetStatus = function Step_checkShouldSetStatus(bugID) {
+  if (!(bugID in this.bugInfo))
+    return
+
+  var info = this.bugInfo[bugID];
+  if (!info.canSetStatus) {
+    info.shouldSetStatus = false; 
+    return;
+  }
+
+  // Basically we want some kind of assertion of the fix to be posted to the bug
+  // That means - for a tracked tree - we should be sending at least one comment.
+  // Additionally, for m-c and c-c we also need to be resolving the bug.
+  if ((Config.treeName == 'mozilla-central' || Config.treeName == 'comm-central')  &&
+      !info.canResolve) {
+    info.shouldSetStatus = false;
+    return;
+  }
+
+  var linked = info.linkedChangesets;
+  var hasComment = false;
+  for (var i = 0; i < info.linkedChangesets.length; i++) {
+    var index = info.linkedChangesets[i];
+    var attached = this.attachedBugs[index][bugID];
+    if (attached.canComment && attached.shouldComment) {
+      hasComment = true;
+      break;
+    }
+  }
+
+  info.shouldSetStatus = hasComment;
+};
+
+
 // Associate a bug number with a particular push
 Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   var attached = {};
@@ -448,6 +497,8 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                            linkedChangesets: [],
                            canReopen: false,
                            shouldReopen: false,
+                           canSetStatus: false,
+                           shouldSetStatus: false,
                            milestone: milestone};
 
     // Don't resolve bugs for integration repos
@@ -462,6 +513,14 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
       this.bugInfo[bugID].canReopen = true;
       this.bugInfo[bugID].shouldReopen = true;
       attached.shouldComment = true;
+    }
+
+    // Release-tracking: determine if status-[tree]N can be set
+    if (bug && bug.isTracked && (bug.statusFlag == '---' || bug.statusFlag == 'affected')) {
+      if (isMC || Config.treeName == 'comm-central')
+        this.bugInfo[bugID].canSetStatus = this.bugInfo[bugID].canResolve;
+      else if (Config.treeInfo[Config.treeName].trackedTree)
+        this.bugInfo[bugID].canSetStatus = true;
     }
 
     // Adjust the whiteboard the first time we see this bug
@@ -481,9 +540,16 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   var attachedBugs = this.attachedBugs[index];
   attachedBugs[bugID] = attached;
 
+  // Release-tracking: determine if status-[tree]N should be set
+  if (bug && bug.isTracked)
+    this.checkShouldSetStatus(bugID);
+
   // Various bits of state used for constructing additional help text
   if (this.bugInfo[bugID].linkedChangesets.length == 2)
     this.multiBugs.push(bugID);
+  if (this.bugInfo[bugID].canSetStatus && this.bugInfo[bugID].shouldSetStatus &&
+      this.trackedBugs.indexOf(bugID) == -1)
+    this.trackedBugs.push(bugID);
   if (!bug && this.securityBugs.indexOf(bugID) == -1)
     this.securityBugs.push(bugID);
   if (isMC && leaveOpen && this.leaveOpenBugs.indexOf(bugID) == -1)
@@ -492,6 +558,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
       this.bugInfo[bugID].canResolve)
     this.hasMilestones.push(bugID);
 };
+
 
 // Returns an array of strings representing the bug numbers
 // associated with the given push
@@ -519,11 +586,41 @@ Step.prototype.isAttached = function Step_isAttached(index, bugID) {
 };
 
 
+Step.prototype.updateShouldSetStatusAfterResolve = function Step_updateShouldSetStatusAfterResolve(bugID, should) {
+  function removeFromArr(arr) {
+    var i = arr.indexOf(bugID);
+    if (i == -1)
+      return;
+
+    arr.splice(i, 1);
+  }
+
+  if (!this.bugInfo[bugID].canSetStatus)
+    return;
+
+  // Resolve can't be toggled for aurora/beta etc trees, so if we're here after a resolve toggle
+  // that implies m-c/c-c. Hence, if shouldResolve has been switched off, we can immediately decide
+  // that we can't set the status
+  if (!should) {
+    this.bugInfo[bugID].shouldSetStatus = false;
+    removeFromArr(this.trackedBugs);
+    return;
+  }
+
+  this.checkShouldSetStatus(bugID);
+  if (this.bugInfo[bugID].shouldSetStatus && this.trackedBugs.indexOf(bugID) == -1)
+    this.trackedBugs.push(bugID);
+  else if (!this.bugInfo[bugID].shouldSetStatus)
+    removeFromArr(this.trackedBugs);
+};
+
+
 Step.prototype.setShouldResolve = function Step_setShouldResolve(bugID, should) {
   if (!(bugID in this.bugInfo))
     return;
 
   this.bugInfo[bugID].shouldResolve = should;
+  this.updateShouldSetStatusAfterResolve(bugID, should);
 };
 
 
@@ -533,6 +630,7 @@ Step.prototype.toggleShouldResolve = function Step_toggleShouldResolve(bugID) {
 
   should = this.bugInfo[bugID].shouldResolve;
   this.bugInfo[bugID].shouldResolve = !should;
+  this.updateShouldSetStatusAfterResolve(bugID, !should);
 };
 
 
@@ -600,11 +698,32 @@ Step.prototype.setMilestone = function Step_setMilestone(bugID, newVal) {
 };
 
 
+Step.prototype.updateShouldSetStatusAfterComment = function Step_updateShouldSetStatusAfterComment(bugID) {
+  function removeFromArr(arr) {
+    var i = arr.indexOf(bugID);
+    if (i == -1)
+      return;
+
+    arr.splice(i, 1);
+  }
+
+  if (!this.bugInfo[bugID].canSetStatus)
+    return;
+
+  this.checkShouldSetStatus(bugID);
+  if (this.bugInfo[bugID].shouldSetStatus && this.trackedBugs.indexOf(bugID) == -1)
+    this.trackedBugs.push(bugID);
+  else if (!this.bugInfo[bugID].shouldSetStatus)
+    removeFromArr(this.trackedBugs);
+};
+
+
 Step.prototype.setShouldComment = function Step_setShouldComment(index, bugID, should) {
   if (!this.isAttached(index, bugID))
     return;
 
   this.attachedBugs[index][bugID].shouldComment = should;
+  this.updateShouldSetStatusAfterComment(bugID);
 };
 
 
@@ -622,6 +741,7 @@ Step.prototype.toggleShouldComment = function Step_toggleShouldComment(index, bu
 
   should = this.attachedBugs[index][bugID].shouldComment;
   this.attachedBugs[index][bugID].shouldComment = !should;
+  this.updateShouldSetStatusAfterComment(bugID);
 };
 
 
@@ -695,6 +815,7 @@ Step.prototype.detachBugFromCset = function Step_detachBugFromCset(index, bugID)
   if (this.bugInfo[bugID].linkedChangesets.length == 0) {
     removeFromArr(this.securityBugs);
     removeFromArr(this.leaveOpenBugs);
+    removeFromArr(this.trackingBugs);
     delete this.bugInfo[bugID];
   } else if (this.bugInfo[bugID].linkedChangesets.length == 1)
     removeFromArr(this.multiBugs);
@@ -749,8 +870,10 @@ Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   var leaveOpenPost = ' "leave open" in the whiteboard, so the resolve flag has not been set.';
   var securityPost = ' restricted - m-cMerge was unable to load the relevant information from Bugzilla.';
   var milestonePost = ' a milestone set. You may wish to check it is correct before submitting.';
+  var trackedPost = ' ' + mcMerge.trackingFlag + '+, so ' + mcMerge.statusFlag + ' will be set to "fixed".';
 
   var hashave = {singular: 'has', plural: 'have'};
+  var isare = {singular: 'is', plural: 'are'};
   var already = {singular: 'already has', plural: 'already have'};
 
   if (this.multiBugs.length > 0 || this.leaveOpenBugs.length > 0 ||
@@ -768,6 +891,9 @@ Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
 
   if (this.hasMilestones.length > 0)
     text += this.constructTextFor(this.hasMilestones, milestonePost, already, true);
+
+  if (this.trackedBugs.length > 0)
+    text += this.constructTextFor(this.trackedBugs, trackedPost, isare);
 
   return text;
 };

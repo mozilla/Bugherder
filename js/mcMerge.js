@@ -5,6 +5,8 @@ var mcMerge = {
   expand: false,
   remap: false,
   tree: null,
+  trackingFlag: null,
+  statusFlag: null,
 
   stageTypes: [{name: 'foundBackouts'},
     {name: 'notFoundBackouts'},
@@ -75,6 +77,8 @@ var mcMerge = {
       dataType = 'bugzilla';
     if (this.loading == 'version')
       dataType = 'target milestone';
+    if (this.loading == 'tracking')
+      dataType = 'tracking and status flag';
 
     if (errorType == 'invalid')
       errorText = 'You entered an invalid changeset ID: IDs should either be 12-40 hexadecimal characters, or "tip"';
@@ -197,6 +201,16 @@ var mcMerge = {
   },
 
 
+  // Callback following load of tracking flag names. Kicks off loading of configuration data from BZ
+  onFlagsLoad: function mcM_onFlagLoad(flagData) {
+    UI.hideLoadingMessage();
+    this.trackingFlag = flagData.tracking;
+    this.statusFlag = flagData.status;
+
+    this.loadVersionFromBZ();
+  },
+
+
   // Callback following load of pushlog data. Kicks off loading of current version from m-c
   onPushlogLoad: function mcM_onPushlogLoad(cset) {
     UI.hideLoadingMessage();
@@ -212,7 +226,10 @@ var mcMerge = {
     // Stash the changeset requested for future error messages
     this.cset = cset;
 
-    this.loadVersionFromBZ();
+    if (!this.tree || this.tree == 'comm-central' || Config.treeInfo[this.tree].trackedTree)
+      this.loadFlags();
+    else
+      this.loadVersionFromBZ();
   },
 
 
@@ -282,6 +299,27 @@ var mcMerge = {
     };
 
     MilestoneData.init(versionsCallback, errorCallback);
+  },
+
+
+  loadFlags: function mcM_loadFlags() {
+    this.loading = 'tracking';
+    UI.showLoadingMessage('Calculating tracking/status flags...');
+
+    var self = this;
+    var loadCallback = function mcM_loadFlagsLoadCallback(flagData) {
+     self.onFlagsLoad(flagData);
+    };
+
+    var errorCallback = function mcM_loadFlagsErrorCallback(jqResponse, textStatus, errorThrown) {
+      self.ajaxError(jqResponse, textStatus, errorThrown);
+    };
+
+    var tree = this.tree;
+    if (tree == null)
+      tree = 'mozilla-central';
+
+    FlagLoader.init(this.cset, tree, loadCallback, errorCallback);
   },
 
 
