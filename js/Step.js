@@ -441,7 +441,7 @@ Step.prototype.checkShouldSetStatus = function Step_checkShouldSetStatus(bugID) 
   // That means - for a tracked tree - we should be sending at least one comment.
   // Additionally, for m-c and c-c we also need to be resolving the bug.
   if ((Config.treeName == 'mozilla-central' || Config.treeName == 'comm-central')  &&
-      !info.canResolve) {
+      (!info.canResolve || !info.shouldResolve)) {
     info.shouldSetStatus = false;
     return;
   }
