@@ -43,6 +43,7 @@ var BugData = {
     if (this.trackingFlag && bugObj[this.trackingFlag] == '+')
       bug.isTracked = true;
     bug.statusFlag = '---';
+    bug.isUnassigned = bugObj.assigned_to.name == 'nobody';
     if (this.statusFlag)
       bug.statusFlag = bugObj[this.statusFlag];
     this.bugs[bugObj.id] = bug;

@@ -164,6 +164,20 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
       bug[fieldName] = 'fixed';
     }
 
+    // Set assignee if appropriate
+    if (!info.canReopen && !info.shouldReopen && BugData.bugs[bugID].isUnassigned && info.linkedChangesets.length > 0) {
+      var canSetAssignee = true;
+      var assignee = PushData.allPushes[info.linkedChangesets[0]].email;
+      for (var i = 1; i < info.linkedChangesets.length; i++) {
+        if (PushData.allPushes[info.linkedChangesets[i]].email != assignee) {
+          canSetAssignee = false;
+          break;
+        }
+      }
+      if (canSetAssignee)
+        bug.assigned_to = {name: assignee};
+    }
+
     if (bugID in Step.remaps) {
       bug.id = Step.remaps[bugID];
       if ('resolution' in bug)
@@ -216,6 +230,15 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     this.continueSubmit(i);
   }
   if (where == 'submit' && msg == 'HTTP status 400') {
+    // First check to see if there was an assignee in the data we sent. If so, we should try and submitting again - it may have been a
+    // case where the email was wrong (or the author's bugzilla email is different from the email in the changeset). Don't count that as
+    // a retry
+    if ('assigned_to' in this.sendData[i]) {
+      delete this.sendData[i].assigned_to;
+      this.startSubmit(i);
+      return;
+    }
+
     // If we got a bad request here, either we were mid-aired or something really
     // odd happened, like the product milestone was deleted. Try again, unless of course this *was* our
     // retry

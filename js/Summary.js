@@ -18,6 +18,11 @@ var Summary = {
     else
       html += '&nbsp;';
     html += '</td><td>';
+    if ('assigned_to' in data)
+      html += UI.htmlEncode(data.assigned_to.name);
+    else
+     html += '&nbsp;';
+    html += '</td><td>';
     if ('comments' in data) {
       var comment = data.comments[0].text;
       comment = comment.replace(/\n/g, '<br>');
@@ -40,7 +45,7 @@ var Summary = {
     }
 
     html += '<br><table class="summaryTable"><tr class="thead"><td>Bug</td><td>Resolved?</td>';
-    html += '<td>Reopened?</td><td>Target Milestone</td><td>Comment</td></tr>';
+    html += '<td>Reopened?</td><td>Target Milestone</td><td>Assignee</td><td>Comment</td></tr>';
     html += sent.map(function(data) {return this.makeSummaryForData(data);}, this).join('');
     html += '</table>';
     return html;

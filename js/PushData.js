@@ -425,8 +425,12 @@ var PushData = {
 
     var author = cset.author;
     var index = author.indexOf(' <');
-    if (author.indexOf(' <') != -1)
+    if (author.indexOf(' <') != -1) {
+      var emailEnd = author.indexOf('>');
+      push.email = author.substring(index + 2, emailEnd);
       author = author.substr(0, index);
+    } else
+      push.email = author;
     push.author = UI.htmlEncode(author);
 
     // Have a stab at working out the bug number. This will return the first possibility
