@@ -186,7 +186,7 @@ var mcMerge = {
   // Callback following load of version options from Bugzilla. Checks for errors, then kicks off
   // bug loading
   onbzVersionLoad: function mcM_onBZVersionLoad() {
-    if (!MilestoneData.milestones) {
+    if (!ConfigurationData.milestones) {
       this.go('error=version&cset='+this.cset, false);
       return;
     }
@@ -207,7 +207,7 @@ var mcMerge = {
     this.trackingFlag = flagData.tracking;
     this.statusFlag = flagData.status;
 
-    this.loadVersionFromBZ();
+    this.loadConfigurationFromBZ();
   },
 
 
@@ -229,7 +229,7 @@ var mcMerge = {
     if (!this.tree || this.tree == 'comm-central' || Config.treeInfo[this.tree].trackedTree)
       this.loadFlags();
     else
-      this.loadVersionFromBZ();
+      this.loadConfigurationFromBZ();
   },
 
 
@@ -239,7 +239,7 @@ var mcMerge = {
       return;
 
     this.loading = 'bz';
-    UI.showLoadingMessage('Loading bugzilla data...');
+    UI.showLoadingMessage('Loading Bugzilla data...');
 
     // Build list of bugs to load
     var bugs = PushData.fixes.map(this.getBug, this).join(',');
@@ -285,20 +285,20 @@ var mcMerge = {
 
 
   // Load options for options menu from Bugzilla config
-  loadVersionFromBZ: function mcM_loadVersionFromBZ() {
+  loadConfigurationFromBZ: function mcM_loadConfigurationFromBZ() {
     this.loading = 'version';
-    UI.showLoadingMessage('Loading milestone possibilities...');
+    UI.showLoadingMessage('Loading Bugzilla configuration...');
     var self = this;
 
-    var versionsCallback = function mcM_loadVersionLoadCallback() {
+    var versionsCallback = function mcM_loadConfigurationLoadCallback() {
       self.onbzVersionLoad();
     };
 
-    var errorCallback = function mcM_loadVersionErrorCallback(jqResponse, textStatus, errorThrown) {
+    var errorCallback = function mcM_loadConfigurationErrorCallback(jqResponse, textStatus, errorThrown) {
       self.ajaxError(jqResponse, textStatus, errorThrown);
     };
 
-    MilestoneData.init(versionsCallback, errorCallback);
+    ConfigurationData.init(versionsCallback, errorCallback);
   },
 
 

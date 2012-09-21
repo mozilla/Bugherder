@@ -422,6 +422,7 @@ var PushData = {
     push.cset = cset.node.substring(0,12);
     push.hgLink = Config.hgRevURL + push.cset;
     push.desc = UI.htmlEncode(cset.desc);
+    push.files = cset.files;
 
     var author = cset.author;
     var index = author.indexOf(' <');

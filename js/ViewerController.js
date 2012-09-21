@@ -191,6 +191,11 @@ var ViewerController = {
   },
 
 
+  onTestsuiteChange: function vc_onTestsuiteChange(bug, newVal) {
+    this.steps[this.currentStep].setTestsuite(bug, newVal);
+  },
+
+
   postSubmitUpdate: function vc_postSubmitUpdate(index, bug) {
     Viewer.removeBug(index, bug);
     Viewer.addBug(index, bug);

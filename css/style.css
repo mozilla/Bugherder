@@ -129,6 +129,12 @@ progress {
   background-color: rgb(245, 255, 250);
 }
 
+.files {
+  background-color: rgb(245, 255, 250);
+  padding: 5px 10px 5px 10px;
+  border-top: 1px solid black;
+}
+
 .backoutbanner {
   font-weight: bold;
   background-color: rgb(255,239,217);
@@ -215,6 +221,10 @@ progress {
   font-size: large;
 }
 
+.testsuite {
+  font-size: smaller;
+}
+
 #opaque {
   position: fixed;
   top: 0;
@@ -241,7 +251,7 @@ progress {
   background-color: rgb(245, 255, 250);
 }
 
-.viewhide {
+.viewhide, .fileviewhide {
   text-decoration: none;
   color: #4169e1;
   cursor: pointer;

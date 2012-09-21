@@ -178,6 +178,16 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
         bug.assigned_to = {name: assignee};
     }
 
+    // Set in-testsuite if possible 
+    if (BugData.bugs[bugID] && info.canSetTestsuite && info.intestsuite != BugData.bugs[bugID].intestsuite) {
+      bug.flags = [{name: 'in-testsuite',
+                    setter: {email: Step.username},
+                    type_id: ConfigurationData.testsuiteFlag,
+                    status: info.intestsuite}];
+      if (BugData.bugs[bugID].testsuiteFlagID != -1)
+        bug.flags[0].id = BugData.bugs[bugID].testsuiteFlagID;
+    }
+
     if (bugID in Step.remaps) {
       bug.id = Step.remaps[bugID];
       if ('resolution' in bug)
@@ -409,6 +419,12 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
     BugData.bugs[bugID].statusFlag = sent['cf_' + mcMerge.statusFlag];
   }
 
+  // Update the intestsuite flag if we sent it
+  if ('flags' in sent) {
+    info.intestsuite = sent.flags[0].status;
+    BugData.bugs[bugID].intestsuite = sent.flags[0].status;
+  }
+
   this.continueSubmit(i);
 };
 
@@ -508,8 +524,8 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
     if (!isMC || hasMilestone || leaveOpen)
       milestone = bug.milestone;
     else {
-      var defaultMilestone = MilestoneData.milestones[bug.product].defaultIndex;
-      milestone = MilestoneData.milestones[bug.product].values[defaultMilestone];
+      var defaultMilestone = ConfigurationData.milestones[bug.product].defaultIndex;
+      milestone = ConfigurationData.milestones[bug.product].values[defaultMilestone];
     }
   }
 
@@ -522,6 +538,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                            shouldReopen: false,
                            canSetStatus: false,
                            shouldSetStatus: false,
+                           canSetTestsuite: bug && bug.canSetTestsuite,
                            milestone: milestone};
 
     // Don't resolve bugs for integration repos
@@ -545,6 +562,10 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
       else if (Config.treeInfo[Config.treeName].trackedTree)
         this.bugInfo[bugID].canSetStatus = true;
     }
+
+    // Allow setting of intestsuite if possible
+    if (bug && bug.canSetTestsuite)
+      this.bugInfo[bugID].intestsuite = bug.intestsuite;
 
     // Adjust the whiteboard the first time we see this bug
     if (bug)
@@ -718,6 +739,22 @@ Step.prototype.setMilestone = function Step_setMilestone(bugID, newVal) {
     return;
 
   this.bugInfo[bugID].milestone = newVal;
+};
+
+
+Step.prototype.getTestsuite = function Step_getTestsuite(bugID) {
+  if (!(bugID in this.bugInfo))
+    return ' ';
+
+  return this.bugInfo[bugID].intestsuite;
+};
+
+
+Step.prototype.setTestsuite = function Step_setTestsuite(bugID, newVal) {
+  if (!(bugID in this.bugInfo))
+    return;
+
+  this.bugInfo[bugID].intestsuite = newVal;
 };
 
 

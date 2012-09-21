@@ -1,7 +1,9 @@
 "use strict";
 
-var MilestoneData = {
+var ConfigurationData = {
   milestones: {},
+  products: {},
+  testsuiteFlag: -1,
 
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
@@ -19,9 +21,9 @@ var MilestoneData = {
             'Toolkit'],
 
 
-  init: function MD_init(loadCallback, errorCallback) {
+  init: function CD_init(loadCallback, errorCallback) {
     var self = this;
-    var callback  = function MD_initCallback(errmsg, data) {
+    var callback  = function CD_initCallback(errmsg, data) {
       if (errmsg)
         errorCallback(errmsg);
       else
@@ -33,7 +35,8 @@ var MilestoneData = {
   },
 
 
-  parseData: function MD_parseData(data, loadCallback) {
+  parseData: function CD_parseData(data, loadCallback) {
+    // Parse Milestones 
     var productMilestones = {}
     if ('product' in data) {
       for (var product in data['product']) {
@@ -51,6 +54,28 @@ var MilestoneData = {
       }
     }
     this.milestones = productMilestones;
+
+    // Find the flag number for in-testsuite 
+    if ('flag_type' in data) {
+      for (var flagNumber in data['flag_type']) {
+        if (data['flag_type'][flagNumber].name == 'in-testsuite') {
+          this.testsuiteFlag = parseInt(flagNumber);
+          break;
+        }
+      }
+    }
+
+    // Find which products/components can have intestsuite set
+    if ('product' in data && this.testsuiteFlag != -1) {
+      for (var product in data.product) {
+        this.products[product] = {};
+        for (var component in data.product[product].component) {
+          var hasTestsuite = data.product[product].component[component].flag_type.indexOf(this.testsuiteFlag) != -1;
+          this.products[product][component] = hasTestsuite;
+        }
+      }
+    }
+
     loadCallback();
   }
 };

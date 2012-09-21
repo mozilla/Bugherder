@@ -46,6 +46,11 @@ var Viewer = {
   },
 
 
+  addTestsuiteChangeListener: function viewer_addTestsuiteChangeListener(cset, bug) {
+    $('#' + this.getTestsuiteID(cset, bug)).on('change', this.onTestsuiteChange);
+  },
+
+
   addBug: function viewer_attachBug(index, bugID) {
     var cset = PushData.allPushes[index].cset;
 
@@ -62,6 +67,7 @@ var Viewer = {
     this.addCommentChangeListener(cset, bugID);
     this.addWhiteboardChangeListener(cset, bugID);
     this.addMilestoneChangeListener(cset, bugID);
+    this.addTestsuiteChangeListener(cset, bugID);
     this.updateSubmitButton();
   },
 
@@ -114,6 +120,20 @@ var Viewer = {
     var cset = PushData.allPushes[target.getAttribute('data-index')].cset;
     var bug = target.getAttribute('data-bug');
     $('#' + Viewer.getCommentID(cset, bug)).toggle();
+  },
+
+
+  onFileViewHideClick: function viewer_onFileViewHideClick(e) {
+    e.preventDefault();
+    var target = e.target;
+
+    if (!target.hasAttribute('data-index')) {
+      UI.showErrorMessage('View/hide clicked with no data!');
+      return;
+    }
+
+    var cset = target.getAttribute('data-index');
+    $('#' + Viewer.getFilesID(cset)).toggle();
   },
 
 
@@ -254,6 +274,24 @@ var Viewer = {
   },
 
 
+  onTestsuiteChange: function viewer_onTestsuiteChange(e) {
+    e.preventDefault();
+    var target = e.target;
+
+    if (!target.hasAttribute('data-index') ||
+        !target.hasAttribute('data-bug')) {
+      UI.showErrorMessage('Testsuite changed with no data!');
+      return;
+    }
+
+    var index = target.getAttribute('data-index');
+    var bug = target.getAttribute('data-bug');
+    // Update all other instances of this bug
+    $('.'+bug+'Testsuite').val(target.value);
+    ViewerController.onTestsuiteChange(bug, target.value);
+  },
+
+
   onChangeButtonClick: function viewer_onChangeButtonClick(e) {
     e.preventDefault();
     var target = e.target;
@@ -297,8 +335,18 @@ var Viewer = {
   },
 
 
+  getTestsuiteID: function viewer_getTestsuiteID(cset, id) {
+    return cset + id + 'Testsuite';
+  },
+
+
   getViewHideID: function viewer_getViewHideID(cset, id) {
     return cset + id + 'ViewHide';
+  },
+
+
+  getFilesID: function viewer_getFilesID(cset) {
+    return cset + 'Files';
   },
 
 
@@ -365,13 +413,32 @@ var Viewer = {
       html += ' disabled="true"';
     html += '>';
     var product = BugData.bugs[id].product;
-    var milestones = MilestoneData.milestones[product].values;
+    var milestones = ConfigurationData.milestones[product].values;
     var defaultMilestone = this.step.getMilestone(id);
     for (var i = 0; i < milestones.length; i++) {
       html += '<option value="' + milestones[i] + '"';
       if (milestones[i] == defaultMilestone)
         html += ' selected';
       html += '>' + milestones[i] + '</option>';
+    }
+    html += '</select>';
+    return html;
+  },
+
+
+  makeTestsuiteHTML: function viewer_makeTestsuiteHTML(cset, index, id) {
+    var html = '<select id="';
+    html += this.getTestsuiteID(cset, id);
+    html += '" class="testsuite ' + id + 'Testsuite"';
+    html += ' ' + this.makeDataHTML(index, id);
+    html += '>';
+    var statuses = [' ', '?', '+', '-'];
+    var defaultStatus = this.step.getTestsuite(id);
+    for (var i = 0; i < statuses.length; i++) {
+      html += '<option value="' + statuses[i] + '"';
+      if (statuses[i] == defaultStatus)
+        html += ' selected';
+      html += '>' + statuses[i] + '</option>';
     }
     html += '</select>';
     return html;
@@ -488,7 +555,13 @@ var Viewer = {
       html += '</span>';
     } else
       html += '<br>';
-    html += '<br><br>';
+    if (bug && bug.canSetTestsuite) {
+      html += '<span class="afterWhiteboard">In-testsuite: ';
+      html += this.makeTestsuiteHTML(cset, index, id);
+      html += '</span><br>';
+    } else
+      html += '<br>';
+    html += '<br>';
     html += '<span class="afterWhiteboard">';
     html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
     html += this.makeDataHTML(index, id) + '>View/hide comment</span></span></div>';
@@ -514,6 +587,7 @@ var Viewer = {
     var cset = PushData.allPushes[index].cset;
     var desc = PushData.allPushes[index].desc;
     var author = PushData.allPushes[index].author;
+    var files = PushData.allPushes[index].files;
     html += '<div class="changeset';
     if (classToAdd != '')
       html += ' ' + classToAdd;
@@ -532,7 +606,15 @@ var Viewer = {
     html += '      <button class="addBug" ' + this.makeDataHTML(index);
     html += ' id="' + this.getAddBugIDForCset(index) + '" type="button">Add Bug</button>';
     html += '    </div>';
+    html += '    <div class="grid-12"><span class="fileviewhide" ';
+    html += this.makeDataHTML(cset) + '>View/hide files</span></div>';
     html += '  </div>';
+    html += '  <div class="files hiddenContent" id="' + this.getFilesID(cset) + '">';
+    for (var i = 0; i < files.length; i++)
+      html += UI.htmlEncode(files[i]) + '<br />';
+    html += '    <span class="fileviewhide" ';
+    html += this.makeDataHTML(cset) + '>Hide</span>';
+    html += '    </div>';
 
     return html;
   },
@@ -659,12 +741,14 @@ var Viewer = {
     $('.removeButton').one('click', this.onRemoveButtonClick);
     $('.changeButton').one('click', this.onChangeButtonClick);
     $('.viewhide').click(this.onViewHideClick);
+    $('.fileviewhide').click(this.onFileViewHideClick);
     $('.comment').on('input', this.onCommentInput);
     $('.whiteboardTA').on('input', this.onWhiteboardInput);
     $('.resolveCheck').on('change', this.onResolveCheckClick);
     $('.commentCheck').on('change', this.onCommentCheckClick);
     $('.reopenCheck').on('change', this.onReopenCheckClick);
     $('.milestone').on('change', this.onMilestoneChange);
+    $('.testsuite').on('change', this.onTestsuiteChange);
 
     $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
