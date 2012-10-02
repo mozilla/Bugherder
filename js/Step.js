@@ -150,12 +150,10 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
     // Remove checkin-needed if present in keywords
     var keywords = BugData.bugs[bugID].keywords;
-    if (Config.treeName == 'mozilla-central') {
-      var checkinIndex = keywords.indexOf('checkin-needed');
-      if (checkinIndex != -1) {
-        keywords.splice(checkinIndex, 1);
-        bug.keywords = keywords;
-      }
+    var checkinIndex = keywords.indexOf('checkin-needed');
+    if (checkinIndex != -1) {
+      keywords.splice(checkinIndex, 1);
+      bug.keywords = keywords;
     }
 
     // Set status flag if appropriate
