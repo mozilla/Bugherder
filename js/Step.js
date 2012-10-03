@@ -540,7 +540,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                            milestone: milestone};
 
     // Don't resolve bugs for integration repos
-    if (Config.treeName != 'mozilla-central') {
+    if (Config.treeName != 'mozilla-central' && Config.treeName != 'comm-central') {
       this.bugInfo[bugID].canResolve = false;
       this.bugInfo[bugID].shouldResolve = false;
        
