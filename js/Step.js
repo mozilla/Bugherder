@@ -163,7 +163,8 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     }
 
     // Set assignee if appropriate
-    if (!info.canReopen && !info.shouldReopen && BugData.bugs[bugID].isUnassigned && info.linkedChangesets.length > 0) {
+    if (!Config.leaveOpenRE.test(bug.whiteboard) && !info.canReopen && !info.shouldReopen &&
+        BugData.bugs[bugID].isUnassigned && info.linkedChangesets.length > 0) {
       var canSetAssignee = true;
       var assignee = PushData.allPushes[info.linkedChangesets[0]].email;
       for (var i = 1; i < info.linkedChangesets.length; i++) {
