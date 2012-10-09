@@ -242,10 +242,16 @@ var mcMerge = {
     UI.showLoadingMessage('Loading Bugzilla data...');
 
     // Build list of bugs to load
-    var bugs = PushData.fixes.map(this.getBug, this).join(',');
-    if (bugs && PushData.backedOut.length > 0)
-      bugs += ',';
-    bugs += PushData.backedOut.map(this.getBug, this).join(',');
+    var bugArray = [];
+    function forEachCB(val) {
+      var bugNum = this.getBug(val);
+      if (bugArray.indexOf(bugNum) == -1)
+        bugArray.push(bugNum);
+    }
+
+    PushData.fixes.forEach(forEachCB, this);
+    PushData.backedOut.forEach(forEachCB, this);
+    var bugs = bugArray.join(',');
 
 
     // Parse commit messages and load backout bugs when the push only contains backouts
