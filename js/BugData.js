@@ -3,6 +3,8 @@
 var BugData = {
   bugs: {},
   trackingFlag: null,
+  statusFlag: null,
+  fields: 'id,resolution,status,whiteboard,keywords,target_milestone,summary,product,component,flags,assigned_to',
 
   load: function BD_load(bugs, loadCallback, errorCallback) {
     if (mcMerge.trackingFlag)
@@ -10,7 +12,13 @@ var BugData = {
     if (mcMerge.statusFlag)
       this.statusFlag = 'cf_' + mcMerge.statusFlag;
 
-    bugs = {id : bugs, include_fields: '_default,flags'};
+    var includeFields = this.fields;
+    if (this.trackingFlag)
+      includeFields += ',' + this.trackingFlag;
+    if (this.statusFlag)
+      includeFields += ',' + this.statusFlag;
+
+    bugs = {id : bugs, include_fields: includeFields};
 
     var self = this;
     var callback  = function BD_LoadCallback(errmsg, data) {
@@ -27,20 +35,34 @@ var BugData = {
 
   makeBug: function BD_makeBug(bugObj) {
     var bug = {};
-    bug.resolution = UI.htmlEncode(bugObj.resolution);
+
+    if (bugObj.resolution)
+      bug.resolution = UI.htmlEncode(bugObj.resolution);
+    else
+      bug.resolution = '';
+    
+    if (bugObj.whiteboard)
+      bug.whiteboard = bugObj.whiteboard;
+    else
+      bug.whiteboard = '';
+
+    if (bugObj.keywords)
+      bug.keywords = bugObj.keywords;
+    else
+      bug.keywords = '';
+
+    // The next five should always be present
     bug.status = UI.htmlEncode(bugObj.status);
-    bug.whiteboard = bugObj.whiteboard;
-    bug.keywords = bugObj.keywords;
     bug.milestone = UI.htmlEncode(bugObj.target_milestone);
     bug.summary = UI.htmlEncode(bugObj.summary);
     bug.product = bugObj.product;
-
-    bug.canResolve = !(bug.status == 'RESOLVED' || bug.status == 'VERIFIED');
-    bug.canReopen = bug.resolution == 'FIXED';
-
     bug.id = bugObj.id;
     if (typeof bug.id == 'string')
       bug.id = UI.htmlEncode(bug.id);
+
+
+    bug.canResolve = !(bug.status == 'RESOLVED' || bug.status == 'VERIFIED');
+    bug.canReopen = bug.resolution == 'FIXED';
 
     bug.isTracked = false;
     if (this.trackingFlag && bugObj[this.trackingFlag] == '+')
