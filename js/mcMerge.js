@@ -251,11 +251,10 @@ var mcMerge = {
 
     PushData.fixes.forEach(forEachCB, this);
     PushData.backedOut.forEach(forEachCB, this);
-    var bugs = bugArray.join(',');
 
 
     // Parse commit messages and load backout bugs when the push only contains backouts
-    if (PushData.safeToReopen() && bugs == '' && PushData.notFoundBackouts.length > 0) {
+    if (PushData.safeToReopen() && bugArray.length == 0 && PushData.notFoundBackouts.length > 0) {
       var reResult;
       for (var i = 0; i < PushData.notFoundBackouts.length; i++) {
         var ind = PushData.notFoundBackouts[i];
@@ -264,15 +263,13 @@ var mcMerge = {
          while (reResult = Config.bugNumRE.exec(PushData.allPushes[ind].desc))
           if (PushData.allPushes[ind].backoutBugs.indexOf(reResult[0]) == -1)
             PushData.allPushes[ind].backoutBugs.push(reResult[0]);
-        if (bugs != '')
-          bugs += ',';
-        bugs += PushData.allPushes[ind].backoutBugs.join(',');
+        bugArray.push.apply(bugArray, PushData.allPushes[ind].backoutBugs);
       }
     }
 
     // There were no bug numbers found? Might happen when called with a
     // non-merge "no bug" changeset
-    if (!bugs) {
+    if (bugArray.length == 0) {
       this.updateUI();
       return;
     }
@@ -286,7 +283,7 @@ var mcMerge = {
       self.ajaxError(jqResponse, textStatus, errorThrown);
     };
 
-    BugData.load(bugs, loadCallback, errorCallback);
+    BugData.load(bugArray, loadCallback, errorCallback);
   },
 
 

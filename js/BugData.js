@@ -5,8 +5,31 @@ var BugData = {
   trackingFlag: null,
   statusFlag: null,
   fields: 'id,resolution,status,whiteboard,keywords,target_milestone,summary,product,component,flags,assigned_to',
+  notYetLoaded: [],
+  loadCallback: null,
+  errorCallback: null,
+  bugzilla: bz.createClient(),
 
   load: function BD_load(bugs, loadCallback, errorCallback) {
+    this.notYetLoaded = bugs;
+    this.loadCallback = loadCallback;
+    this.errorCallback = errorCallback;
+    this.loadMore();    
+  },
+
+
+  loadMore: function BD_loadMore() {
+    var batch = [];
+    var limit = 500; // to avoid URI too long errors from BZAPI
+    if (this.notYetLoaded.length < limit)
+      limit = this.notYetLoaded.length;
+    for (var i = 0; i < limit; i++)
+      batch.push(this.notYetLoaded.pop());
+    this._realLoad(batch.join(','));
+  },
+
+
+  _realLoad: function BD_realLoad(bugs) {
     if (mcMerge.trackingFlag)
       this.trackingFlag = 'cf_' + mcMerge.trackingFlag;
     if (mcMerge.statusFlag)
@@ -23,13 +46,12 @@ var BugData = {
     var self = this;
     var callback  = function BD_LoadCallback(errmsg, data) {
       if (errmsg)
-        errorCallback(errmsg);
+        self.errorCallback(errmsg);
       else
-        self.parseData(data, loadCallback);
+        self.parseData(data);
     };
 
-    var bugzilla = bz.createClient();
-    bugzilla.searchBugs(bugs, callback);
+    this.bugzilla.searchBugs(bugs, callback);
   },
 
 
@@ -94,6 +116,9 @@ var BugData = {
 
   parseData: function BD_parseData(data, loadCallback) {
     data.forEach(this.makeBug, this);
-    loadCallback();
+    if (this.notYetLoaded.length == 0)
+      this.loadCallback();
+    else
+      this.loadMore();
   }
 };
