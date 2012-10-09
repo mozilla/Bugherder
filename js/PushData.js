@@ -138,6 +138,8 @@ var PushData = {
       var csetFound = false;
       for (var i = 0; i < descCsets.length; i++) {
         var cset = descCsets[i];
+        if (cset.length > 12)
+          cset = cset.substring(0,12);
         if (cset in this._csets && !this.allPushes[this._csets[cset]].backedOut)
           csetFound = true;
       }
