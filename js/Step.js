@@ -520,7 +520,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   if (bug) {
     leaveOpen = Config.leaveOpenRE.test(bug.whiteboard);
     hasMilestone = bug.milestone != '---';
-    if (!isMC || hasMilestone || leaveOpen)
+    if (hasMilestone || leaveOpen || !(Config.treeName == 'mozilla-central' || Config.treeName == 'comm-central'))
       milestone = bug.milestone;
     else {
       var defaultMilestone = ConfigurationData.milestones[bug.product].defaultIndex;
