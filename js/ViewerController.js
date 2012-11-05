@@ -111,7 +111,7 @@ var ViewerController = {
     var loadCallback = function vc_onAddBugLoadCallback() {
       self.addBug(index, input);
     };
-    BugData.load(input, loadCallback, null);
+    BugData.load([input], loadCallback, null);
   },
 
 
@@ -152,7 +152,7 @@ var ViewerController = {
       self.addBug(index, input);
       self.removeBug(index, bug);
     };
-    BugData.load(input, loadCallback, null);
+    BugData.load([input], loadCallback, null);
   },
 
 
