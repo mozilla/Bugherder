@@ -452,6 +452,9 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
 
     // Remove annotations on fx-team merges
     newWhiteboard = newWhiteboard.replace('[fixed-in-fx-team]','');
+
+    // Remove annotations on s-c merges
+    newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)services\]/ig, '');
   }
 
   if (Config.treeName != 'mozilla-central' && 'additions' in Config.treeInfo[Config.treeName]) {
