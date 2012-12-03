@@ -82,7 +82,12 @@ var Config = {
     "mozilla-esr10": {
       repo: "releases/mozilla-esr10",
       trackedTree: true,
-      synonyms: ["releases/mozilla-esr10", "mozilla-esr10"]
+      synonyms: ["esr10", "releases/mozilla-esr10", "mozilla-esr10"]
+    },
+    "mozilla-esr17": {
+      repo: "releases/mozilla-esr17",
+      trackedTree: true,
+      synonyms: ["esr17", "releases/mozilla-esr17", "mozilla-esr17"]
     },
     "jetpack": {
       repo: "projects/addon-sdk",
@@ -224,6 +229,11 @@ var Config = {
       repo: "releases/comm-esr10",
       trackedTree: true,
       synonyms: ["releases/comm-esr10", "comm-esr10"]
+    },
+    "comm-esr17": {
+      repo: "releases/comm-esr17",
+      trackedTree: true,
+      synonyms: ["releases/comm-esr17", "comm-esr17"]
     }
   }
 };
