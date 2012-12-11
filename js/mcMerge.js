@@ -173,7 +173,7 @@ var mcMerge = {
 
   // Callback following load of bug data from Bugzilla. Providing there's no errors, it's time
   // to display the UI
-  onBugLoad: function mcM_onBugLoad(bugs) {
+  onBugLoad: function mcM_onBugLoad() {
     if (!BugData.bugs) {
       this.go('error=bugs&cset='+this.cset, false);
       return;
