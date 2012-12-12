@@ -2,87 +2,64 @@
 
 var Viewer = {
   init: function viewer_init() {
-    function bindListener(fn, that) {
+    var listener = this.listener;
+    function bindListener(that, listeners) {
       return function (e) {
-        fn.call(that, e);
+        listener.call(that, listeners, e);
       };
     }
 
-    var self = this;
-    $('#viewerOutput').click(bindListener(self.clickListener, self));
-    $('#viewerOutput').on('input', bindListener(self.inputListener, self));
-    $('#viewerOutput').on('change', bindListener(self.changeListener, self));
-  },
-
-  clickListener: function viewer_clickListener(e) {
-    var listenerDict = {
-      'addBug'      : {func: this.onAddButtonClick,    preventDefault: true},
-      'changeButton': {func: this.onChangeButtonClick, preventDefault: true},
-      'removeButton': {func: this.onRemoveButtonClick, preventDefault: true},
-      'commentCheck': {func: this.onCommentCheckClick, preventDefault: false},
-      'resolveCheck': {func: this.onResolveCheckClick, preventDefault: false},
-      'reopenCheck' : {func: this.onReopenCheckClick,  preventDefault: false},
-      'viewhide'    : {func: this.onViewHideClick,     preventDefault: true},
-      'fileviewhide': {func: this.onFileViewHideClick, preventDefault: true},
-      'expandButton': {func: this.onExpandButtonClick, preventDefault: true},
-      'submitButton': {func: this.onSubmitButtonClick, preventDefault: true},
-      'prevButton'  : {func: this.onPrevious,          preventDefault: true},
-      'nextButton'  : {func: this.onNext,              preventDefault: true}
+    var clickListeners = {
+      'addBug'      : this.onAddButtonClick,
+      'changeButton': this.onChangeButtonClick,
+      'removeButton': this.onRemoveButtonClick,
+      'commentCheck': this.onCommentCheckClick,
+      'resolveCheck': this.onResolveCheckClick,
+      'reopenCheck' : this.onReopenCheckClick,
+      'viewhide'    : this.onViewHideClick,
+      'fileviewhide': this.onFileViewHideClick,
+      'expandButton': this.onExpandButtonClick,
+      'submitButton': this.onSubmitButtonClick,
+      'prevButton'  : this.onPreviousButtonClick,
+      'nextButton'  : this.onNextButtonClick
     };
 
-    var className = e.target.className.split(' ')[0];
-    if (!(className in listenerDict))
-      return;
-
-    if (listenerDict[className].preventDefault)
-      e.preventDefault();
-    listenerDict[className].func.call(this, e.target);
-  },
-
-
-  inputListener: function viewer_inputListener(e) {
-    var listenerDict = {
+    var inputListeners = {
       'comment': this.onCommentInput,
       'whiteboardTA': this.onWhiteboardInput
     };
 
-    var className = e.target.className.split(' ')[0];
-    if (!(className in listenerDict))
-      return;
-
-    listenerDict[className].call(this, e.target);
-  },
-
-
-  changeListener: function viewer_changeListener(e) {
-    var listenerDict = {
+    var changeListeners = {
       'milestone': this.onMilestoneChange,
       'testsuite': this.onTestsuiteChange
     };
 
+    var self = this;
+    $('#viewerOutput').click(bindListener(self, clickListeners));
+    $('#viewerOutput').on('input', bindListener(self, inputListeners));
+    $('#viewerOutput').on('change', bindListener(self, changeListeners));
+  },
+
+
+  listener: function viewer_listener(listeners, e) {
     var className = e.target.className.split(' ')[0];
-    if (!(className in listenerDict))
+    if (!(className in listeners))
       return;
 
-    listenerDict[className].call(this, e.target);
+    listeners[className].call(this, e.target);
   },
 
 
-  addBug: function viewer_attachBug(index, bugID) {
-    var cset = PushData.allPushes[index].cset;
-
-    var bugHTML = this.makeBugHTML(index, bugID);
-    $('#' + this.getBugDivID(cset)).prepend(bugHTML);
-
-    this.updateSubmitButton();
+  // Buttons
+  onPreviousButtonClick: function viewer_onPreviousButtonClick() {
+    if (this.onPreviousFn)
+      this.onPreviousFn();
   },
 
 
-  // Assumes the bug has already been removed from attachedBugs[cset]
-  removeBug: function viewer_removeBug(index, id) {
-    var cset = PushData.allPushes[index].cset;
-    $('#' + this.getBugCsetID(cset, id)).remove();
-    this.updateSubmitButton();
+  onNextButtonClick: function viewer_onNextButtonClick() {
+    if (this.onNextFn)
+      this.onNextFn();
   },
 
 
@@ -109,6 +86,29 @@ var Viewer = {
   },
 
 
+  onChangeButtonClick: function viewer_onChangeButtonClick(target) {
+    if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
+      UI.showErrorMessage('Change button clicked without data!');
+      return;
+    }
+
+    var index = target.getAttribute('data-index');
+    var bug = target.getAttribute('data-bug');
+    UI.showBugChangeForm(index, bug);
+  },
+
+
+  onExpandButtonClick: function viewer_onExpandButtonClick(target) {
+    $('.commentDiv').toggle();
+  },
+
+
+  onSubmitButtonClick: function viewer_onSubmitButtonClick(target) {
+    this.step.onSubmit();
+  },
+
+
+  // Spans
   onViewHideClick: function viewer_onViewHideClick(target) {
     if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('View/hide clicked with no data!');
@@ -132,6 +132,7 @@ var Viewer = {
   },
 
 
+  // Text inputs
   onCommentInput: function viewer_onCommentInput(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
@@ -159,6 +160,7 @@ var Viewer = {
   },
 
 
+  // Checkboxes
   onResolveCheckClick: function viewer_onResolveCheckClick(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
@@ -236,6 +238,7 @@ var Viewer = {
   },
 
 
+  // Selects
   onMilestoneChange: function viewer_onMilestoneChange(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
@@ -266,25 +269,21 @@ var Viewer = {
   },
 
 
-  onChangeButtonClick: function viewer_onChangeButtonClick(target) {
-    if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Change button clicked without data!');
-      return;
-    }
+  addBug: function viewer_attachBug(index, bugID) {
+    var cset = PushData.allPushes[index].cset;
 
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
-    UI.showBugChangeForm(index, bug);
+    var bugHTML = this.makeBugHTML(index, bugID);
+    $('#' + this.getBugDivID(cset)).prepend(bugHTML);
+
+    this.updateSubmitButton();
   },
 
 
-  onExpandButtonClick: function viewer_onExpandButtonClick(target) {
-    $('.commentDiv').toggle();
-  },
-
-
-  onSubmitButtonClick: function viewer_onSubmitButtonClick(target) {
-    this.step.onSubmit();
+  // Assumes the bug has already been removed from attachedBugs[cset]
+  removeBug: function viewer_removeBug(index, id) {
+    var cset = PushData.allPushes[index].cset;
+    $('#' + this.getBugCsetID(cset, id)).remove();
+    this.updateSubmitButton();
   },
 
 
@@ -667,7 +666,6 @@ var Viewer = {
   },
 
 
-
   view: function view_View(step, onPrevious, onNext) {
     // Hide any previous viewer output
     UI.hide('viewerOutput');
@@ -697,13 +695,11 @@ var Viewer = {
 
     $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
-    if (onPrevious.fn)
-      this.onPrevious = onPrevious.fn;
-    else
+    this.onPreviousFn = onPrevious.fn;
+    if (!onPrevious.fn)
       $('.prevButton').attr('disabled', true);
-    if (onNext.fn)
-      this.onNext = onNext.fn;
-    else 
+    this.onNextFn = onNext.fn;
+    if (!onNext.fn)
       $('.nextButton').attr('disabled', true);
 
     this.updateSubmitButton();
