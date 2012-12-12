@@ -2,12 +2,15 @@
 
 var Viewer = {
   init: function viewer_init() {
-    var self = this;
-    var clickListener = function (e) {
-      self.clickListener.call(self, e);
-    };
+    function bindListener(fn, that) {
+      return function (e) {
+        fn.call(that, e);
+      };
+    }
 
-    $('#viewerOutput').click(clickListener);
+    var self = this;
+    $('#viewerOutput').click(bindListener(self.clickListener, self));
+    $('#viewerOutput').on('input', bindListener(self.inputListener, self));
   },
 
   clickListener: function viewer_clickListener(e) {
@@ -35,13 +38,18 @@ var Viewer = {
     listenerDict[className].func.call(this, e.target);
   },
 
-  addCommentChangeListener: function viewer_addCommentChangeListener(cset, bug) {
-    $('#' + this.getCommentTextAreaID(cset, bug)).on('input', this.onCommentInput);
-  },
 
+  inputListener: function viewer_inputListener(e) {
+    var listenerDict = {
+      'comment': this.onCommentInput,
+      'whiteboardTA': this.onWhiteboardInput
+    };
 
-  addWhiteboardChangeListener: function viewer_addWhiteboardChangeListener(cset, bug) {
-    $('#' + this.getWhiteboardID(cset, bug)).on('input', this.onWhiteboardInput);
+    var className = e.target.className.split(' ')[0];
+    if (!(className in listenerDict))
+      return;
+
+    listenerDict[className].call(this, e.target);
   },
 
 
@@ -62,8 +70,6 @@ var Viewer = {
     $('#' + this.getBugDivID(cset)).prepend(bugHTML);
 
     // Hook up listeners
-    this.addCommentChangeListener(cset, bugID);
-    this.addWhiteboardChangeListener(cset, bugID);
     this.addMilestoneChangeListener(cset, bugID);
     this.addTestsuiteChangeListener(cset, bugID);
     this.updateSubmitButton();
@@ -124,10 +130,7 @@ var Viewer = {
   },
 
 
-  onCommentInput: function viewer_onCommentInput(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onCommentInput: function viewer_onCommentInput(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Comment changed with no data!');
@@ -140,10 +143,7 @@ var Viewer = {
   },
 
 
-  onWhiteboardInput: function viewer_onWhiteboardInput(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onWhiteboardInput: function viewer_onWhiteboardInput(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Whiteboard changed with no data!');
@@ -700,8 +700,6 @@ var Viewer = {
     }
 
     // Add listeners
-    $('.comment').on('input', this.onCommentInput);
-    $('.whiteboardTA').on('input', this.onWhiteboardInput);
     $('.milestone').on('change', this.onMilestoneChange);
     $('.testsuite').on('change', this.onTestsuiteChange);
 
