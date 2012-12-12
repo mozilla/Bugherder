@@ -11,6 +11,7 @@ var Viewer = {
     var self = this;
     $('#viewerOutput').click(bindListener(self.clickListener, self));
     $('#viewerOutput').on('input', bindListener(self.inputListener, self));
+    $('#viewerOutput').on('change', bindListener(self.changeListener, self));
   },
 
   clickListener: function viewer_clickListener(e) {
@@ -53,13 +54,17 @@ var Viewer = {
   },
 
 
-  addMilestoneChangeListener: function viewer_addMilestoneChangeListener(cset, bug) {
-    $('#' + this.getMilestonesID(cset, bug)).on('change', this.onMilestoneChange);
-  },
+  changeListener: function viewer_changeListener(e) {
+    var listenerDict = {
+      'milestone': this.onMilestoneChange,
+      'testsuite': this.onTestsuiteChange
+    };
 
+    var className = e.target.className.split(' ')[0];
+    if (!(className in listenerDict))
+      return;
 
-  addTestsuiteChangeListener: function viewer_addTestsuiteChangeListener(cset, bug) {
-    $('#' + this.getTestsuiteID(cset, bug)).on('change', this.onTestsuiteChange);
+    listenerDict[className].call(this, e.target);
   },
 
 
@@ -69,9 +74,6 @@ var Viewer = {
     var bugHTML = this.makeBugHTML(index, bugID);
     $('#' + this.getBugDivID(cset)).prepend(bugHTML);
 
-    // Hook up listeners
-    this.addMilestoneChangeListener(cset, bugID);
-    this.addTestsuiteChangeListener(cset, bugID);
     this.updateSubmitButton();
   },
 
@@ -234,10 +236,7 @@ var Viewer = {
   },
 
 
-  onMilestoneChange: function viewer_onMilestoneChange(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onMilestoneChange: function viewer_onMilestoneChange(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Milestone changed with no data!');
@@ -252,10 +251,7 @@ var Viewer = {
   },
 
 
-  onTestsuiteChange: function viewer_onTestsuiteChange(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onTestsuiteChange: function viewer_onTestsuiteChange(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Testsuite changed with no data!');
@@ -698,10 +694,6 @@ var Viewer = {
       }, this).join('');
       $('#viewerOutput').append(html);
     }
-
-    // Add listeners
-    $('.milestone').on('change', this.onMilestoneChange);
-    $('.testsuite').on('change', this.onTestsuiteChange);
 
     $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
