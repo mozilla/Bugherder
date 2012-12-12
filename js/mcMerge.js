@@ -566,3 +566,4 @@ var mcMerge = {
     }
   }
 };
+mcMerge.init();
