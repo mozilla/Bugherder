@@ -9,15 +9,18 @@ var Viewer = {
       };
     }
 
+    var indexOnly = ['index'];
+    var indexBug = ['index', 'bug'];
+
     var clickListeners = {
-      'addBug'      : this.onAddButtonClick,
-      'changeButton': this.onChangeButtonClick,
-      'removeButton': this.onRemoveButtonClick,
-      'commentCheck': this.onCommentCheckClick,
-      'resolveCheck': this.onResolveCheckClick,
-      'reopenCheck' : this.onReopenCheckClick,
-      'viewhide'    : this.onViewHideClick,
-      'fileviewhide': this.onFileViewHideClick,
+      'addBug'      : this.decorateWithRequired(this.onAddButtonClick, indexOnly, 'Add'),
+      'changeButton': this.decorateWithRequired(this.onChangeButtonClick, indexBug, 'Change'),
+      'removeButton': this.decorateWithRequired(this.onRemoveButtonClick, indexBug, 'Remove'),
+      'commentCheck': this.decorateWithRequired(this.onCommentCheckClick, indexBug, 'Comment'),
+      'resolveCheck': this.decorateWithRequired(this.onResolveCheckClick, indexBug, 'Resolve'),
+      'reopenCheck' : this.decorateWithRequired(this.onReopenCheckClick, indexBug, 'Reopen'),
+      'viewhide'    : this.decorateWithRequired(this.onViewHideClick, indexBug, 'View/Hide'),
+      'fileviewhide': this.decorateWithRequired(this.onFileViewHideClick, indexOnly, 'View/Hide files'),
       'expandButton': this.onExpandButtonClick,
       'submitButton': this.onSubmitButtonClick,
       'prevButton'  : this.onPreviousButtonClick,
@@ -25,13 +28,13 @@ var Viewer = {
     };
 
     var inputListeners = {
-      'comment': this.onCommentInput,
-      'whiteboardTA': this.onWhiteboardInput
+      'comment': this.decorateWithRequired(this.onCommentInput, indexBug, 'Comment text'),
+      'whiteboardTA': this.decorateWithRequired(this.onWhiteboardInput, indexBug, 'Whiteboard')
     };
 
     var changeListeners = {
-      'milestone': this.onMilestoneChange,
-      'testsuite': this.onTestsuiteChange
+      'milestone': this.decorateWithRequired(this.onMilestoneChange, indexBug, 'Milestone'),
+      'testsuite': this.decorateWithRequired(this.onTestsuiteChange, indexBug, 'Testsuite')
     };
 
     var self = this;
@@ -50,6 +53,22 @@ var Viewer = {
   },
 
 
+  decorateWithRequired: function viewer_decorateWithRequired(fn, required, which) {
+    return function (target) {
+      var args = [];
+      for (var i = 0; i < required.length; i++) {
+        var attribute = 'data-' + required[i];
+        if (!target.hasAttribute(attribute)) {
+          UI.showErrorMessage(which + ' had event without data!');
+          return;
+        }
+        args.push(target.getAttribute(attribute));
+      }
+      args.push(target);
+      fn.apply(this, args);
+    };
+  },
+
   // Buttons
   onPreviousButtonClick: function viewer_onPreviousButtonClick() {
     if (this.onPreviousFn)
@@ -63,38 +82,18 @@ var Viewer = {
   },
 
 
-  onAddButtonClick: function viewer_onAddButtonClick(target) {
-    if (!target.hasAttribute('data-index')) {
-      UI.showErrorMessage('Add button clicked without data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
+  onAddButtonClick: function viewer_onAddButtonClick(index, target) {
     UI.showBugLoadForm(index);
   },
 
 
-  onRemoveButtonClick: function viewer_onRemoveButtonClick(target) {
-    if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Remove button clicked with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
-    ViewerController.removeBug(index, bug);
+  onChangeButtonClick: function viewer_onChangeButtonClick(index, bug, target) {
+    UI.showBugChangeForm(index, bug);
   },
 
 
-  onChangeButtonClick: function viewer_onChangeButtonClick(target) {
-    if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Change button clicked without data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
-    UI.showBugChangeForm(index, bug);
+  onRemoveButtonClick: function viewer_onRemoveButtonClick(index, bug, target) {
+    ViewerController.removeBug(index, bug);
   },
 
 
@@ -109,68 +108,31 @@ var Viewer = {
 
 
   // Spans
-  onViewHideClick: function viewer_onViewHideClick(target) {
-    if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('View/hide clicked with no data!');
-      return;
-    }
-
-    var cset = PushData.allPushes[target.getAttribute('data-index')].cset;
-    var bug = target.getAttribute('data-bug');
+  onViewHideClick: function viewer_onViewHideClick(index, bug, target) {
+    var cset = PushData.allPushes[index].cset;
     $('#' + this.getCommentID(cset, bug)).toggle();
   },
 
 
-  onFileViewHideClick: function viewer_onFileViewHideClick(target) {
-    if (!target.hasAttribute('data-index')) {
-      UI.showErrorMessage('View/hide clicked with no data!');
-      return;
-    }
-
-    var cset = target.getAttribute('data-index');
+  onFileViewHideClick: function viewer_onFileViewHideClick(cset, target) {
     $('#' + this.getFilesID(cset)).toggle();
   },
 
 
   // Text inputs
-  onCommentInput: function viewer_onCommentInput(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Comment changed with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
+  onCommentInput: function viewer_onCommentInput(index, bug, target) {
     ViewerController.onCommentInput(index, bug, target.value);
   },
 
 
-  onWhiteboardInput: function viewer_onWhiteboardInput(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Whiteboard changed with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
+  onWhiteboardInput: function viewer_onWhiteboardInput(index, bug, target) {
     $('.' + bug + 'whiteboard').val(target.value); 
     ViewerController.onWhiteboardInput(index, bug, target.value);
   },
 
 
   // Checkboxes
-  onResolveCheckClick: function viewer_onResolveCheckClick(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage("Resolve checkbox clicked with no data!");
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
-
+  onResolveCheckClick: function viewer_onResolveCheckClick(index, bug, target) {
     // Update all other instances of this bug
     $('.'+bug+'resolvecheck').attr('checked', target.checked);
 
@@ -183,16 +145,7 @@ var Viewer = {
   },
 
 
-  onReopenCheckClick: function viewer_onReopenCheckClick(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage("Reopen checkbox clicked with no data!");
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
-
+  onReopenCheckClick: function viewer_onReopenCheckClick(index, bug, target) {
     // Update all other instances of this bug
     $('.'+bug+'reopencheck').attr('checked', target.checked);
 
@@ -203,15 +156,7 @@ var Viewer = {
   },
 
 
-  onCommentCheckClick: function viewer_onCommentCheckClick(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Comment checkbox clicked with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
+  onCommentCheckClick: function viewer_onCommentCheckClick(index, bug, target) {
     ViewerController.onCommentCheckClick(index, bug, target.checked);
 
     // Comments and reopening are dependent
@@ -239,30 +184,14 @@ var Viewer = {
 
 
   // Selects
-  onMilestoneChange: function viewer_onMilestoneChange(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Milestone changed with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
+  onMilestoneChange: function viewer_onMilestoneChange(index, bug, target) {
     // Update all other instances of this bug
     $('.'+bug+'Milestone').val(target.value);
     ViewerController.onMilestoneChange(bug, target.value);
   },
 
 
-  onTestsuiteChange: function viewer_onTestsuiteChange(target) {
-    if (!target.hasAttribute('data-index') ||
-        !target.hasAttribute('data-bug')) {
-      UI.showErrorMessage('Testsuite changed with no data!');
-      return;
-    }
-
-    var index = target.getAttribute('data-index');
-    var bug = target.getAttribute('data-bug');
+  onTestsuiteChange: function viewer_onTestsuiteChange(index, bug, target) {
     // Update all other instances of this bug
     $('.'+bug+'Testsuite').val(target.value);
     ViewerController.onTestsuiteChange(bug, target.value);
