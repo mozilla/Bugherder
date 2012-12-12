@@ -611,15 +611,6 @@ var Viewer = {
   },
 
 
-  makeOnNextHTML: function viewer_makeOnNextHTML() {
-    var html = '<div class="grid-12 divRight">';
-    html += '  <button type="button" id="nextButton">Next</button>';
-    html += '</div>'
-
-    return html;
-  },
-
-
   makeExpandHTML: function viewer_makeExpandHTML() {
     var html = '<div class="grid-12 divRight" id="expand">';
     html += '  <button type="button" class="expandButton" id="expandButton">Expand/Hide all comments</button>';
