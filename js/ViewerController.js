@@ -237,14 +237,14 @@ var ViewerController = {
 
     var step = this.steps[this.currentStep];
     var self = this;
-    var onPreviousFn = function vc_viewStepOnPrevious() {
+    var onPreviousFn = function vc_viewStepOnPrevious(target) {
       self.onPrevious();
     };
     var onPrevious = {label: 'Previous', fn: onPreviousFn};
     if (stepIndex == 0)
       onPrevious.fn = null;
 
-    var onNextfn = function vc_viewStepOnNext() {
+    var onNextfn = function vc_viewStepOnNext(target) {
       self.onNext();
     };
     var onNext = {label: 'Next', fn: onNextfn};

@@ -94,11 +94,11 @@ var Summary = {
 
   makeButtonHTML: function summary_makeButtonHTML(prevLabel, nextLabel) {
     var html = '<div class="grid-4">';
-    html += '  <button type="button" class="prevButton">' + prevLabel + '</button>';
+    html += '  <button type="button" class="summaryPrevButton">' + prevLabel + '</button>';
     html += '</div>';
     html += '<div class="grid-4"></div>';
     html += '<div class="grid-4 divRight">';
-    html += '  <button type="button" class="nextButton">' + nextLabel + '</button>';
+    html += '  <button type="button" class="summaryNextButton">' + nextLabel + '</button>';
     html += '</div>'
     return html;
   },
@@ -127,22 +127,23 @@ var Summary = {
 
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
     if (onPrevious.fn) {
-      $('.prevButton').click(function Step_onPreviousClick(e) {
+      $('.summaryPrevButton').click(function Step_onPreviousClick(e) {
         onPrevious.fn();
       });
     } else {
-      $('.prevButton').attr('disabled', true);
+      $('.summaryPrevButton').attr('disabled', true);
     }
 
     if (onNext.fn) {
-      $('.nextButton').click(function Step_onNextClick(e) {
+      $('.summaryNextButton').click(function Step_onNextClick(e) {
         onNext.fn();
       });
     } else {
-      $('.nextButton').attr('disabled', true);
+      $('.summaryNextButton').attr('disabled', true);
     }
 
     UI.show('viewerOutput');
     $('html')[0].scrollIntoView();
   }
 }
+

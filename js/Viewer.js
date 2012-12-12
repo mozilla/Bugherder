@@ -1,35 +1,39 @@
 "use strict";
 
 var Viewer = {
-  addRemoveButtonListener: function viewer_addRemoveButtonListener(cset, bug) {
-    $('#' + this.getRemoveButtonID(cset, bug)).one('click', this.onRemoveButtonClick);
+  init: function viewer_init() {
+    var self = this;
+    var clickListener = function (e) {
+      self.clickListener.call(self, e);
+    };
+
+    $('#viewerOutput').click(clickListener);
   },
 
+  clickListener: function viewer_clickListener(e) {
+    var listenerDict = {
+      'addBug'      : {func: this.onAddButtonClick,    preventDefault: true},
+      'changeButton': {func: this.onChangeButtonClick, preventDefault: true},
+      'removeButton': {func: this.onRemoveButtonClick, preventDefault: true},
+      'commentCheck': {func: this.onCommentCheckClick, preventDefault: false},
+      'resolveCheck': {func: this.onResolveCheckClick, preventDefault: false},
+      'reopenCheck' : {func: this.onReopenCheckClick,  preventDefault: false},
+      'viewhide'    : {func: this.onViewHideClick,     preventDefault: true},
+      'fileviewhide': {func: this.onFileViewHideClick, preventDefault: true},
+      'expandButton': {func: this.onExpandButtonClick, preventDefault: true},
+      'submitButton': {func: this.onSubmitButtonClick, preventDefault: true},
+      'prevButton'  : {func: this.onPrevious,          preventDefault: true},
+      'nextButton'  : {func: this.onNext,              preventDefault: true}
+    };
 
-  addChangeButtonListener: function viewer_addChangeButtonListener(cset, bug) {
-    $('#' + this.getChangeButtonID(cset, bug)).one('click', this.onChangeButtonClick);
+    var className = e.target.className.split(' ')[0];
+    if (!(className in listenerDict))
+      return;
+
+    if (listenerDict[className].preventDefault)
+      e.preventDefault();
+    listenerDict[className].func.call(this, e.target);
   },
-
-
-  addCommentCheckListener: function viewer_addCommentCheckListener(cset, bug) {
-    $('#' + this.getCommentCheckID(cset, bug)).on('change', this.onCommentCheckClick);
-  },
-
-
-  addResolveCheckListener: function viewer_addResolveCheckListener(cset, bug) {
-    $('#' + this.getResolveCheckID(cset, bug)).on('change', this.onResolveCheckClick);
-  },
-
-
-  addReopenCheckListener: function viewer_addReopenCheckListener(cset, bug) {
-    $('#' + this.getReopenCheckID(cset, bug)).on('change', this.onReopenCheckClick);
-  },
-
-
-  addViewHideListener: function viewer_addViewHideListener(cset, bug) {
-    $('#' + this.getViewHideID(cset, bug)).click(this.onViewHideClick);
-  },
-
 
   addCommentChangeListener: function viewer_addCommentChangeListener(cset, bug) {
     $('#' + this.getCommentTextAreaID(cset, bug)).on('input', this.onCommentInput);
@@ -58,12 +62,6 @@ var Viewer = {
     $('#' + this.getBugDivID(cset)).prepend(bugHTML);
 
     // Hook up listeners
-    this.addRemoveButtonListener(cset, bugID);
-    this.addChangeButtonListener(cset, bugID);
-    this.addCommentCheckListener(cset, bugID);
-    this.addResolveCheckListener(cset, bugID);
-    this.addReopenCheckListener(cset, bugID);
-    this.addViewHideListener(cset, bugID);
     this.addCommentChangeListener(cset, bugID);
     this.addWhiteboardChangeListener(cset, bugID);
     this.addMilestoneChangeListener(cset, bugID);
@@ -80,9 +78,7 @@ var Viewer = {
   },
 
 
-  onAddButtonClick: function viewer_onAddButtonClick(e) {
-    e.preventDefault();
-    var target = e.target;
+  onAddButtonClick: function viewer_onAddButtonClick(target) {
     if (!target.hasAttribute('data-index')) {
       UI.showErrorMessage('Add button clicked without data!');
       return;
@@ -93,10 +89,7 @@ var Viewer = {
   },
 
 
-  onRemoveButtonClick: function viewer_onRemoveButtonClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onRemoveButtonClick: function viewer_onRemoveButtonClick(target) {
     if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Remove button clicked with no data!');
       return;
@@ -108,10 +101,7 @@ var Viewer = {
   },
 
 
-  onViewHideClick: function viewer_onViewHideClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onViewHideClick: function viewer_onViewHideClick(target) {
     if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('View/hide clicked with no data!');
       return;
@@ -119,21 +109,18 @@ var Viewer = {
 
     var cset = PushData.allPushes[target.getAttribute('data-index')].cset;
     var bug = target.getAttribute('data-bug');
-    $('#' + Viewer.getCommentID(cset, bug)).toggle();
+    $('#' + this.getCommentID(cset, bug)).toggle();
   },
 
 
-  onFileViewHideClick: function viewer_onFileViewHideClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onFileViewHideClick: function viewer_onFileViewHideClick(target) {
     if (!target.hasAttribute('data-index')) {
       UI.showErrorMessage('View/hide clicked with no data!');
       return;
     }
 
     var cset = target.getAttribute('data-index');
-    $('#' + Viewer.getFilesID(cset)).toggle();
+    $('#' + this.getFilesID(cset)).toggle();
   },
 
 
@@ -170,10 +157,7 @@ var Viewer = {
   },
 
 
-  onResolveCheckClick: function viewer_onResolveCheckClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onResolveCheckClick: function viewer_onResolveCheckClick(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage("Resolve checkbox clicked with no data!");
@@ -184,21 +168,18 @@ var Viewer = {
     var bug = target.getAttribute('data-bug');
 
     // Update all other instances of this bug
-    $('.'+bug+'resolvecheck').attr('checked', this.checked);
+    $('.'+bug+'resolvecheck').attr('checked', target.checked);
 
     // If we've turned it off, also turn off milestone selection
     // (we don't support setting the milestone without setting the
     // resolution).
-    $('.'+bug+'Milestone').attr('disabled', !this.checked);
+    $('.'+bug+'Milestone').attr('disabled', !target.checked);
 
-    ViewerController.onResolveCheckClick(bug, this.checked);
+    ViewerController.onResolveCheckClick(bug, target.checked);
   },
 
 
-  onReopenCheckClick: function viewer_onReopenCheckClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onReopenCheckClick: function viewer_onReopenCheckClick(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage("Reopen checkbox clicked with no data!");
@@ -209,19 +190,16 @@ var Viewer = {
     var bug = target.getAttribute('data-bug');
 
     // Update all other instances of this bug
-    $('.'+bug+'reopencheck').attr('checked', this.checked);
+    $('.'+bug+'reopencheck').attr('checked', target.checked);
 
     // If we've turned it on, also turn on commenting - I don't think
     // you would ever backout a bug without an explanation!
-    Viewer.unsetComments(bug, this.checked);
-    ViewerController.onReopenCheckClick(bug, this.checked);
+    this.unsetComments(bug, target.checked);
+    ViewerController.onReopenCheckClick(bug, target.checked);
   },
 
 
-  onCommentCheckClick: function viewer_onCommentCheckClick(e) {
-    e.preventDefault();
-    var target = e.target;
-
+  onCommentCheckClick: function viewer_onCommentCheckClick(target) {
     if (!target.hasAttribute('data-index') ||
         !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Comment checkbox clicked with no data!');
@@ -230,13 +208,13 @@ var Viewer = {
 
     var index = target.getAttribute('data-index');
     var bug = target.getAttribute('data-bug');
-    ViewerController.onCommentCheckClick(index, bug, this.checked);
+    ViewerController.onCommentCheckClick(index, bug, target.checked);
 
     // Comments and reopening are dependent
     if (ViewerController.getCurrentStep().canReopen(bug)) {
-      Viewer.unsetComments(bug, this.checked);
+      this.unsetComments(bug, target.checked);
       var elems = $('.' + bug + 'reopencheck');
-      if (elems.length > 0 && elems.attr('checked') != this.checked)
+      if (elems.length > 0 && elems.attr('checked') != target.checked)
         elems[0].click();
     }
   },
@@ -292,9 +270,7 @@ var Viewer = {
   },
 
 
-  onChangeButtonClick: function viewer_onChangeButtonClick(e) {
-    e.preventDefault();
-    var target = e.target;
+  onChangeButtonClick: function viewer_onChangeButtonClick(target) {
     if (!target.hasAttribute('data-index') || !target.hasAttribute('data-bug')) {
       UI.showErrorMessage('Change button clicked without data!');
       return;
@@ -306,16 +282,12 @@ var Viewer = {
   },
 
 
-  onExpandButtonClick: function viewer_onExpandButtonClick(e) {
-    e.preventDefault();
-
+  onExpandButtonClick: function viewer_onExpandButtonClick(target) {
     $('.commentDiv').toggle();
   },
 
 
-  onSubmitButtonClick: function viewer_onSubmitButtonClick(e) {
-    e.preventDefault();
-
+  onSubmitButtonClick: function viewer_onSubmitButtonClick(target) {
     this.step.onSubmit();
   },
 
@@ -650,7 +622,7 @@ var Viewer = {
 
   makeExpandHTML: function viewer_makeExpandHTML() {
     var html = '<div class="grid-12 divRight" id="expand">';
-    html += '  <button type="button" id="expandButton">Expand/Hide all comments</button>';
+    html += '  <button type="button" class="expandButton" id="expandButton">Expand/Hide all comments</button>';
     html += '</div>';
     return html;
   },
@@ -658,7 +630,7 @@ var Viewer = {
 
   makeSubmitHTML: function viewer_makeSubmitHTML() {
     var html = '<div class="grid-12 divRight" id="submit">';
-    html += '  <button type="button" id="submitButton">Submit the changes above</button>';
+    html += '  <button type="button" class="submitButton" id="submitButton">Submit the changes above</button>';
     html += '</div>';
     return html;
   },
@@ -737,44 +709,21 @@ var Viewer = {
     }
 
     // Add listeners
-    $('.addBug').click(this.onAddButtonClick);
-    $('.removeButton').one('click', this.onRemoveButtonClick);
-    $('.changeButton').one('click', this.onChangeButtonClick);
-    $('.viewhide').click(this.onViewHideClick);
-    $('.fileviewhide').click(this.onFileViewHideClick);
     $('.comment').on('input', this.onCommentInput);
     $('.whiteboardTA').on('input', this.onWhiteboardInput);
-    $('.resolveCheck').on('change', this.onResolveCheckClick);
-    $('.commentCheck').on('change', this.onCommentCheckClick);
-    $('.reopenCheck').on('change', this.onReopenCheckClick);
     $('.milestone').on('change', this.onMilestoneChange);
     $('.testsuite').on('change', this.onTestsuiteChange);
 
     $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
-    if (onPrevious.fn) {
-      $('.prevButton').click(function viewer_ViewOnPrevious(e) {
-        onPrevious.fn();
-      });
-    } else {
+    if (onPrevious.fn)
+      this.onPrevious = onPrevious.fn;
+    else
       $('.prevButton').attr('disabled', true);
-    }
-    if (onNext.fn) {
-      $('.nextButton').click(function viewer_ViewOnNext(e) {
-        onNext.fn();
-      });
-    } else {
+    if (onNext.fn)
+      this.onNext = onNext.fn;
+    else 
       $('.nextButton').attr('disabled', true);
-    }
-
-    var self = this;
-    $('#expandButton').click(function viewer_ViewExpandButtonClick(e) {
-      self.onExpandButtonClick(e);
-    });
-
-    $('#submitButton').click(function viewer_ViewSubmitButtonClick(e) {
-      self.onSubmitButtonClick(e);
-    });
 
     this.updateSubmitButton();
 

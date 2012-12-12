@@ -388,6 +388,7 @@ var mcMerge = {
     Step.remaps = this.remaps;
     Viewer.expand = this.expand;
     ViewerController.init(this.remap);
+    Viewer.init();
 
     // How many stages do we have?
     for (var i = 0; i < this.stageTypes.length; i++) {
