@@ -62,178 +62,219 @@ var Config = {
     "mozilla-inbound": {
       repo: "integration/mozilla-inbound",
       trackedTree: false,
+      unconditionalFlag: false,
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
     "mozilla-aurora": {
       repo: "releases/mozilla-aurora",
       trackedTree: true,
+      unconditionalFlag: false,
       synonyms: ["releases/mozilla-aurora", "mozilla-aurora"]
     },
     "mozilla-beta": {
       repo: "releases/mozilla-beta",
       trackedTree: true,
+      unconditionalFlag: false,
       synonyms: ["releases/mozilla-beta", "mozilla-beta"]
     },
     "mozilla-release": {
       repo: "releases/mozilla-release",
       trackedTree: true,
+      unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
     "mozilla-esr10": {
       repo: "releases/mozilla-esr10",
       trackedTree: true,
+      unconditionalFlag: false,
       synonyms: ["esr10", "releases/mozilla-esr10", "mozilla-esr10"]
     },
     "mozilla-esr17": {
       repo: "releases/mozilla-esr17",
       trackedTree: true,
+      unconditionalFlag: false,
       synonyms: ["esr17", "releases/mozilla-esr17", "mozilla-esr17"]
     },
     "jetpack": {
       repo: "projects/addon-sdk",
       trackedTree: false,
+      unconditionalFlag: false,
       synonyms: ["projects/addon-sdk", "addon-sdk"]
     },
     "build-system": {
       repo: "projects/build-system",
       trackedTree: false,
+      unconditionalFlag: false,
       synonyms: ["build-system", "b-s", "bs"]
     },
     "fx-team": {
       repo: "integration/fx-team",
       trackedTree: false,
+      unconditionalFlag: false,
       synonyms: ["fx-team"],
       additions: "[fixed-in-fx-team]"
     },
     "graphics": {
       repo: "projects/graphics",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/graphics", "graphics"]
     },
     "ionmonkey": {
       repo: "projects/ionmonkey",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/ionmonkey", "ionmonkey", "im"]
     },
     "jaegermonkey": {
       repo: "projects/jaegermonkey",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/jaegermonkey", "jm"]
     },
     "profiling": {
       repo: "projects/profiling",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["profiling", "projects/profiling"]
     },
     "services-central": {
       repo: "services/services-central",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["services-central", "s-c", "sc", "services/services-central"],
       additions: "[fixed in services]"
     },
     "ux": {
+      unconditionalFlag: false,
       repo: "projects/ux",
       synonyms: ["ux", "projects/ux"]
     },
     "alder": {
       repo: "projects/alder",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["alder", "projects/alder"]
     },
     "ash": {
       repo: "projects/ash",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["ash", "projects/ash"]
     },
     "birch": {
       repo: "projects/birch",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/birch", "birch"]
     },
     "cedar": {
       repo: "projects/cedar",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/cedar", "cedar"]
     },
     "elm": {
       repo: "projects/elm",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/elm", "elm"]
     },
     "holly": {
       repo: "projects/holly",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/holly", "holly"]
     },
     "larch": {
       repo: "projects/larch",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/larch", "larch"]
     },
     "maple": {
       repo: "projects/maple",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/maple", "maple"]
     },
     "oak": {
       repo: "projects/oak",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/oak", "oak"]
     },
     "pine": {
       repo: "projects/pine",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/pine", "pine"]
     },
     "accessibility": {
       repo: "projects/accessibility",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/accessibility", "accessibility"]
     },
     "devtools": {
       repo: "projects/devtools",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/devtools", "devtools"]
     },
     "electrolysis": {
       repo: "projects/electrolysis",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/electrolysis", "electrolysis", "e10s"]
     },
     "places": {
       repo: "projects/places",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/places", "places"]
     },
     "comm-central": {
       repo: "comm-central",
+      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["comm-central", "c-c"]
     },
     "comm-aurora": {
       repo: "releases/comm-aurora",
+      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-aurora", "comm-aurora"]
     },
     "comm-beta": {
       repo: "releases/comm-beta",
+      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
     "comm-release": {
       repo: "releases/comm-release",
+      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-release", "comm-release"]
     },
     "comm-esr10": {
       repo: "releases/comm-esr10",
+      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr10", "comm-esr10"]
     },
     "comm-esr17": {
       repo: "releases/comm-esr17",
+      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr17", "comm-esr17"]
+    },
+    "mozilla-b2g18": {
+      repo: "releases/mozilla-b2g18",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g", "b2g18", "mozilla-b2g18"]
     }
   }
 };
