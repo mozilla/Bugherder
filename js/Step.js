@@ -563,7 +563,8 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
         this.bugInfo[bugID].canSetStatus = this.bugInfo[bugID].canResolve;
       else if (Config.treeInfo[Config.treeName].trackedTree)
         this.bugInfo[bugID].canSetStatus = true;
-    } else if (bug && Config.treeInfo[Config.treeName].trackedTree && Config.treeInfo[Config.treeName].unconditionalFlag) {
+    } else if (bug && Config.treeName != 'mozilla-central' && Config.treeInfo[Config.treeName].trackedTree &&
+               Config.treeInfo[Config.treeName].unconditionalFlag) {
         bug.isTracked = true;
         this.bugInfo[bugID].canSetStatus = true;
     }
