@@ -291,6 +291,9 @@ div.ctr {
   text-decoration: underline;
 }
 
+.holly {
+  float: left;
+}
 #errorText {
   border: 1px solid rgb(255,213,153);
   background-color: rgb(255,239,217);
