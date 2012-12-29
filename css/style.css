@@ -6,14 +6,13 @@
 }
 
 body {
-  background: url(../images/snowy.jpg) 0 0 repeat rgb(238, 238, 238);
+  background: url(../images/sky.png) 0 0 repeat-x rgb(238, 238, 238);
   font-family: Georgia, serif;
   z-index: 1;
-  color: purple;
 }
 
 h1, h2, h3{
-  color: green;
+  color: rgb(72,72,72);
   font-family: 'Open sans', sans-serif;
   font-weight: normal;
 }
@@ -291,9 +290,6 @@ div.ctr {
   text-decoration: underline;
 }
 
-.holly {
-  float: left;
-}
 #errorText {
   border: 1px solid rgb(255,213,153);
   background-color: rgb(255,239,217);
@@ -313,10 +309,6 @@ div.ctr {
   padding: 0;
 }
 
-#helpText {
-  color: purple;
-}
-
 #explanation {
   width: 100%;
 }
@@ -328,8 +320,4 @@ div.ctr {
 #expandButton {
   margin-top: 10px;
   margin-bottom: 10px;
-}
-
-#viewerOutput {
-  color: black;
 }
