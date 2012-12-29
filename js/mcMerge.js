@@ -153,6 +153,9 @@ var mcMerge = {
     // We've found text declaring that it's a merge to m-c, can we find another repo name?
     var otherRepo = '';
     for (i in Config.treeInfo) {
+      if (i === "mozilla-central")
+        continue;
+
       synonyms = Config.treeInfo[i].synonyms;
       for (var j = 0; j < synonyms.length; j++) {
         if (mergeDesc.indexOf(synonyms[j]) != -1) {
@@ -220,13 +223,13 @@ var mcMerge = {
       return;
     }
 
-    if (!this.tree)
+    if (this.tree === "mozilla-central")
       UI.sourceRepo = this.findSourceRepo();
 
     // Stash the changeset requested for future error messages
     this.cset = cset;
 
-    if (!this.tree || this.tree == 'comm-central' || Config.treeInfo[this.tree].trackedTree)
+    if (Config.treeInfo[this.tree].trackedTree)
       this.loadFlags();
     else
       this.loadConfigurationFromBZ();
@@ -319,9 +322,6 @@ var mcMerge = {
     };
 
     var tree = this.tree;
-    if (tree == null)
-      tree = 'mozilla-central';
-
     FlagLoader.init(this.cset, tree, loadCallback, errorCallback);
   },
 
@@ -415,41 +415,32 @@ var mcMerge = {
     var input = $('#changeset').attr('value');
     input = input.trim();
 
-    var reres = Config.hgRevRE.exec(input);
-    if (reres)
-      input = input.substring(reres[0].length);
-    else {
-      reres = Config.hgPushlogRE.exec(input);
-      if (reres)
-        input = input.substring(reres[0].length);
-    }
-
     if (this.validateChangeset(input)) {
       this.go('cset='+input, false);
       return;
-    } else {
-      var tree = null;
+    }
 
-      for (var treeName in Config.treeInfo) {
-        reres = Config.treeInfo[treeName].hgRevRE.exec(input);
+    var tree = null;
+
+    for (var treeName in Config.treeInfo) {
+      reres = Config.treeInfo[treeName].hgRevRE.exec(input);
+      if (reres) {
+        input = input.substring(reres[0].length);
+        tree = treeName;
+        break;
+      } else {
+        reres = Config.treeInfo[treeName].hgPushlogRE.exec(input);
         if (reres) {
           input = input.substring(reres[0].length);
           tree = treeName;
           break;
-        } else {
-          reres = Config.treeInfo[treeName].hgPushlogRE.exec(input);
-          if (reres) {
-            input = input.substring(reres[0].length);
-            tree = treeName;
-            break;
-          }
         }
       }
+    }
 
-      if (tree && this.validateChangeset(input)) {
-        this.go('cset='+input + '&tree=' + tree, false);
-        return;
-      }
+    if (tree && this.validateChangeset(input)) {
+      this.go('cset='+input + '&tree=' + tree, false);
+      return;
     }
 
     // Don't fill history stack with multiple error pages
@@ -491,7 +482,7 @@ var mcMerge = {
         if ('tree' in paramsObj) {
           var treeName = paramsObj['tree'].toLowerCase();
           if (!(treeName in Config.treeInfo) && !(treeName in Config.rewriteTrees) &&
-                treeName != 'mozilla-central' && treeName != 'firefox') {
+                treeName != 'firefox') {
             var replace = document.location.href.indexOf('error') != -1;
             this.go('error=treename&tree=' + treeName, replace);
             return;
@@ -509,17 +500,13 @@ var mcMerge = {
           }
 
           this.tree = treeName;
-          Config.hgURL = Config.treeInfo[treeName].hgURL;
-          Config.hgRevURL = Config.treeInfo[treeName].hgRevURL;
-          Config.hgPushlogURL = Config.treeInfo[treeName].hgPushlogURL;
-          Config.treeName = treeName;
-        } else {
-          this.tree = null;
-          Config.hgURL = Config.hgMCURL;
-          Config.hgRevURL = Config.hgMCRevURL;
-          Config.hgPushlogURL = Config.hgMCPushlogURL;
-          Config.treeName = 'mozilla-central';
-        }
+        } else
+          this.tree = treeName = "mozilla-central";
+
+        Config.hgURL = Config.treeInfo[treeName].hgURL;
+        Config.hgRevURL = Config.treeInfo[treeName].hgRevURL;
+        Config.hgPushlogURL = Config.treeInfo[treeName].hgPushlogURL;
+        Config.treeName = treeName;
 
         return self.loadChangeset(cset);
       }

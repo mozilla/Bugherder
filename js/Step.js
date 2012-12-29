@@ -457,7 +457,7 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
     newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)services\]/ig, '');
   }
 
-  if (Config.treeName != 'mozilla-central' && 'additions' in Config.treeInfo[Config.treeName]) {
+  if ('additions' in Config.treeInfo[Config.treeName]) {
     var addition = Config.treeInfo[Config.treeName].additions;
     if (newWhiteboard.indexOf(addition) == -1)
       newWhiteboard = newWhiteboard + addition;
@@ -563,8 +563,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
         this.bugInfo[bugID].canSetStatus = this.bugInfo[bugID].canResolve;
       else if (Config.treeInfo[Config.treeName].trackedTree)
         this.bugInfo[bugID].canSetStatus = true;
-    } else if (bug && Config.treeName != 'mozilla-central' && Config.treeInfo[Config.treeName].trackedTree &&
-               Config.treeInfo[Config.treeName].unconditionalFlag) {
+    } else if (bug && Config.treeInfo[Config.treeName].trackedTree && Config.treeInfo[Config.treeName].unconditionalFlag) {
         bug.isTracked = true;
         this.bugInfo[bugID].canSetStatus = true;
     }
