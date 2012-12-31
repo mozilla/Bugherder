@@ -174,17 +174,41 @@ var Config = {
       trackedTree: false,
       synonyms: ["projects/cedar", "cedar"]
     },
+    "date": {
+      repo: "projects/date",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["projects/date", "date"]
+    },
     "elm": {
       repo: "projects/elm",
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/elm", "elm"]
     },
+    "fig": {
+      repo: "projects/fig",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["projects/fig", "fig"]
+    },
+    "gum": {
+      repo: "projects/gum",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["projects/gum", "gum"]
+    },
     "holly": {
       repo: "projects/holly",
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/holly", "holly"]
+    },
+    "jamun": {
+      repo: "projects/jamun",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["projects/jamun", "jamun"]
     },
     "larch": {
       repo: "projects/larch",
