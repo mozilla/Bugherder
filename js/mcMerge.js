@@ -423,15 +423,15 @@ var mcMerge = {
     var tree = null;
 
     for (var treeName in Config.treeInfo) {
-      reres = Config.treeInfo[treeName].hgRevRE.exec(input);
-      if (reres) {
-        input = input.substring(reres[0].length);
+      var reRes = Config.treeInfo[treeName].hgRevRE.exec(input);
+      if (reRes) {
+        input = input.substring(reRes[0].length);
         tree = treeName;
         break;
       } else {
-        reres = Config.treeInfo[treeName].hgPushlogRE.exec(input);
-        if (reres) {
-          input = input.substring(reres[0].length);
+        reRes = Config.treeInfo[treeName].hgPushlogRE.exec(input);
+        if (reRes) {
+          input = input.substring(reRes[0].length);
           tree = treeName;
           break;
         }
