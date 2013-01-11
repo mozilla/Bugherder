@@ -247,17 +247,16 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
       this.startSubmit(i);
       return;
     }
-
-    // If we got a bad request here, either we were mid-aired or something really
-    // odd happened, like the product milestone was deleted. Try again, unless of course this *was* our
-    // retry
-    if (this.retries.length == 0 || this.retries[this.retries.length - 1] != i) {
-      this.retries.push(i);
-      this.startSubmit(i);
-      return;
-    }
-    this.continueSubmit(i);
   }
+  // If we got a bad request here, either we were mid-aired or something really
+  // odd happened, like the product milestone was deleted. Try again, unless of course this *was* our
+  // retry
+  if (this.retries.length == 0 || this.retries[this.retries.length - 1] != i) {
+    this.retries.push(i);
+    this.startSubmit(i);
+    return;
+  }
+  this.continueSubmit(i);
 };
 
 
