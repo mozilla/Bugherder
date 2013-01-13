@@ -1027,7 +1027,7 @@ Step.prototype.getHelpText = function Step_getHelpText() {
     helpText += '<br>- Submitted bugs will have ' + mcMerge.statusFlag + ' set to "fixed"';
 
   if (Step.remaps && 'items' in Step.remaps && Step.remaps.items > 0)
-    helpText += '<br><strong>Note: You are in debug mode. Only remap bugs will be submitted, and will be submitted to landfill!</strong>';
+    helpText += '<br><strong>Note: You are in debug mode. Only remap bugs will be submitted, and will be submitted to landfill.bugzilla.org!</strong>';
   return helpText;
 };
 
@@ -1035,7 +1035,7 @@ Step.prototype.getHelpText = function Step_getHelpText() {
 Step.helpTexts=  {
     fixes: 'The following fixes have landed. Double-check that the bug number has been correctly detected, and the correct comment attached, and that the "Comment" and "Resolve" flags have been correctly set. Click on "Submit" to submit these changes to Bugzilla.',
     foundBackouts: 'The following pushes appear to have been backed-out, and therefore shouldn\'t require commenting or resolving. However, the backout may require commenting - click on "Add bugs" if so.',
-    notFoundBackouts: 'The following changesets have been detected as backouts, but the things backed out do not appear to be within this merge. Review this information, and manually comment in Bugzilla as necessary.',
+    notFoundBackouts: 'The following changesets have been detected as backouts, but the changesets or bugs backed out do not appear to be within this merge. Review this information, and manually comment in Bugzilla as necessary.',
     merges: 'The following changesets have been detected to be merge changesets, not tied to any particular bug. Review these changesets - use the add bug button or resolve manually in Bugzilla to deal with any that are misdetected.',
     others: 'These changesets do not appear to have a bug associated with them. Review these changesets, and comment in Bugzilla manually as necessary.'
 };
