@@ -102,6 +102,8 @@ var Viewer = {
     $('.commentDiv').toggle(shouldExpand);
     var expandText = shouldExpand ? 'Hide all comments' : 'Expand all comments';
     $('#expandButton').text(expandText);
+    var individualText = shouldExpand ? 'Hide comment' : 'View comment';
+    $('.viewhide').text(individualText);
   },
 
 
@@ -113,16 +115,25 @@ var Viewer = {
   // Spans
   onViewHideClick: function viewer_onViewHideClick(index, bug, target) {
     var cset = PushData.allPushes[index].cset;
-    $('#' + this.getCommentID(cset, bug)).toggle();
-    var shouldExpand = false;
-
+    var currentText = target.textContent;
+    var expandThis = currentText == 'View comment';
+    $('#' + this.getCommentID(cset, bug)).toggle(expandThis);
+    target.textContent = expandThis ? 'Hide comment' : 'View comment';
+    
     // Update 'expand all' button text
-    var divs = $('.commentDiv').get();
-    for (var i = 0, l = divs.length; i < l; i++) {
-      var style = divs[i].style.display.toLowerCase();
-      if (style === 'none' || style === '')
-        shouldExpand = true;
+    var shouldExpand = false;
+    if (expandThis) {
+      var divs = $('.commentDiv').get();
+      for (var i = 0, l = divs.length; i < l; i++) {
+        var style = divs[i].style.display.toLowerCase();
+        if (style === 'none' || style === '')
+          shouldExpand = true;
+      }
+    } else {
+      // Shortcut if we've just minimised a comment
+      shouldExpand = true;
     }
+
     var expandText = shouldExpand ? 'Expand all comments' : 'Hide all comments';
     $('#expandButton').text(expandText);
   },
@@ -474,7 +485,7 @@ var Viewer = {
     html += '<br>';
     html += '<span class="afterWhiteboard">';
     html += '<span class="viewhide" id="' + this.getViewHideID(cset, id) + '" ';
-    html += this.makeDataHTML(index, id) + '>View/hide comment</span></span></div>';
+    html += this.makeDataHTML(index, id) + '>View comment</span></span></div>';
     html += '<div class="grid-12 commentDiv" id ="' + this.getCommentID(cset, id) + '">';
     html += this.makeCommentHTML(cset, index, id);
     html += '</div>';
@@ -649,6 +660,7 @@ var Viewer = {
 
     if (Viewer.expand) {
       $('.commentDiv').toggle(true);
+      $('.viewhide').text('Hide comment');
       $('#expandButton').text('Hide all comments');
     }
 
