@@ -520,27 +520,19 @@ var mcMerge = {
 
   // Push a new URL onto history
   go: function mcM_go(query, replace) {
+    var maintained = [];
+    function persist(prop) {
+      if (this[prop])
+        maintained.push(prop + '=1');
+    }
+
+    // Maintain various parameters across page loads
+    var persisted = ['debug', 'expand', 'remap', 'resume'];
+    persisted.forEach(persist, this);
+
     var newURL = document.location.href.split('?')[0];
     if (query)
       newURL = newURL + '?' + query;
-
-    var maintained = [];
-
-    // Maintain debug state across page load
-    if (this.debug)
-      maintained.push('debug=1');
-
-    // Maintain expand state across page load
-    if (this.expand)
-      maintained.push('expand=1');
-
-    // Maintain remap state across page load
-    if (this.remap)
-      maintained.push('remap=1');
-
-    // Maintain resume state across page load
-    if (this.resume)
-      maintained.push('resume=1');
 
     var maintainedQuery = maintained.join('&');
     if (!query && maintainedQuery.length > 0)
