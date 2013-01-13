@@ -1,11 +1,12 @@
 "use strict";
 
 var ViewerController = {
-  init: function vc_Init(remap) {
+  init: function vc_Init(remap, resume) {
     this.remap = remap;
     this.currentStep = -1;
     this.maxStep = -1;
     this.steps = [];
+    this.resume = resume;
   },
 
 
@@ -111,7 +112,7 @@ var ViewerController = {
     var loadCallback = function vc_onAddBugLoadCallback() {
       self.addBug(index, input);
     };
-    BugData.load([input], loadCallback, null);
+    BugData.load([input], this.resume, loadCallback, null);
   },
 
 

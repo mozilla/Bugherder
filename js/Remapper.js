@@ -33,6 +33,8 @@ var Remapper = {
    html += '<input type="checkbox" id="inbound"></div>';
    html += '<div class="grid-12">Add [fixed-in-fx-team] into whiteboard (to allow testing of [fixed-in-fx-team] removal)';
    html += '<input type="checkbox" id="fxteam"></div>';
+   html += '<div class="grid-12">Ignore comments (i.e. override the "Don\'t duplicate comments" mechanism)';
+   html += '<input type="checkbox" id="comments"></div>';
    html += '<hr>';
    return html;
   },
@@ -150,6 +152,16 @@ var Remapper = {
             BugData.bugs[b].summary += ' [fixed-in-fx-team]';
             fxteamMultiple = true;
           }
+        }
+      }
+    }
+
+    if ($('#comments').prop('checked')) {
+      for (b in remaps) {
+        if (b == 'items')
+          continue;
+        if (b in BugData.bugs) {
+          BugData.bugs[b].comments = [{text: 'Dummy comment'}];
         }
       }
     }

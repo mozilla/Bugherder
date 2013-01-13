@@ -4,6 +4,7 @@ var mcMerge = {
   debug: false,
   expand: false,
   remap: false,
+  resume: false,
   tree: null,
   trackingFlag: null,
   statusFlag: null,
@@ -286,7 +287,7 @@ var mcMerge = {
       self.ajaxError(jqResponse, textStatus, errorThrown);
     };
 
-    BugData.load(bugArray, loadCallback, errorCallback);
+    BugData.load(bugArray, this.resume, loadCallback, errorCallback);
   },
 
 
@@ -387,7 +388,7 @@ var mcMerge = {
   showSteps: function mcM_showSteps() {
     Step.remaps = this.remaps;
     Viewer.expand = this.expand;
-    ViewerController.init(this.remap);
+    ViewerController.init(this.remap, this.resume);
     Viewer.init();
 
     // How many stages do we have?
@@ -472,6 +473,8 @@ var mcMerge = {
         this.expand = (paramsObj['expand'] == '1');
       if ('remap' in paramsObj)
         this.remap = (paramsObj['remap'] == '1');
+      if ('resume' in paramsObj)
+        this.resume = (paramsObj['resume'] == '1');
 
       if ('error' in paramsObj)
         return self.errorPage(paramsObj);
@@ -534,6 +537,10 @@ var mcMerge = {
     // Maintain remap state across page load
     if (this.remap)
       maintained.push('remap=1');
+
+    // Maintain resume state across page load
+    if (this.resume)
+      maintained.push('resume=1');
 
     var maintainedQuery = maintained.join('&');
     if (!query && maintainedQuery.length > 0)

@@ -45,6 +45,7 @@ function Step(name, callbacks, isBackout) {
   this.securityBugs = [];
   this.hasMilestones = [];
   this.trackedBugs = [];
+  this.haveComment = [];
 
   var options = {};
   if (Step.remaps.items > 0)
@@ -397,17 +398,23 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
   }
 
 
-  // Disallow comments if we just sent a comment
-  if ('comments' in sent) {
-    for (var j = 0; j < info.linkedChangesets.length; j++) {
-      var index = info.linkedChangesets[j];
+  // Update the intestsuite flag if we sent it
+  if ('flags' in sent) {
+    info.intestsuite = sent.flags[0].status;
+    BugData.bugs[bugID].intestsuite = sent.flags[0].status;
+  }
+
+  for (var j = 0; j < info.linkedChangesets.length; j++) {
+    var index = info.linkedChangesets[j];
+    // Disallow comments if we just sent a comment
+    if ('comments' in sent) {
       var attached = this.attachedBugs[index][bugID];
-      if (attached.canComment)
+      if (attached.canComment && attached.shouldComment) {
         attached.canComment = false;
-      if (attached.shouldComment)
         attached.shouldComment = false;
-      this.callbacks.uiUpdate(index, bugID);
+      }
     }
+    this.callbacks.uiUpdate(index, bugID);
   }
 
   // Disallow setting status- if we just sent it
@@ -415,12 +422,6 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
     info.canSetStatus = false;
     info.shouldSetStatus = false;
     BugData.bugs[bugID].statusFlag = sent['cf_' + mcMerge.statusFlag];
-  }
-
-  // Update the intestsuite flag if we sent it
-  if ('flags' in sent) {
-    info.intestsuite = sent.flags[0].status;
-    BugData.bugs[bugID].intestsuite = sent.flags[0].status;
   }
 
   this.continueSubmit(i);
@@ -576,7 +577,25 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
       bug.whiteboard = this.adjustWhiteboard(bug.whiteboard, this.bugInfo[bugID].canReopen);
   }
 
-  attached.canComment = !!bug; // reserved for future use :-)
+  if (bug && bug.comments) {
+    var hasThisComment = false;
+    // Iterate backwards: if commented already, the changeset will be in one of the last comments
+    for (var i = bug.comments.length - 1; i > -1; i--) {
+      if (bug.comments[i].text && bug.comments[i].text.indexOf(attached.comment) != -1) {
+        hasThisComment = true;
+        if (this.haveComment.indexOf(bug.id) == -1)
+          this.haveComment.push(bug.id);
+        break;
+      }
+    }
+    attached.canComment = !hasThisComment;
+  } else if (bug && bug.comments === undefined)
+    attached.canComment = true;
+  else 
+    attached.canComment = false;
+
+  if (!attached.canComment)
+    attached.shouldComment = false;
 
   // Maintain indices of changesets linked to a particular bug, in order to coalesce comments
   this.bugInfo[bugID].linkedChangesets.push(index);
@@ -934,9 +953,11 @@ Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   var leaveOpenPost = ' "leave open" in the whiteboard, so the resolve flag has not been set.';
   var securityPost = ' restricted - m-cMerge was unable to load the relevant information from Bugzilla.';
   var milestonePost = ' a milestone set. You may wish to check it is correct before submitting.';
+  var alreadyCommentPost = ' to have already been commented with the correct changeset URL, so commenting there has been disabled.';
   var trackedPost = ' ' + mcMerge.trackingFlag + '+, so ' + mcMerge.statusFlag + ' will be set to "fixed".';
 
   var hashave = {singular: 'has', plural: 'have'};
+  var appearTo = {singular: 'appears', plural: 'appear'};
   var isare = {singular: 'is', plural: 'are'};
   var already = {singular: 'already has', plural: 'already have'};
 
@@ -952,6 +973,9 @@ Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
 
   if (this.securityBugs.length > 0)
     text += this.constructTextFor(this.securityBugs, securityPost);
+
+  if (this.haveComment.length > 0)
+    text += this.constructTextFor(this.haveComment, alreadyCommentPost, appearTo, true);
 
   if (this.hasMilestones.length > 0)
     text += this.constructTextFor(this.hasMilestones, milestonePost, already, true);

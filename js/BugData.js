@@ -8,12 +8,14 @@ var BugData = {
   notYetLoaded: [],
   loadCallback: null,
   errorCallback: null,
+  checkComments: false,
   bugzilla: bz.createClient(),
 
-  load: function BD_load(bugs, loadCallback, errorCallback) {
+  load: function BD_load(bugs, checkComments, loadCallback, errorCallback) {
     this.notYetLoaded = bugs;
     this.loadCallback = loadCallback;
     this.errorCallback = errorCallback;
+    this.checkComments = checkComments;
     this.loadMore();    
   },
 
@@ -36,6 +38,8 @@ var BugData = {
       this.statusFlag = 'cf_' + mcMerge.statusFlag;
 
     var includeFields = this.fields;
+    if (this.checkComments)
+      includeFields += ',comments';
     if (this.trackingFlag)
       includeFields += ',' + this.trackingFlag;
     if (this.statusFlag)
@@ -82,6 +86,8 @@ var BugData = {
     if (typeof bug.id == 'string')
       bug.id = UI.htmlEncode(bug.id);
 
+    if (this.checkComments)
+      bug.comments = bugObj.comments;
 
     bug.canResolve = !(bug.status == 'RESOLVED' || bug.status == 'VERIFIED');
     bug.canReopen = bug.resolution == 'FIXED';
