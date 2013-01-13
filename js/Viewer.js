@@ -140,7 +140,18 @@ var Viewer = {
 
 
   onFileViewHideClick: function viewer_onFileViewHideClick(cset, target) {
-    $('#' + this.getFilesID(cset)).toggle();
+    var shouldExpand = target.textContent == 'View files';
+    $('#' + this.getFilesID(cset)).toggle(shouldExpand);
+
+    // Flip the text appropriately
+    var classes = target.className.split(' ');
+    var classToChange = '';
+    for (var i = 0; i < classes.length; i++) {
+      if (classes[i].indexOf('Files') != -1)
+        classToChange = classes[i];
+    }
+    var newText = shouldExpand ? 'Hide files' : 'View files';
+    $('.' + classToChange).text(newText);
   },
 
 
@@ -527,13 +538,13 @@ var Viewer = {
     html += '      <button class="addBug" ' + this.makeDataHTML(index);
     html += ' id="' + this.getAddBugIDForCset(index) + '" type="button">Add Bug</button>';
     html += '    </div>';
-    html += '    <div class="grid-12"><span class="fileviewhide" ';
-    html += this.makeDataHTML(cset) + '>View/hide files</span></div>';
+    html += '    <div class="grid-12"><span class="fileviewhide ' + cset + 'Files" ';
+    html += this.makeDataHTML(cset) + '>View files</span></div>';
     html += '  </div>';
     html += '  <div class="files hiddenContent" id="' + this.getFilesID(cset) + '">';
     for (var i = 0; i < files.length; i++)
       html += UI.htmlEncode(files[i]) + '<br />';
-    html += '    <span class="fileviewhide" ';
+    html += '    <span class="fileviewhide ' + cset + 'Files" ';
     html += this.makeDataHTML(cset) + '>Hide</span>';
     html += '    </div>';
 
