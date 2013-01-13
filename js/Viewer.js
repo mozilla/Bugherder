@@ -98,7 +98,10 @@ var Viewer = {
 
 
   onExpandButtonClick: function viewer_onExpandButtonClick(target) {
-    $('.commentDiv').toggle();
+    var shouldExpand = $('#expandButton').text() === 'Expand all comments';
+    $('.commentDiv').toggle(shouldExpand);
+    var expandText = shouldExpand ? 'Hide all comments' : 'Expand all comments';
+    $('#expandButton').text(expandText);
   },
 
 
@@ -111,6 +114,17 @@ var Viewer = {
   onViewHideClick: function viewer_onViewHideClick(index, bug, target) {
     var cset = PushData.allPushes[index].cset;
     $('#' + this.getCommentID(cset, bug)).toggle();
+    var shouldExpand = false;
+
+    // Update 'expand all' button text
+    var divs = $('.commentDiv').get();
+    for (var i = 0, l = divs.length; i < l; i++) {
+      var style = divs[i].style.display.toLowerCase();
+      if (style === 'none' || style === '')
+        shouldExpand = true;
+    }
+    var expandText = shouldExpand ? 'Expand all comments' : 'Hide all comments';
+    $('#expandButton').text(expandText);
   },
 
 
@@ -537,7 +551,7 @@ var Viewer = {
 
   makeExpandHTML: function viewer_makeExpandHTML() {
     var html = '<div class="grid-12 divRight" id="expand">';
-    html += '  <button type="button" class="expandButton" id="expandButton">Expand/Hide all comments</button>';
+    html += '  <button type="button" class="expandButton" id="expandButton">Expand all comments</button>';
     html += '</div>';
     return html;
   },
@@ -633,8 +647,10 @@ var Viewer = {
 
     this.updateSubmitButton();
 
-    if (Viewer.expand)
-      $('.commentDiv').toggle();
+    if (Viewer.expand) {
+      $('.commentDiv').toggle(true);
+      $('#expandButton').text('Hide all comments');
+    }
 
     UI.show('viewerOutput');
     $('html')[0].scrollIntoView();
