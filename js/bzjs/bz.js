@@ -104,6 +104,7 @@ BugzillaClient.prototype = {
       var req = new XMLHttpRequest();
       req.open(method, url, true);
       req.setRequestHeader("Accept", "application/json");
+      req.timeout = 30000;
       if (method.toUpperCase() !== "GET") {
         req.setRequestHeader("Content-type", "application/json");
       }
