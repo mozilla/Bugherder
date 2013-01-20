@@ -60,14 +60,12 @@ var PushData = {
   getBugNumber: function PD_getBugNumber(push) {
     // How shall I specify a bug number?
     // Let me count the ways...
-    var matched = false;
     var len = Config.bugNumberREs.length;
     for (var i = 0; i < len; i++) {
       var re = Config.bugNumberREs[i];
       var reResult = re.exec(push.desc);
 
       if (reResult) {
-        matched = true;
         push.bug = reResult[1];
         break;
       }
