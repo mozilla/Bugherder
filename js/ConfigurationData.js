@@ -30,7 +30,7 @@ var ConfigurationData = {
         self.parseData(data, loadCallback);
     };
 
-    var bugzilla = bz.createClient();
+    var bugzilla = bz.createClient({timeout: 30000});
     bugzilla.getConfiguration(callback);
   },
 

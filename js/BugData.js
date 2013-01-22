@@ -9,7 +9,6 @@ var BugData = {
   loadCallback: null,
   errorCallback: null,
   checkComments: false,
-  bugzilla: bz.createClient(),
 
   load: function BD_load(bugs, checkComments, loadCallback, errorCallback) {
     this.notYetLoaded = bugs;
@@ -45,6 +44,8 @@ var BugData = {
     if (this.statusFlag)
       includeFields += ',' + this.statusFlag;
 
+    // Calculate an appropriate timeout for the amount of bugs being loaded
+    var timeout = (Math.floor(bugs.length / 100) + 1) * 30000;
     bugs = {id : bugs, include_fields: includeFields};
 
     var self = this;
@@ -55,7 +56,8 @@ var BugData = {
         self.parseData(data);
     };
 
-    this.bugzilla.searchBugs(bugs, callback);
+    var bugzilla = bz.createClient({timeout: timeout});
+    bugzilla.searchBugs(bugs, callback);
   },
 
 
