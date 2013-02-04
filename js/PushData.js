@@ -42,6 +42,7 @@ var PushData = {
     $.ajax({
       url: Config.hgURL + 'json-pushes?full=1&changeset=' + cset,
       dataType: 'json',
+      timeout: 30000,
       success: function PD_ajaxSuccessCallback(data) {
         self.parseData(data, loadCallback);
       },
