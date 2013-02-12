@@ -153,7 +153,7 @@ var ViewerController = {
       self.addBug(index, input);
       self.removeBug(index, bug);
     };
-    BugData.load([input], loadCallback, null);
+    BugData.load([input], this.resume, loadCallback, null);
   },
 
 
