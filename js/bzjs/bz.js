@@ -7,6 +7,7 @@ var BugzillaClient = function(options) {
   this.apiUrl = options.url ||
     (options.test ? "https://api-dev.bugzilla.mozilla.org/test/latest/"
                   : "https://api-dev.bugzilla.mozilla.org/latest/");
+  this.apiUrl = this.apiUrl.replace(/\/$/, "");
 }
 
 BugzillaClient.prototype = {
