@@ -174,6 +174,12 @@ var Config = {
       trackedTree: false,
       synonyms: ["projects/cedar", "cedar"]
     },
+    "cypress": {
+      repo: "projects/cypress",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["projects/cypress", "cypress"]
+    },
     "date": {
       repo: "projects/date",
       unconditionalFlag: false,
