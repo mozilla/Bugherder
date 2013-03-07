@@ -22,6 +22,9 @@ If you do not enter any diversion bugs on the remap page, you will return to liv
 
 STANDING ON THE SHOULDERS OF GIANTS
 ===================================
-Uses bz.js by Heather Arthur
-Uses jQuery and jQuery-UI 1.8.1
-Uses Toast CSS framework by Dan Eden http://www.daneden.me/toast
+m-cMerge uses the following third-party projects:
+
+bz.js by Heather Arthur - https://github.com/harthur/bz.js
+jQuery and jQuery-UI 1.8.1
+Toast CSS framework by Dan Eden - http://www.daneden.me/toast
+require.js by James Burke - https://github.com/jrburke/requirejs
