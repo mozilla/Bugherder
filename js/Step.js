@@ -451,7 +451,7 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
     newWhiteboard = whiteboard.replace('[inbound]','');
 
     // Remove annotations on fx-team merges
-    newWhiteboard = newWhiteboard.replace('[fixed-in-fx-team]','');
+    newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)fx(?:\s+|-)team\]/ig, '');
 
     // Remove annotations on s-c merges
     newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)services\]/ig, '');
