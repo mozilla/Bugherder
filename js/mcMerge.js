@@ -53,7 +53,7 @@ var mcMerge = {
 
     var self = this;
 
-    document.title = 'm-cMerge';
+    document.title = 'mcMerge';
 
     var formListener = function mcM_acquireListener(e) {
       self.validateForm(e);
@@ -334,7 +334,7 @@ var mcMerge = {
       return;
     }
 
-    document.title = 'm-cMerge (changeset: ' + cset + ')';
+    document.title = 'mcMerge (changeset: ' + cset + ')';
     this.loading = 'cset';
     UI.showLoadingMessage('Loading pushlog data...');
 

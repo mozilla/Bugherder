@@ -223,7 +223,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     // - a tester remapped to a non-existant bug on landfill, (they should know better :))
     // If we've failed trying to get the time/token on our very first bug, let's just put it
     //   down to username/password, and abandon this submit attempt
-    // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while m-cMerge was working?!?)
+    // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while mcMerge was working?!?)
     // Else, we'll note this one failed and try the next. If we carry on without further failure, then this was a
     //  security bug that wasn't one before
     if (i == 0 || this.retries[this.retries.length-1] == i - 1) {
@@ -947,14 +947,14 @@ Step.prototype.constructTextFor = function Step_constructTextFor(arr, postText, 
 // Calls out various interesting properties of the attached bugs
 //   - "multi" bugs (where a bug is associated with multiple changesets
 //   - "leave open" bugs (where the assignee doesn't want the bug resolved
-//   - "security" bugs (bugs m-cMerge couldn't access)
+//   - "security" bugs (bugs mcMerge couldn't access)
 //   - "has milestone" bugs (bugs that can be resolved, but already had a milestone)
 Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   var text = '';
 
   var multiPost = ' associated with multiple changesets: the individual comments will be coalesced into a single comment.';
   var leaveOpenPost = ' "leave open" in the whiteboard, so the resolve flag has not been set.';
-  var securityPost = ' restricted - m-cMerge was unable to load the relevant information from Bugzilla.';
+  var securityPost = ' restricted - mcMerge was unable to load the relevant information from Bugzilla.';
   var milestonePost = ' a milestone set. You may wish to check it is correct before submitting.';
   var alreadyCommentPost = ' to have already been commented with the correct changeset URL, so commenting there has been disabled.';
   var trackedPost = ' ' + mcMerge.trackingFlag + '+, so ' + mcMerge.statusFlag + ' will be set to "fixed".';
