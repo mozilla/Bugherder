@@ -4,8 +4,10 @@ var FlagLoader = {
 
   init: function FL_init(cset, tree, loadCallback, errorCallback) {
     var self = this;
+    // When running from the local filesystem use the production backend.
+    var baseURL = (window.location.protocol == 'file:') ? Config.productionURL : '';
     $.ajax({
-      url: 'php/getFlags.php?cset=' + cset + '&tree=' + tree,
+      url: baseURL + 'php/getFlags.php?cset=' + cset + '&tree=' + tree,
       dataType: 'json',
       success: function FL_ajaxSuccessCallback(data) {
         self.parseData(data, loadCallback, errorCallback);

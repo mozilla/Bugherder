@@ -10,7 +10,7 @@ var Config = {
   hgRevURL: "https://hg.mozilla.org/mozilla-central/rev/",
   hgPushlogURL: "https://hg.mozilla.org/mozilla-central/pushloghtml?changeset=",
   showBugURL: "https://bugzilla.mozilla.org/show_bug.cgi?id=",
-  versionURL: "php/getVersion.php",
+  productionURL: "https://tbpl.mozilla.org/mcmerge/",
 
   // Here be dragons
   versionRE: /^mozilla\d+$/i,
