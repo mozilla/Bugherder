@@ -1,5 +1,6 @@
 <?php
 try {
+  header("Access-Control-Allow-Origin: *");
   header("Cache-control: no-cache, must-revalidate");
   header("Content-type: application/json");
 
