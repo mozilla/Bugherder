@@ -7,10 +7,13 @@ var ConfigurationData = {
 
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
-  useNext: ['Core',
+  useNext: ['Add-on SDK',
+            'Core',
             'Fennec',
-            'Firefox for Android',
             'Firefox',
+            'Firefox for Android',
+            'Firefox for Metro',
+            'Firefox Health Report',
             'MailNews Core',
             'Mozilla Localizations',
             'Mozilla Services',
