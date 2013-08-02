@@ -65,6 +65,12 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
+    "b2g-inbound": {
+      repo: "integration/b2g-inbound",
+      trackedTree: false,
+      unconditionalFlag: false,
+      synonyms: ["b2g-inbound", "b-i", "bi"]
+    },
     "mozilla-aurora": {
       repo: "releases/mozilla-aurora",
       trackedTree: true,
@@ -88,6 +94,24 @@ var Config = {
       trackedTree: true,
       unconditionalFlag: false,
       synonyms: ["esr17", "releases/mozilla-esr17", "mozilla-esr17"]
+    },
+    "mozilla-b2g18": {
+      repo: "releases/mozilla-b2g18",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g18", "mozilla-b2g18"]
+    },
+    "mozilla-b2g18-v1.0.1": {
+      repo: "releases/mozilla-b2g18_v1_0_1",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g18_v1_0_1", "mozilla-b2g18_v1_0_1"]
+    },
+    "mozilla-b2g18-v1.1.0hd": {
+      repo: "releases/mozilla-b2g18_v1_1_0_hd",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g18_v1_1_0_hd", "b2g18_v1_1_0hd", "mozilla-b2g18_v1_1_0_hd", "v1.1hd"]
     },
     "jetpack": {
       repo: "projects/addon-sdk",
@@ -258,12 +282,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr17", "comm-esr17"]
-    },
-    "mozilla-b2g18": {
-      repo: "releases/mozilla-b2g18",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g", "b2g18", "mozilla-b2g18"]
     }
   }
 };
