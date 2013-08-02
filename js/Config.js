@@ -83,12 +83,6 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
-    "mozilla-esr10": {
-      repo: "releases/mozilla-esr10",
-      trackedTree: true,
-      unconditionalFlag: false,
-      synonyms: ["esr10", "releases/mozilla-esr10", "mozilla-esr10"]
-    },
     "mozilla-esr17": {
       repo: "releases/mozilla-esr17",
       trackedTree: true,
@@ -125,12 +119,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/ionmonkey", "ionmonkey", "im"]
-    },
-    "jaegermonkey": {
-      repo: "projects/jaegermonkey",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/jaegermonkey", "jm"]
     },
     "profiling": {
       repo: "projects/profiling",
@@ -241,30 +229,6 @@ var Config = {
       trackedTree: false,
       synonyms: ["projects/pine", "pine"]
     },
-    "accessibility": {
-      repo: "projects/accessibility",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/accessibility", "accessibility"]
-    },
-    "devtools": {
-      repo: "projects/devtools",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/devtools", "devtools"]
-    },
-    "electrolysis": {
-      repo: "projects/electrolysis",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/electrolysis", "electrolysis", "e10s"]
-    },
-    "places": {
-      repo: "projects/places",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/places", "places"]
-    },
     "comm-central": {
       repo: "comm-central",
       unconditionalFlag: false,
@@ -288,12 +252,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-release", "comm-release"]
-    },
-    "comm-esr10": {
-      repo: "releases/comm-esr10",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-esr10", "comm-esr10"]
     },
     "comm-esr17": {
       repo: "releases/comm-esr17",
