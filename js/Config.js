@@ -59,17 +59,17 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"]
     },
-    "mozilla-inbound": {
-      repo: "integration/mozilla-inbound",
-      trackedTree: false,
-      unconditionalFlag: false,
-      synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
-    },
     "b2g-inbound": {
       repo: "integration/b2g-inbound",
       trackedTree: false,
       unconditionalFlag: false,
       synonyms: ["b2g-inbound", "b-i", "bi"]
+    },
+    "mozilla-inbound": {
+      repo: "integration/mozilla-inbound",
+      trackedTree: false,
+      unconditionalFlag: false,
+      synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
     "mozilla-aurora": {
       repo: "releases/mozilla-aurora",
