@@ -102,7 +102,7 @@ var BugData = {
     if (this.statusFlag)
       bug.statusFlag = bugObj[this.statusFlag];
 
-    bug.isUnassigned = bugObj.assigned_to.email.endsWith('.bugs');
+    bug.isUnassigned = bugObj.assigned_to.name == 'nobody';
 
     bug.intestsuite = ' ';
     bug.testsuiteFlagID = -1;
