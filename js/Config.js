@@ -89,23 +89,23 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
-    "mozilla-esr17": {
-      repo: "releases/mozilla-esr17",
+    "mozilla-esr24": {
+      repo: "releases/mozilla-esr24",
       trackedTree: true,
       unconditionalFlag: false,
-      synonyms: ["esr17", "releases/mozilla-esr17", "mozilla-esr17"]
+      synonyms: ["esr24", "releases/mozilla-esr24", "mozilla-esr24"]
+    },
+    "mozilla-b2g26": {
+      repo: "releases/mozilla-b2g26_v1_2",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g26", "mozilla-b2g26", "mozilla-b2g26_v1_2"]
     },
     "mozilla-b2g18": {
       repo: "releases/mozilla-b2g18",
       unconditionalFlag: true,
       trackedTree: true,
       synonyms: ["b2g18", "mozilla-b2g18"]
-    },
-    "mozilla-b2g18-v1.0.1": {
-      repo: "releases/mozilla-b2g18_v1_0_1",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g18_v1_0_1", "mozilla-b2g18_v1_0_1"]
     },
     "mozilla-b2g18-v1.1.0hd": {
       repo: "releases/mozilla-b2g18_v1_1_0_hd",
@@ -271,17 +271,11 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
-    "comm-release": {
-      repo: "releases/comm-release",
+    "comm-esr24": {
+      repo: "releases/comm-esr24",
       unconditionalFlag: false,
       trackedTree: true,
-      synonyms: ["releases/comm-release", "comm-release"]
-    },
-    "comm-esr17": {
-      repo: "releases/comm-esr17",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-esr17", "comm-esr17"]
+      synonyms: ["releases/comm-esr24", "comm-esr24", "comm-release"]
     }
   }
 };
