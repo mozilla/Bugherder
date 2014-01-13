@@ -48,8 +48,7 @@ var Config = {
     "thunderbird-trunk": "comm-central",
     "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
-    "thunderbird-release": "comm-release",
-    "thunderbird-esr10": "comm-esr10",
+    "thunderbird-esr24": "comm-esr24",
   },
 
   treeInfo: {
