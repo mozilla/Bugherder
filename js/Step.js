@@ -164,7 +164,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     }
 
     // Set assignee if appropriate
-    if (!Config.leaveOpenRE.test(bug.whiteboard) && !info.canReopen && !info.shouldReopen &&
+    if (!BugData.bugs[bugID].leaveOpen && !info.canReopen && !info.shouldReopen &&
         BugData.bugs[bugID].isUnassigned && info.linkedChangesets.length > 0) {
       var canSetAssignee = true;
       var assignee = PushData.allPushes[info.linkedChangesets[0]].email;
@@ -524,7 +524,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
   var bug = BugData.bugs[bugID];
 
   if (bug) {
-    leaveOpen = Config.leaveOpenRE.test(bug.whiteboard);
+    leaveOpen = bug.leaveOpen;
     hasMilestone = bug.milestone != '---';
     if (hasMilestone || leaveOpen || !(Config.treeName == 'mozilla-central' || Config.treeName == 'comm-central'))
       milestone = bug.milestone;

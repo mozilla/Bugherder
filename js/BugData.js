@@ -77,7 +77,7 @@ var BugData = {
     if (bugObj.keywords)
       bug.keywords = bugObj.keywords;
     else
-      bug.keywords = '';
+      bug.keywords = [];
 
     // The next five should always be present
     bug.status = UI.htmlEncode(bugObj.status);
@@ -93,6 +93,11 @@ var BugData = {
 
     bug.canResolve = !(bug.status == 'RESOLVED' || bug.status == 'VERIFIED');
     bug.canReopen = bug.resolution == 'FIXED';
+
+    // The preferred way to prevent bug closure is through the keyword, however
+    // test for the previous method of whiteboard annotation
+    bug.leaveOpen = bug.keywords.indexOf('leave-open') !== -1 ||
+                    Config.leaveOpenRE.test(bug.whiteboard);
 
     bug.isTracked = false;
     if (this.trackingFlag && bugObj[this.trackingFlag] == '+')
