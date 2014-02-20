@@ -428,7 +428,7 @@ var Viewer = {
 
   makeWhiteboardHTML: function viewer_makeWhiteBoardHTML(cset, index, id) {
     var bug = BugData.bugs[id];
-    var html = '<textarea class="whiteboardTA ' + id + 'whiteboard" rows="3" id="' + this.getWhiteboardID(cset, id);
+    var html = '<textarea class="whiteboardTA ' + id + 'whiteboard" rows="4" id="' + this.getWhiteboardID(cset, id);
     html += '" ' + this.makeDataHTML(index, id) + '>';
     if (bug.whiteboard)
       html += bug.whiteboard.replace(/]/g, ']\n');
@@ -475,6 +475,10 @@ var Viewer = {
     } else
       html += '<div class="grid-6"></div>';
     html += '<div class="grid-6 afterWhiteboard">';
+    if (bug && bug.leaveOpen)
+      html += ' <span class="afterWhiteboard leaveOpen">LEAVE OPEN</span><br>';
+    else
+      html += '<br>';
     html += '<span class="afterWhiteboard">';
     html += 'Comment: ';
     html += this.makeCheckboxHTML(cset, index, id, 'comment');
