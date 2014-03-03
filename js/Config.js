@@ -149,12 +149,6 @@ var Config = {
       trackedTree: false,
       synonyms: ["projects/ionmonkey", "ionmonkey", "im"]
     },
-    "profiling": {
-      repo: "projects/profiling",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["profiling", "projects/profiling"]
-    },
     "services-central": {
       repo: "services/services-central",
       unconditionalFlag: false,
