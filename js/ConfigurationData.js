@@ -8,6 +8,7 @@ var ConfigurationData = {
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
   useNext: ['Add-on SDK',
+            'Android Background Services',
             'Core',
             'Fennec',
             'Firefox',
