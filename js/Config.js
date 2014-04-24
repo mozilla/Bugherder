@@ -94,12 +94,6 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["esr24", "releases/mozilla-esr24", "mozilla-esr24"]
     },
-    "mozilla-b2g26-v1.2": {
-      repo: "releases/mozilla-b2g26_v1_2",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g26", "mozilla-b2g26", "mozilla-b2g26_v1_2", "v1.2"]
-    },
     "mozilla-b2g30-v1.4": {
       repo: "releases/mozilla-b2g30_v1_4",
       unconditionalFlag: true,
@@ -117,6 +111,12 @@ var Config = {
       unconditionalFlag: true,
       trackedTree: true,
       synonyms: ["b2g28t", "mozilla-b2g28t", "mozilla-b2g28_v1_3t", "v1.3t"]
+    },
+    "mozilla-b2g26-v1.2": {
+      repo: "releases/mozilla-b2g26_v1_2",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g26", "mozilla-b2g26", "mozilla-b2g26_v1_2", "v1.2"]
     },
     "mozilla-b2g18": {
       repo: "releases/mozilla-b2g18",
@@ -154,12 +154,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/graphics", "graphics"]
-    },
-    "ionmonkey": {
-      repo: "projects/ionmonkey",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/ionmonkey", "ionmonkey", "im"]
     },
     "services-central": {
       repo: "services/services-central",
