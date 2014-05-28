@@ -118,18 +118,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g26", "mozilla-b2g26", "mozilla-b2g26_v1_2", "v1.2"]
     },
-    "mozilla-b2g18": {
-      repo: "releases/mozilla-b2g18",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g18", "mozilla-b2g18"]
-    },
-    "mozilla-b2g18-v1.1.0hd": {
-      repo: "releases/mozilla-b2g18_v1_1_0_hd",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g18_v1_1_0_hd", "b2g18_v1_1_0hd", "mozilla-b2g18_v1_1_0_hd", "v1.1hd"]
-    },
     "jetpack": {
       repo: "projects/addon-sdk",
       trackedTree: false,
