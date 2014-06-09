@@ -112,12 +112,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g28t", "mozilla-b2g28t", "mozilla-b2g28_v1_3t", "v1.3t"]
     },
-    "mozilla-b2g26-v1.2": {
-      repo: "releases/mozilla-b2g26_v1_2",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g26", "mozilla-b2g26", "mozilla-b2g26_v1_2", "v1.2"]
-    },
     "jetpack": {
       repo: "projects/addon-sdk",
       trackedTree: false,
