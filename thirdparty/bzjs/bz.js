@@ -4,9 +4,7 @@ var BugzillaClient = function(options) {
   this.username = options.username;
   this.password = options.password;
   this.timeout = options.timeout || 0;
-  this.apiUrl = options.url ||
-    (options.test ? "https://api-dev.bugzilla.mozilla.org/test/latest/"
-                  : "https://api-dev.bugzilla.mozilla.org/latest/");
+  this.apiUrl = "https://bugzilla.mozilla.org/bzapi/"
   this.apiUrl = this.apiUrl.replace(/\/$/, "");
 }
 
