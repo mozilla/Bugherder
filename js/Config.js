@@ -48,6 +48,7 @@ var Config = {
     "thunderbird-trunk": "comm-central",
     "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
+    "thunderbird-esr31": "comm-esr31",
     "thunderbird-esr24": "comm-esr24",
   },
 
@@ -87,6 +88,12 @@ var Config = {
       trackedTree: true,
       unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
+    },
+    "mozilla-esr31": {
+      repo: "releases/mozilla-esr31",
+      trackedTree: true,
+      unconditionalFlag: false,
+      synonyms: ["esr31", "releases/mozilla-esr31", "mozilla-esr31"]
     },
     "mozilla-esr24": {
       repo: "releases/mozilla-esr24",
@@ -257,6 +264,12 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
+    },
+    "comm-esr31": {
+      repo: "releases/comm-esr31",
+      unconditionalFlag: false,
+      trackedTree: true,
+      synonyms: ["releases/comm-esr31", "comm-esr31"]
     },
     "comm-esr24": {
       repo: "releases/comm-esr24",
