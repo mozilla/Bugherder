@@ -422,7 +422,9 @@ var PushData = {
     var push = {};
     push.cset = cset.node.substring(0,12);
     push.hgLink = Config.hgRevURL + push.cset;
-    push.desc = UI.htmlEncode(cset.desc);
+    // Only use the first line of the commit message, to avoid false
+    // positives when checking for bug numbers and backouts later.
+    push.desc = UI.htmlEncode(cset.desc.split('\n', 1)[0]);
     push.files = cset.files;
 
     var author = cset.author;
