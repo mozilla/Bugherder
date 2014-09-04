@@ -113,12 +113,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g30", "mozilla-b2g30", "mozilla-b2g30_v1_4", "v1.4"]
     },
-    "mozilla-b2g28-v1.3": {
-      repo: "releases/mozilla-b2g28_v1_3",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g28", "mozilla-b2g28", "mozilla-b2g28_v1_3", "v1.3"]
-    },
     "mozilla-b2g28-v1.3t": {
       repo: "releases/mozilla-b2g28_v1_3t",
       unconditionalFlag: true,
