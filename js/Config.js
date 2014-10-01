@@ -101,6 +101,12 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["esr24", "releases/mozilla-esr24", "mozilla-esr24"]
     },
+    "mozilla-b2g34-v2.1": {
+      repo: "releases/mozilla-b2g34_v2_1",
+      unconditionalFlag: true,
+      trackedTree: true,
+      synonyms: ["b2g34", "mozilla-b2g34", "mozilla-b2g34_v2_1", "v2.1"]
+    },
     "mozilla-b2g32-v2.0": {
       repo: "releases/mozilla-b2g32_v2_0",
       unconditionalFlag: true,
