@@ -95,12 +95,6 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["esr31", "releases/mozilla-esr31", "mozilla-esr31"]
     },
-    "mozilla-esr24": {
-      repo: "releases/mozilla-esr24",
-      trackedTree: true,
-      unconditionalFlag: false,
-      synonyms: ["esr24", "releases/mozilla-esr24", "mozilla-esr24"]
-    },
     "mozilla-b2g34-v2.1": {
       repo: "releases/mozilla-b2g34_v2_1",
       unconditionalFlag: true,
@@ -276,12 +270,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr31", "comm-esr31"]
-    },
-    "comm-esr24": {
-      repo: "releases/comm-esr24",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-esr24", "comm-esr24", "comm-release"]
     }
   }
 };
