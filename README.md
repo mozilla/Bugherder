@@ -27,6 +27,3 @@ mcMerge uses the following third-party projects:
 * bz.js by Heather Arthur - [https://github.com/harthur/bz.js](https://github.com/harthur/bz.js)
 * jQuery - [http://jquery.com/](http://jquery.com)
 * Toast CSS framework by Dan Eden - [http://www.daneden.me/toast](http://www.daneden.me/toast)
-* require.js by James Burke - [https://github.com/jrburke/requirejs](https://github.com/jrburke/requirejs)
-* mocha test framework - [http://visionmedia.github.com/mocha/](http://visionmedia.github.com/mocha/)
-* chai assertion library - [https://github.com/chaijs/chai](https://github.com/chaijs/chai)
