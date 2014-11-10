@@ -21,16 +21,17 @@ var FlagLoader = {
       loadCallback({});
       return;
     }
+    var treeInfo = Config.treeInfo[tree];
     var productName = 'firefox';
+    var fileLocation = '/browser/config/version.txt';
     if (tree.indexOf('comm') != -1) {
       productName = 'thunderbird';
+      fileLocation = '/mail/config/version.txt';
     }
     var self = this;
-    // When running from the local filesystem use the production backend.
-    var baseURL = (window.location.protocol == 'file:') ? Config.productionURL : '';
     $.ajax({
-      url: baseURL + 'php/getFlags.php?cset=' + cset + '&tree=' + tree,
-      dataType: 'json',
+      url: Config.hgBaseURL + treeInfo.repo + '/raw-file/' + cset + fileLocation,
+      dataType: 'text',
       success: function FL_ajaxSuccessCallback(data) {
         self.parseData(data, productName, loadCallback, errorCallback);
       },
@@ -39,12 +40,14 @@ var FlagLoader = {
   },
 
   parseData: function FL_parseData(data, productName, loadCallback, errorCallback) {
-    if ('error' in data) {
-      errorCallback(null, data['error']);
+    // The version number is of form: "36.0a1", "35.0a2, "34.0" etc.
+    var version = /^([1-9][\d]*)(?:\.[\d]+)?/.exec(data);
+    if (!version) {
+      errorCallback(null, 'Unable to parse version.txt');
       loadCallback({});
       return;
     }
-    var flags = this.generateFlags(productName + data['version']);
+    var flags = this.generateFlags(productName + version[1]);
     loadCallback(flags);
   },
 
