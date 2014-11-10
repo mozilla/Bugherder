@@ -124,31 +124,12 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["projects/addon-sdk", "addon-sdk"]
     },
-    "build-system": {
-      repo: "projects/build-system",
-      trackedTree: false,
-      unconditionalFlag: false,
-      synonyms: ["build-system", "b-s", "bs"]
-    },
     "fx-team": {
       repo: "integration/fx-team",
       trackedTree: false,
       unconditionalFlag: false,
       synonyms: ["fx-team"],
       additions: "[fixed-in-fx-team]"
-    },
-    "graphics": {
-      repo: "projects/graphics",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/graphics", "graphics"]
-    },
-    "services-central": {
-      repo: "services/services-central",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["services-central", "s-c", "sc", "services/services-central"],
-      additions: "[fixed in services]"
     },
     "ux": {
       unconditionalFlag: false,
@@ -166,12 +147,6 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["ash", "projects/ash"]
-    },
-    "birch": {
-      repo: "projects/birch",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["projects/birch", "birch"]
     },
     "cedar": {
       repo: "projects/cedar",
