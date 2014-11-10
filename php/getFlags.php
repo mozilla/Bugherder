@@ -24,19 +24,6 @@ try {
 
   $tree = strtolower($_GET["tree"]);
 
-  // The cset is irrelevant for ESR trees - we can go ahead and calculate the flag names now
-  // We do this before the check for valid tree names to avoid having to manually maintain a list
-  // of ESR trees
-  if (preg_match("/-esr([1-9][\d]*)$/", $tree, $esrMatch) === 1) {
-    $ver = $esrMatch[1];
-    if (strpos($tree, "mozilla") === 0) {
-      exit(json_encode(array("tracking" => "tracking_esr" . $ver, "status" => "status_esr" . $ver)));
-    } else if (strpos($tree, "comm") === 0) {
-      exit(json_encode(array("tracking" => "tracking_thunderbird_esr" . $ver, "status" => "status_thunderbird_esr" . $ver)));
-    }
-    exit(json_encode(array("error" => "unknown esr tree")));
-  }
-
   // Error out if it's not a tree that we think needs tracked
   if (!(array_key_exists($tree, $validTrees))) {
     exit(json_encode(array("error" => "unknown tree")));
