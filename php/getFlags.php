@@ -57,14 +57,7 @@ try {
     exit(json_encode(array("error" => "unable to parse cset")));
   }
 
-  $tracking = "tracking_firefox" . $match[1];
-  $status = "status_firefox" . $match[1];
-  if (strpos($tree, "comm") === 0) {
-    $tracking = "tracking_thunderbird" . $match[1];
-    $status = "status_thunderbird" . $match[1];
-  }
- 
-  exit(json_encode(array("tracking" => $tracking, "status" => $status)));
+  exit(json_encode(array("version" => $match[1])));
 
 } catch (Exception $e) {
   exit(json_encode(array("error" => $e->getMessage())));

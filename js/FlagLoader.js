@@ -21,6 +21,10 @@ var FlagLoader = {
       loadCallback({});
       return;
     }
+    var productName = 'firefox';
+    if (tree.indexOf('comm') != -1) {
+      productName = 'thunderbird';
+    }
     var self = this;
     // When running from the local filesystem use the production backend.
     var baseURL = (window.location.protocol == 'file:') ? Config.productionURL : '';
@@ -28,16 +32,20 @@ var FlagLoader = {
       url: baseURL + 'php/getFlags.php?cset=' + cset + '&tree=' + tree,
       dataType: 'json',
       success: function FL_ajaxSuccessCallback(data) {
-        self.parseData(data, loadCallback, errorCallback);
+        self.parseData(data, productName, loadCallback, errorCallback);
       },
       error: errorCallback
     });
   },
 
-  parseData: function FL_parseData(data, loadCallback, errorCallback) {
-    if ('error' in data)
+  parseData: function FL_parseData(data, productName, loadCallback, errorCallback) {
+    if ('error' in data) {
       errorCallback(null, data['error']);
-    loadCallback(data);
+      loadCallback({});
+      return;
+    }
+    var flags = this.generateFlags(productName + data['version']);
+    loadCallback(flags);
   },
 
   generateFlags: function FL_generateFlags(flagSuffix) {
