@@ -14,8 +14,7 @@ try {
     "comm-central" => "comm-central/",
     "comm-aurora" => "releases/comm-aurora/",
     "comm-beta" => "releases/comm-beta/",
-    "comm-release" => "releases/comm-release/",
-    "mozilla-b2g18" => "releases/mozilla-b2g18/"
+    "comm-release" => "releases/comm-release/"
   );
 
   if (!(array_key_exists("tree", $_GET)) OR !(array_key_exists("cset", $_GET))) {
@@ -33,12 +32,6 @@ try {
   $cset = strtolower($_GET["cset"]);
   if (preg_match("/^(?:(?:tip)|(?:[\da-f]{12,40}))$/", $cset) !== 1) {
     exit(json_encode(array("error" => "invalid cset")));
-  }
-
-  // Fast-path for b2g18
-  // XXX need to revist this once we know how b2g releases are managed post initial release
-  if ($tree === "mozilla-b2g18") {
-    exit(json_encode(array("tracking" => "tracking_b2g18", "status" => "status_b2g18")));
   }
 
   $fileLocation = "/browser/config/version.txt";

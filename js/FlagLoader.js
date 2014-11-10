@@ -15,6 +15,12 @@ var FlagLoader = {
       loadCallback(flags);
       return;
     }
+    if (tree.indexOf('mozilla-b2g') != -1) {
+      // TODO: B2G repos use B2G version numbers, which are not yet supported.
+      errorCallback(null, 'unknown tree');
+      loadCallback({});
+      return;
+    }
     var self = this;
     // When running from the local filesystem use the production backend.
     var baseURL = (window.location.protocol == 'file:') ? Config.productionURL : '';
