@@ -45,10 +45,19 @@ var ConfigurationData = {
         loadCallback();
         return;
     }
+    // Find the flag number for in-testsuite
+    if ('flag_type' in data) {
+      for (var flagNumber in data['flag_type']) {
+        if (data['flag_type'][flagNumber].name == 'in-testsuite') {
+          this.testsuiteFlagID = parseInt(flagNumber);
+          break;
+        }
+      }
+    }
     var products = data.product;
-    // Parse Milestones 
     var productMilestones = {}
     for (var product in products) {
+      // Parse Milestones
       var values = products[product].target_milestone;
       productMilestones[product] = {}
       productMilestones[product].values = values.map(UI.htmlEncode);
@@ -61,21 +70,9 @@ var ConfigurationData = {
       } else
         productMilestones[product].defaultIndex = 0;
       }
-    this.milestones = productMilestones;
 
-    // Find the flag number for in-testsuite 
-    if ('flag_type' in data) {
-      for (var flagNumber in data['flag_type']) {
-        if (data['flag_type'][flagNumber].name == 'in-testsuite') {
-          this.testsuiteFlagID = parseInt(flagNumber);
-          break;
-        }
-      }
-    }
-
-    // Find which products/components can have intestsuite set
-    if (this.testsuiteFlagID != -1) {
-      for (var product in products) {
+      // Find which products/components can have in-testsuite set
+      if (this.testsuiteFlagID != -1) {
         this.hasTestsuiteFlag[product] = {};
         for (var component in products[product].component) {
           var hasTestsuite = products[product].component[component].flag_type.indexOf(this.testsuiteFlagID) != -1;
@@ -83,7 +80,7 @@ var ConfigurationData = {
         }
       }
     }
-
+    this.milestones = productMilestones;
     loadCallback();
   }
 };
