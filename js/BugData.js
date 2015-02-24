@@ -115,7 +115,7 @@ var BugData = {
     if (bug.canSetTestsuite && 'flags' in bugObj && bugObj.flags) {
       for (var i = 0; i < bugObj.flags.length; i++) {
         var f = bugObj.flags[i];
-        if (f.name == 'in-testsuite' && f.type_id == ConfigurationData.testsuiteFlag) {
+        if (f.name == 'in-testsuite' && f.type_id == ConfigurationData.testsuiteFlagID) {
           bug.intestsuite = f.status; 
           bug.testsuiteFlagID = f.id;
           break;

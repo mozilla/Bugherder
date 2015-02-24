@@ -182,7 +182,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     if (BugData.bugs[bugID] && info.canSetTestsuite && info.intestsuite != BugData.bugs[bugID].intestsuite) {
       bug.flags = [{name: 'in-testsuite',
                     setter: {email: Step.username},
-                    type_id: ConfigurationData.testsuiteFlag,
+                    type_id: ConfigurationData.testsuiteFlagID,
                     status: info.intestsuite}];
       if (BugData.bugs[bugID].testsuiteFlagID != -1)
         bug.flags[0].id = BugData.bugs[bugID].testsuiteFlagID;

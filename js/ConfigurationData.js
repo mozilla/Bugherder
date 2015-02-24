@@ -3,7 +3,7 @@
 var ConfigurationData = {
   milestones: {},
   products: {},
-  testsuiteFlag: -1,
+  testsuiteFlagID: -1,
 
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
@@ -64,18 +64,18 @@ var ConfigurationData = {
     if ('flag_type' in data) {
       for (var flagNumber in data['flag_type']) {
         if (data['flag_type'][flagNumber].name == 'in-testsuite') {
-          this.testsuiteFlag = parseInt(flagNumber);
+          this.testsuiteFlagID = parseInt(flagNumber);
           break;
         }
       }
     }
 
     // Find which products/components can have intestsuite set
-    if ('product' in data && this.testsuiteFlag != -1) {
+    if ('product' in data && this.testsuiteFlagID != -1) {
       for (var product in data.product) {
         this.products[product] = {};
         for (var component in data.product[product].component) {
-          var hasTestsuite = data.product[product].component[component].flag_type.indexOf(this.testsuiteFlag) != -1;
+          var hasTestsuite = data.product[product].component[component].flag_type.indexOf(this.testsuiteFlagID) != -1;
           this.products[product][component] = hasTestsuite;
         }
       }
