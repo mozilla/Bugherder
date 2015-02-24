@@ -58,16 +58,21 @@ var ConfigurationData = {
     var productMilestones = {}
     for (var product in products) {
       // Parse Milestones
-      var values = products[product].target_milestone;
+      var active_milestones = products[product].target_milestone_detail.filter(function (milestone) {
+        return milestone.is_active;
+      }).map(function (milestone) {
+        return milestone.name;
+      });
       productMilestones[product] = {}
-      productMilestones[product].values = values.map(UI.htmlEncode);
-      var dashIndex = values.indexOf('---');
+      productMilestones[product].values = active_milestones.map(UI.htmlEncode);
+      var dashIndex = active_milestones.indexOf('---');
       if (dashIndex != -1) {
-        if (dashIndex + 1 < values.length && this.useNext.indexOf(product) != -1)
+        if (dashIndex + 1 < active_milestones.length && this.useNext.indexOf(product) != -1) {
           productMilestones[product].defaultIndex = dashIndex + 1;
-        else
+        } else {
           productMilestones[product].defaultIndex = dashIndex;
-      } else
+        }
+      } else {
         productMilestones[product].defaultIndex = 0;
       }
 
