@@ -111,7 +111,7 @@ var BugData = {
 
     bug.intestsuite = ' ';
     bug.testsuiteFlagID = -1;
-    bug.canSetTestsuite = ConfigurationData.products[bug.product][bugObj.component];
+    bug.canSetTestsuite = ConfigurationData.hasTestsuiteFlag[bug.product][bugObj.component];
     if (bug.canSetTestsuite && 'flags' in bugObj && bugObj.flags) {
       for (var i = 0; i < bugObj.flags.length; i++) {
         var f = bugObj.flags[i];

@@ -2,7 +2,7 @@
 
 var ConfigurationData = {
   milestones: {},
-  products: {},
+  hasTestsuiteFlag: {},
   testsuiteFlagID: -1,
 
   // useNext represents products where I'm reasonably
@@ -73,10 +73,10 @@ var ConfigurationData = {
     // Find which products/components can have intestsuite set
     if ('product' in data && this.testsuiteFlagID != -1) {
       for (var product in data.product) {
-        this.products[product] = {};
+        this.hasTestsuiteFlag[product] = {};
         for (var component in data.product[product].component) {
           var hasTestsuite = data.product[product].component[component].flag_type.indexOf(this.testsuiteFlagID) != -1;
-          this.products[product][component] = hasTestsuite;
+          this.hasTestsuiteFlag[product][component] = hasTestsuite;
         }
       }
     }
