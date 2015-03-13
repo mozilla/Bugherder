@@ -584,8 +584,8 @@ var Viewer = {
 
 
   makeSubmitHTML: function viewer_makeSubmitHTML() {
-    var html = '<div class="grid-12 divRight" id="submit">';
-    html += '  <button type="button" class="submitButton" id="submitButton">Submit the changes above</button>';
+    var html = '<div class="grid-12 divRight" class="submit">';
+    html += '  <button type="button" class="submitButton">Submit the changes</button>';
     html += '</div>';
     return html;
   },
@@ -613,7 +613,7 @@ var Viewer = {
 
 
   updateSubmitButton: function viewer_updateSubmitButton() {
-    $('#submitButton').attr('disabled', !(this.step.canSubmit()));
+    $('.submitButton').attr('disabled', !(this.step.canSubmit()));
   },
 
 
@@ -644,6 +644,7 @@ var Viewer = {
     $('#viewerOutput').append(this.makeHeadlineHTML(step.getHeading()));
     $('#viewerOutput').append(this.makeHelpHTML(step.getHelpText()));
     $('#viewerOutput').append(this.makeExpandHTML());
+    $('#viewerOutput').append(this.makeSubmitHTML());
     $('#viewerOutput').append(this.makeButtonHTML(onPrevious.label, onNext.label));
 
     this.step = step;
