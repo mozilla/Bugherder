@@ -1,0 +1,44 @@
+# Since we can't auto deploy a Stackato app in response to commits to the repo, we
+# instead have to perform these gymnastics. We don't |stackato push| our source
+# directory, since it will get stale (and we need the .git directory, which isn't
+# ideal to upload). As such we |stackato push| only the Staticfile, and clone the
+# repo as part of the deploy.
+#
+# Some other notes:
+# * We are having to use the legacy stackato.yml syntax, since the Mozilla instance
+#   is running an older v2.x Stackato release.
+# * The staticfiles buildpack we're using has a few bugs, so we're using my fork of
+#   it until upstream merges my PRs.
+# * The cron that we use to update the repo only runs on instance #0, so we limit
+#   the number of instances to one, since any others wouldn't self-update.
+# * We set app-dir to be a subdirectory of the mcMerge repo, to ensure we only
+#   upload 'Staticfile' and not the whole mcMerge repo.
+# * The buildpack's staging step copies the project root to public/ in its entirety,
+#   but we don't want .git to be served by nginx, so we delete it post staging.
+# * The buildpack we're using auto-redirects http to https if FORCE_HTTPS is defined.
+#
+# To deploy this to Mozilla's Stackato instance, follow the generic client setup
+# steps on Mana, and then |stackato push --no-prompt| from the root of the repo.
+# However once it is deployed, it should need to further intervention, since it
+# will auto-update from the mcMerge repo every 5 minutes, storing the status of
+# the update at: <site>/deploy.txt
+
+name: mcmerge
+url:
+  - mcmerge.paas.allizom.org
+instances: 1
+mem: 64M
+framework:
+  type: buildpack
+env:
+  BUILDPACK_URL: git://github.com/edmorley/staticfile-buildpack.git
+  FORCE_HTTPS: true
+app-dir: deployment
+hooks:
+  pre-staging:
+    - git clone --depth 1 https://github.com/mozilla/mcMerge.git src
+  post-staging:
+    - rm -rf public/.git
+    - echo "Cron not yet run on this instance!" > public/deploy.txt
+cron:
+  - "*/5 * * * * cd src; { date; git pull; git rev-parse HEAD; rsync -a --exclude='/.git' ./ ../public; } > ../public/deploy.txt"
