@@ -321,6 +321,27 @@ div.ctr {
   width: 100%;
 }
 
+#footer {
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#footer > div {
+  width: 300px;
+}
+
+#source-link {
+  text-align: left;
+  float: left;
+}
+
+#mcmerge-revision {
+  text-align: right;
+  float: right;
+  display: none;
+}
+
 .submitButton {
   margin-top: 10px;
 }
@@ -328,4 +349,10 @@ div.ctr {
 #expandButton {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+@-moz-document url-prefix(https://mcmerge.paas.allizom.org/) {
+  #mcmerge-revision {
+    display: inline !important;
+  }
 }
