@@ -257,6 +257,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     this.startSubmit(i);
     return;
   }
+  UI.showErrorMessage(msg);
   this.continueSubmit(i);
 };
 
