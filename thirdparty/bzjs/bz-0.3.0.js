@@ -126,15 +126,20 @@ BugzillaClient.prototype = {
     // I couldn't find an equivalent to /configuration in the native REST API, fall back to bzAPI
     if(path == "/configuration") {
       url = this.legacyApiUrl + path;
+      if(this.username && this.password) {
+        params = params || {};
+        params.username = this.username;
+        params.password = this.password;
+      }
     } else {
       url = this.apiUrl + path;
+      if(this.username && this.password) {
+        params = params || {};
+        params.login = this.username;
+        params.password = this.password;
+      }
     }
 
-    if(this.username && this.password) {
-      params = params || {};
-      params.login = this.username;
-      params.password = this.password;
-    }
     if(params)
       url += "?" + this.urlEncode(params);
 
