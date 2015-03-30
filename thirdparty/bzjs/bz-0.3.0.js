@@ -30,10 +30,16 @@ var BugzillaClient = function(options) {
   this.username = options.username;
   this.password = options.password;
   this.timeout = options.timeout || 0;
+  // Use this for the native REST API
   this.apiUrl = options.url ||
+    (options.test ? "https://bugzilla-dev.allizom.org/rest"
+                  : "https://bugzilla.mozilla.org/rest");
+  // Use this for any calls that still depend on bzAPI (eg, "/configuration")
+  this.legacyApiUrl = options.url ||
     (options.test ? "https://bugzilla-dev.allizom.org/bzapi"
                   : "https://bugzilla.mozilla.org/bzapi");
   this.apiUrl = this.apiUrl.replace(/\/$/, "");
+  this.legacyApiUrl = this.legacyApiUrl.replace(/\/$/, "");
 }
 
 BugzillaClient.prototype = {
@@ -116,10 +122,17 @@ BugzillaClient.prototype = {
   },
 
   APIRequest : function(path, method, callback, field, body, params) {
-    var url = this.apiUrl + path;
+    var url;
+    // I couldn't find an equivalent to /configuration in the native REST API, fall back to bzAPI
+    if(path == "/configuration") {
+      url = this.legacyApiUrl + path;
+    } else {
+      url = this.apiUrl + path;
+    }
+
     if(this.username && this.password) {
       params = params || {};
-      params.username = this.username;
+      params.login = this.username;
       params.password = this.password;
     }
     if(params)
