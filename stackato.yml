@@ -7,8 +7,6 @@
 # Some other notes:
 # * We are having to use the legacy stackato.yml syntax, since the Mozilla instance
 #   is running an older v2.x Stackato release.
-# * The staticfiles buildpack we're using has a few bugs, so we're using my fork of
-#   it until upstream merges my PRs.
 # * The cron that we use to update the repo only runs on instance #0, so we limit
 #   the number of instances to one, since any others wouldn't self-update.
 # * We set app-dir to be a subdirectory of the mcMerge repo, to ensure we only
@@ -31,7 +29,7 @@ mem: 64M
 framework:
   type: buildpack
 env:
-  BUILDPACK_URL: git://github.com/edmorley/staticfile-buildpack.git
+  BUILDPACK_URL: git://github.com/cloudfoundry-incubator/staticfile-buildpack.git
   FORCE_HTTPS: true
 app-dir: deployment
 hooks:
