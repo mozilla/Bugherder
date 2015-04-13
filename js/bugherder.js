@@ -1,6 +1,6 @@
 "use strict";
 
-var mcMerge = {
+var bugherder = {
   debug: false,
   expand: false,
   remap: false,
@@ -21,7 +21,7 @@ var mcMerge = {
     var self = this;
     $(window).load(function onDocReady() {
       if (Config.inMaintenanceMode) {
-        $('#errorText').text('mcMerge is down for maintenance!');
+        $('#errorText').text('bugherder is down for maintenance!');
         UI.show('errors');
         return;
       }
@@ -29,7 +29,7 @@ var mcMerge = {
       if (Config.supportsHistory) {
         // Set the popstate handler on a timeout, to avoid the inital load popstate in Webkit
         window.setTimeout(function mcM_onLoadTimeout() {
-          $(window).on('popstate', {mcMerge: self}, function mcM_InitPopstate(e) {
+          $(window).on('popstate', {bugherder: self}, function mcM_InitPopstate(e) {
            self.parseQuery(e);
           });
         }, 1);
@@ -53,7 +53,7 @@ var mcMerge = {
 
     var self = this;
 
-    document.title = 'mcMerge';
+    document.title = 'bugherder';
 
     var formListener = function mcM_acquireListener(e) {
       self.validateForm(e);
@@ -334,7 +334,7 @@ var mcMerge = {
       return;
     }
 
-    document.title = 'mcMerge (changeset: ' + cset + ')';
+    document.title = 'bugherder (changeset: ' + cset + ')';
     this.loading = 'cset';
     UI.showLoadingMessage('Loading pushlog data...');
 
@@ -456,7 +456,7 @@ var mcMerge = {
     if (!event)
       self = this;
     else
-      self = event.data.mcMerge;
+      self = event.data.bugherder;
 
     var query = document.location.search;
     if (query) {
@@ -552,4 +552,4 @@ var mcMerge = {
     }
   }
 };
-mcMerge.init();
+bugherder.init();
