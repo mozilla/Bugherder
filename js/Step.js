@@ -159,7 +159,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
     // Set status flag if appropriate
     if (info.canSetStatus && info.shouldSetStatus) {
-      var fieldName = 'cf_' + mcMerge.statusFlag;
+      var fieldName = 'cf_' + bugherder.statusFlag;
       bug[fieldName] = 'fixed';
     }
 
@@ -223,7 +223,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     // - a tester remapped to a non-existant bug on landfill, (they should know better :))
     // If we've failed trying to get the time/token on our very first bug, let's just put it
     //   down to username/password, and abandon this submit attempt
-    // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while mcMerge was working?!?)
+    // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while bugherder was working?!?)
     // Else, we'll note this one failed and try the next. If we carry on without further failure, then this was a
     //  security bug that wasn't one before
     if (i == 0 || this.retries[this.retries.length-1] == i - 1) {
@@ -418,10 +418,10 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
   }
 
   // Disallow setting status- if we just sent it
-  if ('cf_' + mcMerge.statusFlag in sent) {
+  if ('cf_' + bugherder.statusFlag in sent) {
     info.canSetStatus = false;
     info.shouldSetStatus = false;
-    BugData.bugs[bugID].statusFlag = sent['cf_' + mcMerge.statusFlag];
+    BugData.bugs[bugID].statusFlag = sent['cf_' + bugherder.statusFlag];
   }
 
   this.continueSubmit(i);
@@ -947,17 +947,17 @@ Step.prototype.constructTextFor = function Step_constructTextFor(arr, postText, 
 // Calls out various interesting properties of the attached bugs
 //   - "multi" bugs (where a bug is associated with multiple changesets
 //   - "leave open" bugs (where the assignee doesn't want the bug resolved
-//   - "security" bugs (bugs mcMerge couldn't access)
+//   - "security" bugs (bugs bugherder couldn't access)
 //   - "has milestone" bugs (bugs that can be resolved, but already had a milestone)
 Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   var text = '';
 
   var multiPost = ' associated with multiple changesets: the individual comments will be coalesced into a single comment.';
   var leaveOpenPost = ' "leave open" in the whiteboard, so the resolve flag has not been set.';
-  var securityPost = ' restricted - mcMerge was unable to load the relevant information from Bugzilla.';
+  var securityPost = ' restricted - bugherder was unable to load the relevant information from Bugzilla.';
   var milestonePost = ' a milestone set. You may wish to check it is correct before submitting.';
   var alreadyCommentPost = ' to have already been commented with the correct changeset URL, so commenting there has been disabled.';
-  var statusChangePost = ' tracked or uplifted and will have ' + mcMerge.statusFlag + ' set to "fixed".';
+  var statusChangePost = ' tracked or uplifted and will have ' + bugherder.statusFlag + ' set to "fixed".';
 
   var hashave = {singular: 'has', plural: 'have'};
   var appearTo = {singular: 'appears', plural: 'appear'};
@@ -1027,7 +1027,7 @@ Step.prototype.getHelpText = function Step_getHelpText() {
   helpText += this.getAdditionalHelpText();
 
   if (this.statusChangeBugs.length > 0 && Config.treeInfo[Config.treeName].unconditionalFlag)
-    helpText += '<br>- Submitted bugs will have ' + mcMerge.statusFlag + ' set to "fixed"';
+    helpText += '<br>- Submitted bugs will have ' + bugherder.statusFlag + ' set to "fixed"';
 
   if (Step.remaps && 'items' in Step.remaps && Step.remaps.items > 0)
     helpText += '<br><strong>Note: You are in debug mode. Only remap bugs will be submitted, and will be submitted to landfill.bugzilla.org!</strong>';

@@ -336,7 +336,7 @@ div.ctr {
   float: left;
 }
 
-#mcmerge-revision {
+#bugherder-revision {
   text-align: right;
   float: right;
   display: none;
@@ -352,7 +352,7 @@ div.ctr {
 }
 
 @-moz-document url-prefix(https://mcmerge.paas.allizom.org/) {
-  #mcmerge-revision {
+  #bugherder-revision {
     display: inline !important;
   }
 }

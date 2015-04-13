@@ -9,8 +9,8 @@
 #   is running an older v2.x Stackato release.
 # * The cron that we use to update the repo only runs on instance #0, so we limit
 #   the number of instances to one, since any others wouldn't self-update.
-# * We set app-dir to be a subdirectory of the mcMerge repo, to ensure we only
-#   upload 'Staticfile' and not the whole mcMerge repo.
+# * We set app-dir to be a subdirectory of the Bugherder repo, to ensure we only
+#   upload 'Staticfile' and not the whole Bugherder repo.
 # * The buildpack's staging step copies the project root to public/ in its entirety,
 #   but we don't want .git to be served by nginx, so we delete it post staging.
 # * The buildpack we're using auto-redirects http to https if FORCE_HTTPS is defined.
@@ -18,12 +18,13 @@
 # To deploy this to Mozilla's Stackato instance, follow the generic client setup
 # steps on Mana, and then |stackato push --no-prompt| from the root of the repo.
 # However once it is deployed, it should need to further intervention, since it
-# will auto-update from the mcMerge repo every 5 minutes, storing the status of
+# will auto-update from the Bugherder repo every 5 minutes, storing the status of
 # the update at: <site>/deploy.txt
 
-name: mcmerge
+name: bugherder
 url:
-  - mcmerge.paas.allizom.org
+  - bugherder.paas.allizom.org
+  - bugherder.mozilla.org
 instances: 1
 mem: 64M
 framework:
@@ -34,7 +35,7 @@ env:
 app-dir: deployment
 hooks:
   pre-staging:
-    - git clone --depth 1 https://github.com/mozilla/mcMerge.git src
+    - git clone --depth 1 https://github.com/mozilla/Bugherder.git src
   post-staging:
     - rm -rf public/.git
     - echo "Cron not yet run on this instance!" > public/deploy.txt

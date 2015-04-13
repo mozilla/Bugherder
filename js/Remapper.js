@@ -176,7 +176,7 @@ var Remapper = {
      remaps.midair = false;
 
     UI.clearErrorMessage();
-    mcMerge.onRemap(remaps);
+    bugherder.onRemap(remaps);
   },
 
 

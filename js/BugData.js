@@ -31,10 +31,10 @@ var BugData = {
 
 
   _realLoad: function BD_realLoad(bugs) {
-    if (mcMerge.trackingFlag)
-      this.trackingFlag = 'cf_' + mcMerge.trackingFlag;
-    if (mcMerge.statusFlag)
-      this.statusFlag = 'cf_' + mcMerge.statusFlag;
+    if (bugherder.trackingFlag)
+      this.trackingFlag = 'cf_' + bugherder.trackingFlag;
+    if (bugherder.statusFlag)
+      this.statusFlag = 'cf_' + bugherder.statusFlag;
 
     var includeFields = this.fields;
     if (this.checkComments)
