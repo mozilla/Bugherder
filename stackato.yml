@@ -23,7 +23,7 @@
 
 name: bugherder
 url:
-  - bugherder.paas.allizom.org
+  - bugherder.paas.mozilla.org
   - bugherder.mozilla.org
 instances: 1
 mem: 64M
