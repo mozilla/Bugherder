@@ -104,10 +104,8 @@ Step.prototype.getSecurityBugs = function Step_getSecurityBugs() {
 
 
 Step.prototype.createComment = function Step_createComment(text) {
-  return {creation_time: new Date().toISOString(),
-          creator: {email: Step.username},
-          is_private: 0,
-          text: text};
+  return {is_private: 0,
+          body: text};
 };
 
 
@@ -140,7 +138,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
   if (comments.length > 0) {
     var text = comments.join('\n');
-    bug.comments = [this.createComment(text)];
+    bug.comment = this.createComment(text);
     changed = true;
   }
 
@@ -153,8 +151,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     var keywords = BugData.bugs[bugID].keywords;
     var checkinIndex = keywords.indexOf('checkin-needed');
     if (checkinIndex != -1) {
-      keywords.splice(checkinIndex, 1);
-      bug.keywords = keywords;
+      bug.keywords = { "remove" : ["checkin-needed"] };
     }
 
     // Set status flag if appropriate

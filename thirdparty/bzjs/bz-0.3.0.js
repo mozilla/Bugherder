@@ -133,11 +133,6 @@ BugzillaClient.prototype = {
       }
     } else {
       url = this.apiUrl + path;
-      if(this.username && this.password) {
-        params = params || {};
-        params.login = this.username;
-        params.password = this.password;
-      }
     }
 
     if(params)
@@ -158,6 +153,10 @@ BugzillaClient.prototype = {
       req.setRequestHeader("Accept", "application/json");
       if (method.toUpperCase() !== "GET") {
         req.setRequestHeader("Content-type", "application/json");
+      }
+      if(this.username && this.password) {
+        req.setRequestHeader("x-bugzilla-login", this.username);
+        req.setRequestHeader("x-bugzilla-password", this.password);
       }
       req.onreadystatechange = function (event) {
         if (req.readyState == 4 && req.status != 0) {
@@ -185,6 +184,10 @@ BugzillaClient.prototype = {
           'Content-Type': 'application/json'
         }
       };
+if(this.username && this.password) {
+  requestParams.headers[0]['x-bugzilla-login'] = this.username;
+  requestParams.headers[0]['x-bugzilla-password'] = this.password;
+}
       if (this.timeout > 0)
         requestParams.timeout = this.timeout;
       request(requestParams, function (err, resp, body) {
