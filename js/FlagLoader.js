@@ -7,7 +7,7 @@ var FlagLoader = {
     // We can infer their version from the repo name to avoid querying the repo.
     var esrVersion = /-esr(\d+)$/.exec(tree);
     if (esrVersion) {
-      var esrName = 'esr';
+      var esrName = 'firefox_esr';
       if (tree.indexOf('comm') != -1) {
         esrName = 'thunderbird_esr';
       }
