@@ -3,6 +3,16 @@
 var FlagLoader = {
 
   init: function FL_init(cset, tree, loadCallback, errorCallback) {
+    // Bug 1159415: Short term tweak to set the firefox38.0.5 flags
+    var thisDate = new Date();
+    var betaDate = new Date(2015, 4, 11);
+    var releaseDate = new Date(2015, 5, 29);
+    if ((thisDate < betaDate && tree == 'mozilla-beta') ||
+        (betaDate < thisDate && thisDate < releaseDate && tree == 'mozilla-release')) {
+      this.generateFlags('firefox38.0.5');
+      loadCallback(flags);
+      return;
+    }
     // The version for some repositories is a constant, since they're release branches.
     // We can infer their version from the repo name to avoid querying the repo.
     var esrVersion = /-esr(\d+)$/.exec(tree);
