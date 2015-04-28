@@ -49,7 +49,6 @@ var Config = {
     "thunderbird-beta": "comm-beta",
     "thunderbird-esr38": "comm-esr38",
     "thunderbird-esr31": "comm-esr31",
-    "thunderbird-esr24": "comm-esr24",
   },
 
   treeInfo: {
