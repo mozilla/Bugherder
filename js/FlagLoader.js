@@ -9,7 +9,7 @@ var FlagLoader = {
     var releaseDate = new Date(2015, 5, 29);
     if ((thisDate < betaDate && tree == 'mozilla-beta') ||
         (betaDate < thisDate && thisDate < releaseDate && tree == 'mozilla-release')) {
-      this.generateFlags('firefox38.0.5');
+      var flags = this.generateFlags('firefox38.0.5');
       loadCallback(flags);
       return;
     }
