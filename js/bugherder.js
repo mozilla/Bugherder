@@ -208,9 +208,12 @@ var bugherder = {
   // Callback following load of tracking flag names. Kicks off loading of configuration data from BZ
   onFlagsLoad: function mcM_onFlagLoad(flagData) {
     UI.hideLoadingMessage();
-    this.trackingFlag = flagData.tracking;
-    this.statusFlag = flagData.status;
-
+    if(flagData.tracking) {
+      this.trackingFlag = flagData.tracking;
+    }
+    if(flagData.status) {
+      this.statusFlag = flagData.status;
+    }
     this.loadConfigurationFromBZ();
   },
 

@@ -106,19 +106,19 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g37", "mozilla-b2g37", "mozilla-b2g37_v2_2", "v2.2"]
     },
-    "mozilla-b2g34-v2_1": {
+    "mozilla-b2g34_v2_1": {
       repo: "releases/mozilla-b2g34_v2_1",
       unconditionalFlag: true,
       trackedTree: true,
       synonyms: ["b2g34", "mozilla-b2g34", "mozilla-b2g34_v2_1", "v2.1"]
     },
-    "mozilla-b2g32-v2_0": {
+    "mozilla-b2g32_v2_0": {
       repo: "releases/mozilla-b2g32_v2_0",
       unconditionalFlag: true,
       trackedTree: true,
       synonyms: ["b2g32", "mozilla-b2g32", "mozilla-b2g32_v2_0", "v2.0"]
     },
-    "mozilla-b2g30-v1_4": {
+    "mozilla-b2g30_v1_4": {
       repo: "releases/mozilla-b2g30_v1_4",
       unconditionalFlag: true,
       trackedTree: true,

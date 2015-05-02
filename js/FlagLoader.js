@@ -26,9 +26,27 @@ var FlagLoader = {
       return;
     }
     if (tree.indexOf('mozilla-b2g') != -1) {
-      // TODO: B2G repos use B2G version numbers, which are not yet supported.
-      errorCallback(null, 'unknown tree');
-      loadCallback({});
+      // Hardcode some b2g release branch flags
+      var flags;
+      switch(tree) {
+        case "mozilla-b2g30_v1_4":
+          flags = this.generateFlags("b2g_1_4");
+          break;
+        case "mozilla-b2g32_v2_0":
+          flags = this.generateFlags("b2g_2_0");
+          break;
+        case "mozilla-b2g34_v2_1":
+          flags = this.generateFlags("b2g_2_1");
+          break;
+        case "mozilla-b2g37_v2_2":
+          flags = this.generateFlags("b2g_2_2");
+          break;
+        default:
+          errorCallback(null, 'unknown tree');
+          flags = {};
+          return;
+      }
+      loadCallback(flags);
       return;
     }
     var treeInfo = Config.treeInfo[tree];
@@ -62,7 +80,12 @@ var FlagLoader = {
   },
 
   generateFlags: function FL_generateFlags(flagSuffix) {
-    return {'tracking': 'tracking_' + flagSuffix,
-            'status': 'status_' + flagSuffix};
+    // B2G doesn't use tracking flags, only status
+    if(flagSuffix.indexOf('b2g_') != -1) {
+      return {'status': 'status_' + flagSuffix};
+    } else {
+      return {'tracking': 'tracking_' + flagSuffix,
+              'status': 'status_' + flagSuffix};
+    }
   }
 };
