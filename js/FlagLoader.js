@@ -29,9 +29,6 @@ var FlagLoader = {
       // Hardcode some b2g release branch flags
       var flags;
       switch(tree) {
-        case "mozilla-b2g30_v1_4":
-          flags = this.generateFlags("b2g_1_4");
-          break;
         case "mozilla-b2g32_v2_0":
           flags = this.generateFlags("b2g_2_0");
           break;

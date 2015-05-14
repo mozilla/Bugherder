@@ -118,12 +118,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g32", "mozilla-b2g32", "mozilla-b2g32_v2_0", "v2.0"]
     },
-    "mozilla-b2g30_v1_4": {
-      repo: "releases/mozilla-b2g30_v1_4",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g30", "mozilla-b2g30", "mozilla-b2g30_v1_4", "v1.4"]
-    },
     "jetpack": {
       repo: "projects/addon-sdk",
       trackedTree: false,
