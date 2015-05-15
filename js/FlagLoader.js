@@ -6,7 +6,7 @@ var FlagLoader = {
     // Bug 1159415: Short term tweak to set the firefox38.0.5 flags
     var thisDate = new Date();
     var betaDate = new Date(2015, 4, 4);
-    var releaseDate = new Date(2015, 5, 29);
+    var releaseDate = new Date(2015, 5, 22);
     if ((thisDate < betaDate && tree == 'mozilla-beta') ||
         (betaDate < thisDate && thisDate < releaseDate && tree == 'mozilla-release')) {
       var flags = this.generateFlags('firefox38_0_5');
