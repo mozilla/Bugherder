@@ -32,8 +32,14 @@ var FlagLoader = {
         case "mozilla-b2g32_v2_0":
           flags = this.generateFlags("b2g_2_0");
           break;
+        case "mozilla-b2g32_v2_0m":
+          flags = this.generateFlags("b2g_2_0m");
+          break;
         case "mozilla-b2g34_v2_1":
           flags = this.generateFlags("b2g_2_1");
+          break;
+        case "mozilla-b2g34_v2_1s":
+          flags = this.generateFlags("b2g_2_1s");
           break;
         case "mozilla-b2g37_v2_2":
           flags = this.generateFlags("b2g_2_2");
