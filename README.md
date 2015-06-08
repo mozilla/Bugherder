@@ -1,4 +1,4 @@
-Bugherder is a tool for marking bugs post-merge.
+Bugherder is a tool for marking bugs post-merge, created by [Graeme McCutcheon](http://www.graememcc.co.uk/).
 
 NOTES ON TESTING
 ----------------
