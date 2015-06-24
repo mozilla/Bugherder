@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mozilla/bugherder.svg?branch=master)](https://travis-ci.org/mozilla/bugherder)
+
 Bugherder is a tool for marking bugs post-merge, created by [Graeme McCutcheon](http://www.graememcc.co.uk/).
 
 NOTES ON TESTING

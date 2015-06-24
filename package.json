@@ -1,0 +1,22 @@
+{
+  "name": "bugherder",
+  "description": "Bugherder helps keep bugzilla entries up to date when things are pushed to the tree",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "test": "karma start karma.conf.js --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mozilla/Bugherder.git"
+  },
+  "devDependencies": {
+    "jasmine-core": "*",
+    "karma": "*",
+    "karma-cli": "*",
+    "karma-jasmine": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-chrome-launcher": "~0.2.0"
+  }
+}
+
