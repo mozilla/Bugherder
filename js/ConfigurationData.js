@@ -15,7 +15,7 @@ var ConfigurationData = {
             'Firefox for Android',
             'Firefox for Metro',
             'Firefox Health Report',
-            'Loop',
+            'Hello (Loop)',
             'MailNews Core',
             'Mozilla Localizations',
             'Mozilla Services',
