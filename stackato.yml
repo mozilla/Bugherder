@@ -24,18 +24,22 @@
 name: bugherder
 url:
   - bugherder.paas.mozilla.org
-  - bugherder.mozilla.org
+  # Deploying against mozilla.org doesn't work at the moment, unlike allizom
+  # - bugherder.paas.mozilla.org
+  # - bugherder.mozilla.org
 instances: 1
 mem: 64M
 framework:
   type: buildpack
 env:
-  BUILDPACK_URL: git://github.com/cloudfoundry-incubator/staticfile-buildpack.git
+  # We're using a fork of staticfile-buildpack since upstream master is broken
+  # for older Stackato instances (see bug 1183368).
+  BUILDPACK_URL: git://github.com/edmorley/staticfile-buildpack.git
   FORCE_HTTPS: true
 app-dir: deployment
 hooks:
   pre-staging:
-    - git clone --depth 1 https://github.com/mozilla/Bugherder.git src
+    - git clone --depth 1 https://github.com/mozilla/bugherder.git src
   post-staging:
     - rm -rf public/.git
     - echo "Cron not yet run on this instance!" > public/deploy.txt
