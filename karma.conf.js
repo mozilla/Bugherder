@@ -15,8 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'js/BugData.js',
-      'js/FlagLoader.js',
+      'thirdparty/*/*.js',
+      'js/*.js',
       'test/*Spec.js'
     ],
 
