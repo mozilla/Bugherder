@@ -193,3 +193,28 @@ describe("A FlagLoader suite", function() {
   }, 10000);
 });
 
+describe("A ConfigurationData suite", function() {
+  it("should find the correct target milestone for the current date", function() {
+    console.log("starting fxos current date milestone");
+
+    var milestone = ConfigurationData.getDateMilestone();
+    console.log(milestone);
+    expect(milestone).toBeDefined();
+  });
+
+  it("should find the correct target milestone for a specific date", function() {
+    console.log("starting fxos specific date milestone");
+
+    var milestone = ConfigurationData.getDateMilestone(new Date(2015, 11, 20));
+    console.log(milestone);
+    expect(milestone).toBe("FxOS-S14 (25Dec)");
+  });
+
+  it("should find the correct target milestone for a specific date that matches one of the milestones", function() {
+    console.log("starting fxos specific date matching milestone");
+
+    var milestone = ConfigurationData.getDateMilestone(new Date(2015, 11, 25));
+    console.log(milestone);
+    expect(milestone).toBe("FxOS-S14 (25Dec)");
+  });
+});
