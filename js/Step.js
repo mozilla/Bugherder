@@ -215,7 +215,7 @@ Step.prototype.constructData = function Step_constructData() {
 
 
 Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
-  if (where == 'lct' && msg == 'HTTP status 400') {
+  if (where == 'lct' && (msg == 'HTTP status 400' || msg == 'HTTP status 401') ) {
     // There are a number of possibilities here:
     // - an invalid username or password was supplied
     // - the bug we were trying to load is a security bug (shouldn't happen, unless someone
@@ -239,7 +239,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     this.retries.push(i);
     this.continueSubmit(i);
   }
-  if (where == 'submit' && msg == 'HTTP status 400') {
+  if (where == 'submit' && (msg == 'HTTP status 400' || msg == 'HTTP status 401') ) {
     // First check to see if there was an assignee in the data we sent. If so, we should try and submitting again - it may have been a
     // case where the email was wrong (or the author's bugzilla email is different from the email in the changeset). Don't count that as
     // a retry
