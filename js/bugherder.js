@@ -70,8 +70,8 @@ var bugherder = {
   errorPage: function mcM_errorPage(params) {
     var errorType = params['error'];
     var errorText = 'Unknown error';
-    var cset = 'cset' in params ? ' ' + UI.htmlEncode(params['cset']) : '';
-    var treeName = 'tree' in params ? ' ' + UI.htmlEncode(params['tree']) : '';
+    var cset = 'cset' in params ? ' ' + UI.htmlEncode(params['cset'][0]) : '';
+    var treeName = 'tree' in params ? ' ' + UI.htmlEncode(params['tree'][0]) : '';
 
     var dataType = 'pushlog';
     if (this.loading == 'bz')
@@ -463,30 +463,24 @@ var bugherder = {
 
     var query = document.location.search;
     if (query) {
-      query = query.substring(1);
-      var params = query.split('&');
-      var paramsObj = {}
-      for (var x in params) {
-        var p = params[x].split('=');
-        paramsObj[p[0]] = p[1];
-      }
+      var paramsObj = this.chunkQuery(query);
       if ('debug' in paramsObj)
-        this.debug = (paramsObj['debug'] == '1');
+        this.debug = (paramsObj['debug'][0] == '1');
       if ('expand' in paramsObj)
-        this.expand = (paramsObj['expand'] == '1');
+        this.expand = (paramsObj['expand'][0] == '1');
       if ('remap' in paramsObj)
-        this.remap = (paramsObj['remap'] == '1');
+        this.remap = (paramsObj['remap'][0] == '1');
       if ('resume' in paramsObj)
-        this.resume = (paramsObj['resume'] == '1');
+        this.resume = (paramsObj['resume'][0] == '1');
 
       if ('error' in paramsObj)
         return self.errorPage(paramsObj);
 
       if ('cset' in paramsObj) {
-        var cset = paramsObj['cset'];
+        var cset = paramsObj['cset'][0];
 
         if ('tree' in paramsObj) {
-          var treeName = paramsObj['tree'].toLowerCase();
+          var treeName = paramsObj['tree'][0].toLowerCase();
           if (!(treeName in Config.treeInfo) && !(treeName in Config.rewriteTrees) &&
                 treeName != 'firefox') {
             var replace = document.location.href.indexOf('error') != -1;
@@ -500,8 +494,8 @@ var bugherder = {
             return;
           }
 
-          if (treeName == 'mozilla-central' || treeName == 'firefox') {
-            this.go('cset=' + cset, true);
+          if (treeName == 'firefox') {
+            this.go('cset=' + cset + '&tree=mozilla-central', true);
             return;
           }
 
@@ -518,6 +512,23 @@ var bugherder = {
       }
     }
     return self.acquireChangeset();
+  },
+
+  // Create an object that contains all parameters from a search/query string
+  // The properties are arrays to make room for a future of multi-tree/cset marking
+  chunkQuery: function mcM_chunkQuery(query) {
+    query = query.substring(1);
+    var params = query.split('&');
+    var paramsObj = {}
+    for (var x in params) {
+      var p = params[x].split('=');
+      if(!paramsObj[p[0]]) {
+        paramsObj[p[0]] = [p[1]];
+      } else {
+        paramsObj[p[0]].push(p[1]);
+      }
+    }
+    return paramsObj;
   },
 
 
@@ -543,6 +554,16 @@ var bugherder = {
     else if (query && maintainedQuery.length > 0)
       newURL += '&';
     newURL += maintainedQuery;
+
+    // Put the cset and tree parameters back in no matter what if present
+    var currentURLSearch = this.chunkQuery(document.location.search);
+    var newURLSearch = this.chunkQuery(newURL.split('?')[1]);
+    if (currentURLSearch['cset'] && !newURLSearch['cset'] && currentURLSearch['tree'] != 'firefox') {
+      newURL = newURL + '&cset=' + currentURLSearch['cset'][0];
+    }
+    if (currentURLSearch['tree'] && !newURLSearch['tree']) {
+      newURL = newURL + '&tree=' + currentURLSearch['tree'][0];
+    }
 
     if (Config.supportsHistory) {
       if (replace)
