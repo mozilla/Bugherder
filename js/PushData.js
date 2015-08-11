@@ -509,7 +509,7 @@ var PushData = {
     this.allPushes.forEach(this.classifyPushes, this);
 
     this.foundBackouts.reverse();
-    this.fixes.reverse();
+  //  this.fixes.reverse();
     this.merges.reverse();
     this.backedOut.reverse();
     this.notFoundBackouts.reverse();
