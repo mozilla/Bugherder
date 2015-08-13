@@ -61,7 +61,7 @@ var ViewerController = {
     // Create privileged loader
     var options = {username: uname, password: pwd}
     if (this.remap)
-      options.test = true;
+      options.url = "https://bugzilla-dev.allizom.org/rest";
 
     var privLoader = bz.createClient(options);
 

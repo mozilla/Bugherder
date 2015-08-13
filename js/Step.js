@@ -48,8 +48,9 @@ function Step(name, callbacks, isBackout) {
   this.haveComment = [];
 
   var options = {};
-  if (Step.remaps.items > 0)
-    options.test = true;
+  if (Step.remaps.items > 0) {
+    options.url = "https://bugzilla-dev.allizom.org/rest";
+  }
   this.unprivilegedLoader = bz.createClient(options);
 
   constructAttachedBugs(false);
@@ -104,10 +105,8 @@ Step.prototype.getSecurityBugs = function Step_getSecurityBugs() {
 
 
 Step.prototype.createComment = function Step_createComment(text) {
-  return {creation_time: new Date().toISOString(),
-          creator: {email: Step.username},
-          is_private: 0,
-          text: text};
+  return {is_private: 0,
+          body: text};
 };
 
 
@@ -140,7 +139,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
   if (comments.length > 0) {
     var text = comments.join('\n');
-    bug.comments = [this.createComment(text)];
+    bug.comment = this.createComment(text);
     changed = true;
   }
 
@@ -153,8 +152,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     var keywords = BugData.bugs[bugID].keywords;
     var checkinIndex = keywords.indexOf('checkin-needed');
     if (checkinIndex != -1) {
-      keywords.splice(checkinIndex, 1);
-      bug.keywords = keywords;
+      bug.keywords = { "remove" : ["checkin-needed"] };
     }
 
     // Set status flag if appropriate
@@ -175,7 +173,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
         }
       }
       if (canSetAssignee)
-        bug.assigned_to = {name: assignee};
+        bug.assigned_to = assignee;
     }
 
     // Set in-testsuite if possible 
@@ -190,8 +188,6 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 
     if (bugID in Step.remaps) {
       bug.id = Step.remaps[bugID];
-      if ('resolution' in bug)
-        bug.product = 'mcMerge test product';
     }
     return bug;
   }
@@ -296,10 +292,10 @@ Step.prototype.startSubmit = function Step_startSubmit(i) {
   var self = this;
 
   // Offer the chance to add a backout explanation where appropriate
-  if (this.name == 'notFoundBackouts' && 'comments' in this.sendData[i] &&
-      this.sendData[i].comments[0].text.indexOf(Config.hgBaseURL) == 0) {
+  if (this.name == 'notFoundBackouts' && 'comment' in this.sendData[i] &&
+      this.sendData[i].comment.body.indexOf(Config.hgBaseURL) == 0) {
     if (this.prependChosen) {
-      this.sendData[i].comments[0].text = this.prependText + this.sendData[i].comments[0].text
+      this.sendData[i].comment.body = this.prependText + this.sendData[i].comment.body
       this.midSubmit(i);
     } else {
       var self = this;
@@ -308,7 +304,7 @@ Step.prototype.startSubmit = function Step_startSubmit(i) {
           self.prependChosen = true;
           self.prependText = text;
         }
-        self.sendData[i].comments[0].text = text + self.sendData[i].comments[0].text
+        self.sendData[i].comment.body = text + self.sendData[i].comment.body
         self.midSubmit(i);
       };
       UI.acquireExplanation(callback, this.sendData[i].id);
@@ -407,7 +403,7 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
   for (var j = 0; j < info.linkedChangesets.length; j++) {
     var index = info.linkedChangesets[j];
     // Disallow comments if we just sent a comment
-    if ('comments' in sent) {
+    if ('comment' in sent) {
       var attached = this.attachedBugs[index][bugID];
       if (attached.canComment && attached.shouldComment) {
         attached.canComment = false;

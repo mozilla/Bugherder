@@ -23,8 +23,8 @@ var Summary = {
     else
      html += '&nbsp;';
     html += '</td><td>';
-    if ('comments' in data) {
-      var comment = data.comments[0].text;
+    if ('comment' in data) {
+      var comment = data.comment.body;
       comment = comment.replace(/\n/g, '<br>');
       Config.hgRevFullRE.lastIndex = 0;
       comment = comment.replace(Config.hgRevFullRE, function(str) {return UI.linkifyRevURL(str);});
