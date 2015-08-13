@@ -146,8 +146,7 @@ var Config = {
       repo: "integration/fx-team",
       trackedTree: false,
       unconditionalFlag: false,
-      synonyms: ["fx-team"],
-      additions: "[fixed-in-fx-team]"
+      synonyms: ["fx-team"]
     },
     "ux": {
       unconditionalFlag: false,
