@@ -455,9 +455,6 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
 
     // Remove annotations on s-c merges
     newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)services\]/ig, '');
-
-    // Remove annotations on fig merges
-    newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)fig\]/ig, '');
   }
 
   if ('additions' in Config.treeInfo[Config.treeName]) {
