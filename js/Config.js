@@ -193,8 +193,7 @@ var Config = {
       repo: "projects/fig",
       unconditionalFlag: false,
       trackedTree: false,
-      synonyms: ["projects/fig", "fig"],
-      additions: "[fixed-in-fig]"
+      synonyms: ["projects/fig", "fig"]
     },
     "gum": {
       repo: "projects/gum",
