@@ -30,10 +30,16 @@ var BugzillaClient = function(options) {
   this.username = options.username;
   this.password = options.password;
   this.timeout = options.timeout || 0;
+  // Use this for the native REST API
   this.apiUrl = options.url ||
+    (options.test ? "https://bugzilla-dev.allizom.org/rest"
+                  : "https://bugzilla.mozilla.org/rest");
+  // Use this for any calls that still depend on bzAPI (eg, "/configuration")
+  this.legacyApiUrl = options.url ||
     (options.test ? "https://bugzilla-dev.allizom.org/bzapi"
                   : "https://bugzilla.mozilla.org/bzapi");
   this.apiUrl = this.apiUrl.replace(/\/$/, "");
+  this.legacyApiUrl = this.legacyApiUrl.replace(/\/$/, "");
 }
 
 BugzillaClient.prototype = {
@@ -116,12 +122,19 @@ BugzillaClient.prototype = {
   },
 
   APIRequest : function(path, method, callback, field, body, params) {
-    var url = this.apiUrl + path;
-    if(this.username && this.password) {
-      params = params || {};
-      params.username = this.username;
-      params.password = this.password;
+    var url;
+    // I couldn't find an equivalent to /configuration in the native REST API, fall back to bzAPI
+    if(path == "/configuration") {
+      url = this.legacyApiUrl + path;
+      if(this.username && this.password) {
+        params = params || {};
+        params.username = this.username;
+        params.password = this.password;
+      }
+    } else {
+      url = this.apiUrl + path;
     }
+
     if(params)
       url += "?" + this.urlEncode(params);
 
@@ -140,6 +153,10 @@ BugzillaClient.prototype = {
       req.setRequestHeader("Accept", "application/json");
       if (method.toUpperCase() !== "GET") {
         req.setRequestHeader("Content-type", "application/json");
+      }
+      if(this.username && this.password) {
+        req.setRequestHeader("x-bugzilla-login", this.username);
+        req.setRequestHeader("x-bugzilla-password", this.password);
       }
       req.onreadystatechange = function (event) {
         if (req.readyState == 4 && req.status != 0) {
@@ -167,6 +184,10 @@ BugzillaClient.prototype = {
           'Content-Type': 'application/json'
         }
       };
+if(this.username && this.password) {
+  requestParams.headers[0]['x-bugzilla-login'] = this.username;
+  requestParams.headers[0]['x-bugzilla-password'] = this.password;
+}
       if (this.timeout > 0)
         requestParams.timeout = this.timeout;
       request(requestParams, function (err, resp, body) {
