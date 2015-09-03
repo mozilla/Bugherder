@@ -107,7 +107,7 @@ var BugData = {
     if (this.statusFlag)
       bug.statusFlag = bugObj[this.statusFlag];
 
-    bug.isUnassigned = /^nobody@(?:mozilla.org|nss.bugs)$/.test(bugObj.assigned_to.name);
+    bug.isUnassigned = bugObj.assigned_to.name == 'nobody';
 
     bug.intestsuite = ' ';
     bug.testsuiteFlagID = -1;
