@@ -72,6 +72,16 @@ progress {
   text-align: right;
 }
 
+#credentialsForm .divRight {
+  padding-top: 10px;
+  clear:both;
+}
+
+.divRight #apikeytogglelabel{
+  float: left;
+  clear:both;
+}
+
 .grid-3.divRight {
   margin-left: 0px;
 }
@@ -228,6 +238,17 @@ progress {
 
 .modalForm input {
   font-family: 'Open Sans', sans-serif;
+}
+
+#credentialsForm div:not(.divRight) > label {
+  margin-top:3px;
+  float:left;
+  clear:left;
+}
+
+#credentialsForm div:not(.divRight) > input {
+  float:right;
+  min-width: 270px;
 }
 
 .modalForm button {

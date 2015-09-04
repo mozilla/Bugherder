@@ -216,21 +216,27 @@ var UI = {
 
 
   onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
-    ViewerController.onCredentialsEntered($('#username').val(), $('#password').val());
+    ViewerController.onCredentialsEntered($('#username').val(), $('#password').val(), $('#apikey').val());
     $('#username').val('');
     $('#password').val('');
+    $('#apikey').val('');
+    $('#apikeytoggle').checked = false;
   },
 
 
   onCredentialsCancel: function UI_onCredentialsCancel(e) {
     $('#username').val('');
     $('#password').val('');
+    $('#apikey').val('');
+    $('#apikeytoggle').checked = false;
   },
 
 
   showCredentialsForm: function UI_showCredentialsForm() {
     $('#username').val('');
     $('#password').val('');
+    $('#apikey').val('');
+    $('#apikeytoggle').checked = false;
     UI.showModalForm('credentialsModal', 'credentialsForm', UI.onCredentialsSubmit,
                      'crCancel', UI.onCredentialsCancel);
     $('#username')[0].focus();

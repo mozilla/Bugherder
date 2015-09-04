@@ -45,9 +45,11 @@ var ViewerController = {
   },
 
 
-  onCredentialsEntered: function vc_onCredentialsEntered(uname, pwd) {
+  onCredentialsEntered: function vc_onCredentialsEntered(uname, pwd, key) {
     $('#username')[0].value = '';
     $('#password')[0].value = '';
+    $('#apikey')[0].value = '';
+    $('#apikeytoggle')[0].checked = false;
 
     // Verify the email is valid
     if (Config.needsValidation) {
@@ -59,7 +61,7 @@ var ViewerController = {
     }
 
     // Create privileged loader
-    var options = {username: uname, password: pwd}
+    var options = {username: uname, password: pwd, api_key: key ? key : null}
     if (this.remap)
       options.url = "https://bugzilla-dev.allizom.org/rest";
 
