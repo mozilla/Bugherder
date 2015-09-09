@@ -20,6 +20,7 @@ var bugherder = {
   init: function mcM_Init() {
     var self = this;
     $(window).load(function onDocReady() {
+      $('#apikeytoggle').on('change',self.onAPIKeyToggle);
       if (Config.inMaintenanceMode) {
         $('#errorText').text('bugherder is down for maintenance!');
         UI.show('errors');
@@ -172,6 +173,26 @@ var bugherder = {
       return otherRepo;
 
     return '';
+  },
+
+
+  //Toggle between using username/password and an API key
+  onAPIKeyToggle: function mcM_onAPIKeyToggle() {
+    if(this.checked) {
+      UI.hide("usernamelabel");
+      UI.hide("username");
+      UI.hide("passwordlabel");
+      UI.hide("password");
+      UI.show("apikeylabel");
+      UI.show("apikey");
+    } else {
+      UI.hide("apikeylabel");
+      UI.hide("apikey");
+      UI.show("usernamelabel");
+      UI.show("username");
+      UI.show("passwordlabel");
+      UI.show("password");
+    }
   },
 
 

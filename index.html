@@ -5,7 +5,7 @@
     <link type="text/css" rel="stylesheet" href="thirdparty/toast/toast.css" />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <script type="text/javascript" src="thirdparty/jquery/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="thirdparty/bzjs/bz-0.3.0.js"></script>
+    <script type="text/javascript" src="thirdparty/bzjs/bz-0.4.3.js"></script>
     <script type="text/javascript" src="js/Utils.js"></script>
     <script type="text/javascript" src="js/Config.js"></script>
     <script type="text/javascript" src="js/Step.js"></script>
@@ -127,11 +127,22 @@
         <div id="crTitle" class="modalTitle">Enter your Bugzilla credentials</div>
         <div id="crContent" class="modalContent">
           <form id="credentialsForm">
-            <p>Please provide your bugzilla login:<br />
-            Username: <input type="email" name="username" id="username" /><br />
-            Password: <input type="password" name="password" id="password" />
-            </p>
+            <p>Please provide your bugzilla login:</p>
+            <div>
+              <label id="usernamelabel" for="username">Username:<br /></label>
+              <input type="email" name="username" id="username" />
+
+              <label id="passwordlabel" for="password">Password:</label>
+              <input type="password" name="password" id="password" />
+
+              <label id="apikeylabel" class="hiddenContent" for="apikey">
+                <a href="https://bugzilla.mozilla.org/userprefs.cgi?tab=apikey" target="_blank"
+                   title="Generate an API key here, then copy it over">API Key</a>:
+              </label>
+              <input type="password" class="hiddenContent" name="apikey" id="apikey" />
+            </div>
             <div class="divRight">
+              <label id="apikeytogglelabel"><input type="checkbox" id="apikeytoggle" /> Use API Key</label>
               <input type="submit" value="Submit"/>
               <button id="crCancel">Cancel</button>
             </div>
