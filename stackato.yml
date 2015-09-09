@@ -23,7 +23,7 @@
 
 name: bugherder
 url:
-  - bugherder.paas.mozilla.org
+  - bugherder.paas.allizom.org
   # Deploying against mozilla.org doesn't work at the moment, unlike allizom
   # - bugherder.paas.mozilla.org
   # - bugherder.mozilla.org
