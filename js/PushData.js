@@ -243,6 +243,22 @@ var PushData = {
     return;
   },
 
+  getTags: function PD_getTags(push) {
+    push.tags = ['bugherder'];
+
+    if (push.isBackout) {
+      push.tags.push('backout');
+    }
+
+    if (push.hgLink.search(/releases\//) >= 0) {
+      push.tags.push('uplift');
+    }
+
+    if (push.hgLink.search(/integration\//) >= 0) {
+      push.tags.push('landing');
+    }
+  },
+
 
   // "Applies" or reverses the effect of the specified backout
   // i.e if reverse is false, it sets the backedOut property on the
@@ -446,6 +462,7 @@ var PushData = {
     // checkIfBackout assumes merges have already been flagged as such
     this.checkIfMerge(push);
     this.checkIfBackout(push);
+    this.getTags(push);
     return push;
   },
 
