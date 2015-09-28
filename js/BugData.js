@@ -146,22 +146,20 @@ var BugData = {
    */
   getDefaultAssignees: function BD_getDefaultAssignees(data) {
     data.forEach(this.parseProducts, this);
-    var productQueryString = "/product?";
-    for(var i in this.productsArray) {
-      productQueryString += "names=" + this.productsArray[i] + "&";
-    }
-    productQueryString += "include_fields=name,components.name,components.default_assigned_to";
+    var productQueryString = "/product?names=" + this.productsArray.join("&names=") +
+                             "include_fields=name,components.name,components.default_assigned_to";
 
     var callback  = function BD_AssigneeCallback(errmsg, data) {
       if (errmsg) {
         self.errorCallback(errmsg);
       } else {
-        for(var prod in data) {
-          BugData.assignees[data[prod].name] = {}
-          for(var component in data[prod]["components"]) {
-            BugData.assignees[data[prod].name][data[prod]["components"][component].name] = data[prod]["components"][component].default_assigned_to;
-          }
-        }
+        data.forEach(function(prod) {
+          var prodName = prod.name;
+          BugData.assignees[prodName] = {};
+          data[prod].components.forEach(function(component) {
+            BugData.assignees[prodName][component.name] = component.default_assigned_to;
+          });
+        });
         for(var bug in BugData.bugs) {
           BugData.recheckAssignee(BugData.bugs[bug]);
         }
@@ -176,8 +174,7 @@ var BugData = {
    * Create an array of all unique products in this push
    */
   parseProducts: function BD_parseProducts(bugObj) {
-    if (bugObj.product in this.assignees) {
-    } else {
+    if (!(bugObj.product in this.assignees)) {
       this.productsArray.push(bugObj.product);
     }
   },
