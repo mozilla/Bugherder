@@ -156,7 +156,7 @@ var BugData = {
         data.forEach(function(prod) {
           var prodName = prod.name;
           BugData.assignees[prodName] = {};
-          data[prod].components.forEach(function(component) {
+          prod.components.forEach(function(component) {
             BugData.assignees[prodName][component.name] = component.default_assigned_to;
           });
         });
