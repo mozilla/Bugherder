@@ -45,23 +45,11 @@ var ViewerController = {
   },
 
 
-  onCredentialsEntered: function vc_onCredentialsEntered(uname, pwd, key) {
-    $('#username')[0].value = '';
-    $('#password')[0].value = '';
+  onCredentialsEntered: function vc_onCredentialsEntered(key) {
     $('#apikey')[0].value = '';
-    $('#apikeytoggle')[0].checked = false;
-
-    // Verify the email is valid
-    if (Config.needsValidation) {
-      uname = uname.trim();
-      if (!this.isValidEmail(uname)) {
-        UI.showInvalidEmailDialog();
-        return;
-      }
-    }
 
     // Create privileged loader
-    var options = {username: uname, password: pwd, api_key: key ? key : null}
+    var options = {username: null, password: null, api_key: key}
     if (this.remap)
       options.url = "https://bugzilla-dev.allizom.org/rest";
 
@@ -77,7 +65,6 @@ var ViewerController = {
 
     Step.privilegedUpdate = privilegedUpdate;
     Step.privilegedLoad = privilegedLoad;
-    Step.username = uname;
     this.steps[this.currentStep].onCredentialsAcquired();
   },
 

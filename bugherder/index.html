@@ -127,22 +127,16 @@
         <div id="crTitle" class="modalTitle">Enter your Bugzilla credentials</div>
         <div id="crContent" class="modalContent">
           <form id="credentialsForm">
-            <p>Please provide your bugzilla login:</p>
+            <p>Please provide a bugzilla api key:</p>
             <div>
-              <label id="usernamelabel" for="username">Username:<br /></label>
-              <input type="email" name="username" id="username" />
-
-              <label id="passwordlabel" for="password">Password:</label>
-              <input type="password" name="password" id="password" />
-
-              <label id="apikeylabel" class="hiddenContent" for="apikey">
+              <label id="apikeylabel" for="apikey">
                 <a href="https://bugzilla.mozilla.org/userprefs.cgi?tab=apikey" target="_blank"
                    title="Generate an API key here, then copy it over">API Key</a>:
               </label>
-              <input type="password" class="hiddenContent" name="apikey" id="apikey" />
+              <input type="password" name="apikey" id="apikey" />
             </div>
             <div class="divRight">
-              <label id="apikeytogglelabel"><input type="checkbox" id="apikeytoggle" /> Use API Key</label>
+              <a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Tree%20Management&component=Bugherder&short_desc=Bring%20back%20Username%20Logins!" title="User/pass login has been removed in favor of bugzilla API keys. If you still need user/pass logins for whatever reason, please click this link and file a bug" target="_blank">Looking for user/pass login?</a>
               <input type="submit" value="Submit"/>
               <button id="crCancel">Cancel</button>
             </div>

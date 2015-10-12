@@ -180,7 +180,6 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
     // Set in-testsuite if possible 
     if (BugData.bugs[bugID] && info.canSetTestsuite && info.intestsuite != BugData.bugs[bugID].intestsuite) {
       bug.flags = [{name: 'in-testsuite',
-                    setter: {email: Step.username},
                     type_id: ConfigurationData.testsuiteFlagID,
                     status: info.intestsuite}];
       if (BugData.bugs[bugID].testsuiteFlagID != -1)
@@ -214,12 +213,12 @@ Step.prototype.constructData = function Step_constructData() {
 Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
   if (where == 'lct' && (msg == 'HTTP status 400' || msg == 'HTTP status 401') ) {
     // There are a number of possibilities here:
-    // - an invalid username or password was supplied
+    // - an invalid api key was supplied
     // - the bug we were trying to load is a security bug (shouldn't happen, unless someone
     //    changed the bug underneath us after the initial bug data load)
     // - a tester remapped to a non-existant bug on landfill, (they should know better :))
     // If we've failed trying to get the time/token on our very first bug, let's just put it
-    //   down to username/password, and abandon this submit attempt
+    //   down to api key, and abandon this submit attempt
     // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while bugherder was working?!?)
     // Else, we'll note this one failed and try the next. If we carry on without further failure, then this was a
     //  security bug that wasn't one before
@@ -227,9 +226,8 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
       // XXX What if we've already succesfully submitted some?
       delete Step.privilegedLoad;
       delete Step.privilegedUpdate;
-      delete Step.username;
       this.retries = [];
-      UI.showErrorMessage('The username or password you supplied was not valid. Submit attempt abandoned.');
+      UI.showErrorMessage('The api key you supplied was not valid. Submit attempt abandoned.');
       UI.hideProgressModal();
       return;
     }
@@ -260,15 +258,14 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
 
 Step.prototype.onSubmit = function Step_onSubmit() {
   UI.hide('errors');
-  if ((typeof Step.privilegedUpdate == 'undefined') || (typeof Step.username == 'undefined') ||
-      (typeof Step.privilegedLoad == 'undefined'))
+  if ((typeof Step.privilegedUpdate == 'undefined') || (typeof Step.privilegedLoad == 'undefined'))
     this.callbacks.credentialsCallback();
   else
     this.beginSubmit();
 };
 
 
-Step.prototype.onCredentialsAcquired = function Step_onCredentialsAcquired(username) {
+Step.prototype.onCredentialsAcquired = function Step_onCredentialsAcquired() {
   this.beginSubmit();
 };
 
