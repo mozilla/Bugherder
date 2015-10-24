@@ -37,6 +37,9 @@ var FlagLoader = {
         case "mozilla-b2g37_v2_2r":
           flags = this.generateFlags("b2g_2_2r");
           break;
+        case "mozilla-b2g44_v2_5":
+          flags = this.generateFlags("b2g_2_5");
+          break;
         default:
           errorCallback(null, 'unknown tree');
           flags = {};
