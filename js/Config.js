@@ -118,30 +118,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["b2g37", "mozilla-b2g37", "mozilla-b2g37_v2_2", "v2.2"]
     },
-    "mozilla-b2g34_v2_1": {
-      repo: "releases/mozilla-b2g34_v2_1",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g34", "mozilla-b2g34", "mozilla-b2g34_v2_1", "v2.1"]
-    },
-    "mozilla-b2g34_v2_1s": {
-      repo: "releases/mozilla-b2g34_v2_1s",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["mozilla-b2g34_v2_1s", "v2.1s"]
-    },
-    "mozilla-b2g32_v2_0m": {
-      repo: "releases/mozilla-b2g32_v2_0m",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["mozilla-b2g32_v2_0m", "v2.0m"]
-    },
-    "mozilla-b2g32_v2_0": {
-      repo: "releases/mozilla-b2g32_v2_0",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g32", "mozilla-b2g32", "mozilla-b2g32_v2_0", "v2.0"]
-    },
     "jetpack": {
       repo: "projects/addon-sdk",
       trackedTree: false,
