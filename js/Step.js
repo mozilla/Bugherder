@@ -140,6 +140,7 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
   if (comments.length > 0) {
     var text = comments.join('\n');
     bug.comment = this.createComment(text);
+    bug.comment_tags = info.tags;
     changed = true;
   }
 
@@ -537,7 +538,8 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
                            canSetStatus: false,
                            shouldSetStatus: false,
                            canSetTestsuite: bug && bug.canSetTestsuite,
-                           milestone: milestone};
+                           milestone: milestone,
+                           tags: PushData.allPushes[index].tags};
 
     // Don't resolve bugs for integration repos
     if (Config.treeName != 'mozilla-central' && Config.treeName != 'comm-central') {
