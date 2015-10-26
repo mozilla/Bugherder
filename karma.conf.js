@@ -15,8 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'thirdparty/*/*.js',
-      'js/*.js',
+      'bugherder/thirdparty/*/*.js',
+      'bugherder/js/*.js',
       'test/*Spec.js'
     ],
 
