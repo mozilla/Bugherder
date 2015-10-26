@@ -4,11 +4,19 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
+    "start": "node web-server.js",
     "test": "karma start karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/mozilla/bugherder.git"
+  },
+  "engines": {
+    "node": "4.2.1"
+  },
+  "dependencies": {
+    "express": "4.13.3",
+    "express-sslify": "1.0.1"
   },
   "devDependencies": {
     "jasmine-core": "*",
