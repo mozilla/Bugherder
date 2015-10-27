@@ -2,6 +2,8 @@
 
 var BugData = {
   bugs: {},
+  productsArray: [],
+  assignees: {},
   trackingFlag: null,
   statusFlag: null,
   fields: 'id,resolution,status,whiteboard,keywords,target_milestone,summary,product,component,flags,assigned_to',
@@ -84,6 +86,7 @@ var BugData = {
     bug.milestone = UI.htmlEncode(bugObj.target_milestone);
     bug.summary = UI.htmlEncode(bugObj.summary);
     bug.product = bugObj.product;
+    bug.component = bugObj.component;
     bug.id = bugObj.id;
     if (typeof bug.id == 'string')
       bug.id = UI.htmlEncode(bug.id);
@@ -107,7 +110,7 @@ var BugData = {
     if (this.statusFlag)
       bug.statusFlag = bugObj[this.statusFlag];
 
-    bug.isUnassigned = /^nobody@(?:mozilla.org|nss.bugs)$/.test(bugObj.assigned_to.name);
+    bug.assignee = bugObj.assigned_to;
 
     bug.intestsuite = ' ';
     bug.testsuiteFlagID = -1;
@@ -129,9 +132,62 @@ var BugData = {
 
   parseData: function BD_parseData(data, loadCallback) {
     data.forEach(this.makeBug, this);
+    this.getDefaultAssignees(data);
     if (this.notYetLoaded.length == 0)
       this.loadCallback();
     else
       this.loadMore();
+  },
+
+  /*
+   * Get default assignees for all products in this push from the API.
+   * We have to get this separate from the bugs query because API doesn't
+   * expose that information from the bugs endpoint.
+   */
+  getDefaultAssignees: function BD_getDefaultAssignees(data) {
+    data.forEach(this.parseProducts, this);
+    var productQueryString = "/product?names=" + this.productsArray.join("&names=") +
+                             "include_fields=name,components.name,components.default_assigned_to";
+
+    var callback  = function BD_AssigneeCallback(errmsg, data) {
+      if (errmsg) {
+        self.errorCallback(errmsg);
+      } else {
+        data.forEach(function(prod) {
+          var prodName = prod.name;
+          BugData.assignees[prodName] = {};
+          prod.components.forEach(function(component) {
+            BugData.assignees[prodName][component.name] = component.default_assigned_to;
+          });
+        });
+        for(var bug in BugData.bugs) {
+          BugData.recheckAssignee(BugData.bugs[bug]);
+        }
+      }
+    };
+
+    var bugzilla = bz.createClient({timeout: 30000});
+    bugzilla.APIRequest(productQueryString, "GET", callback, "products");
+  },
+
+  /*
+   * Create an array of all unique products in this push
+   */
+  parseProducts: function BD_parseProducts(bugObj) {
+    if (!(bugObj.product in this.assignees)) {
+      this.productsArray.push(bugObj.product);
+    }
+  },
+
+  /*
+   * Now that we have the default assignee values, compare against the
+   * current assignee, and store that for use later.
+   */
+  recheckAssignee: function BD_recheckAssignee(bug) {
+    if (this.assignees[bug.product][bug.component] == bug.assignee) {
+      bug.isUnassigned = true;
+    } else {
+      bug.isUnassigned = false;
+    }
   }
 };
