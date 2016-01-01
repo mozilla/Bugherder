@@ -12,7 +12,7 @@
     "url": "https://github.com/mozilla/bugherder.git"
   },
   "engines": {
-    "node": "4.2.1"
+    "node": "5.3.0"
   },
   "dependencies": {
     "express": "4.13.3",
