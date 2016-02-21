@@ -12,10 +12,10 @@
     "url": "https://github.com/mozilla/bugherder.git"
   },
   "engines": {
-    "node": "5.3.0"
+    "node": "5.6.0"
   },
   "dependencies": {
-    "express": "4.13.3",
+    "express": "4.13.4",
     "express-sslify": "1.0.1"
   },
   "devDependencies": {
