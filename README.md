@@ -47,7 +47,7 @@ it's preferable to pin to a specific version tag of the buildpack, using eg:
 with a Cache-Control max-age set.
 * The "auto-deploy from master when CI has passed" option is enabled, to override
 don't use ``git push`` - instead use the manual branch deploy controls
-[here](https://dashboard.heroku.com/apps/mozilla-bugherder/deploy/github).
+[here](https://dashboard.heroku.com/apps/bugherder/deploy/github).
 
 
 STANDING ON THE SHOULDERS OF GIANTS
