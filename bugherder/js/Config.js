@@ -47,6 +47,7 @@ var Config = {
     "thunderbird-trunk": "comm-central",
     "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
+    "thunderbird-esr45": "comm-esr45",
     "thunderbird-esr38": "comm-esr38",
     "thunderbird-esr31": "comm-esr31",
   },
@@ -99,6 +100,12 @@ var Config = {
       trackedTree: true,
       unconditionalFlag: false,
       synonyms: ["esr38", "releases/mozilla-esr38", "mozilla-esr38"]
+    },
+    "mozilla-esr45": {
+      repo: "releases/mozilla-esr45",
+      trackedTree: true,
+      unconditionalFlag: false,
+      synonyms: ["esr45", "releases/mozilla-esr45", "mozilla-esr45"]
     },
     "mozilla-b2g44_v2_5": {
       repo: "releases/mozilla-b2g44_v2_5",
@@ -248,6 +255,12 @@ var Config = {
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr38", "comm-esr38"]
+    },
+    "comm-esr45": {
+      repo: "releases/comm-esr45",
+      unconditionalFlag: false,
+      trackedTree: true,
+      synonyms: ["releases/comm-esr45", "comm-esr45"]
     }
   }
 };
