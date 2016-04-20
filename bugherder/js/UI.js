@@ -217,17 +217,14 @@ var UI = {
 
   onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
     ViewerController.onCredentialsEntered($('#apikey').val());
-    $('#apikey').val('');
   },
 
 
   onCredentialsCancel: function UI_onCredentialsCancel(e) {
-    $('#apikey').val('');
   },
 
 
   showCredentialsForm: function UI_showCredentialsForm() {
-    $('#apikey').val('');
     UI.showModalForm('credentialsModal', 'credentialsForm', UI.onCredentialsSubmit,
                      'crCancel', UI.onCredentialsCancel);
     $('#apikey')[0].focus();
