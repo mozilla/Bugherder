@@ -553,7 +553,7 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
     }
 
     // Release-tracking: determine if status-[tree]N can be set
-    if (bug && (bug.statusFlag == '---' || bug.statusFlag == 'affected' || bug.statusFlag == '?')) {
+    if (bug && (bug.statusFlag == '---' || bug.statusFlag == 'affected' || bug.statusFlag == '?' || bug.statusFlag == 'fix-optional')) {
       if ((bug.isTracked || bug.statusFlag == "affected") && (isMC || Config.treeName == 'comm-central'))
         this.bugInfo[bugID].canSetStatus = this.bugInfo[bugID].canResolve;
       else if (Config.treeInfo[Config.treeName].trackedTree)
