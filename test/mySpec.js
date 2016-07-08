@@ -113,14 +113,6 @@ describe("A FlagLoader suite", function() {
 });
 
 describe("A ConfigurationData suite", function() {
-  it("should find the correct target milestone for the current date", function() {
-    console.log("starting fxos current date milestone");
-
-    var milestone = ConfigurationData.getDateMilestone();
-    console.log(milestone);
-    expect(milestone).toBeDefined();
-  });
-
   it("should find the correct target milestone for a specific date", function() {
     console.log("starting fxos specific date milestone");
 
