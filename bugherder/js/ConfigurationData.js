@@ -21,6 +21,7 @@ var ConfigurationData = {
             'Mozilla Services',
             'Other Applications',
             'SeaMonkey',
+            'Taskcluster',
             'Testing',
             'Thunderbird',
             'Toolkit'],
