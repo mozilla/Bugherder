@@ -47,9 +47,8 @@ var Config = {
     "thunderbird-trunk": "comm-central",
     "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
+    "thunderbird-esr52": "comm-esr52",
     "thunderbird-esr45": "comm-esr45",
-    "thunderbird-esr38": "comm-esr38",
-    "thunderbird-esr31": "comm-esr31",
   },
 
   treeInfo: {
@@ -59,17 +58,17 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"]
     },
-    "b2g-inbound": {
-      repo: "integration/b2g-inbound",
-      trackedTree: false,
-      unconditionalFlag: false,
-      synonyms: ["b2g-inbound", "b-i", "bi"]
-    },
     "mozilla-inbound": {
       repo: "integration/mozilla-inbound",
       trackedTree: false,
       unconditionalFlag: false,
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
+    },
+    "autoland": {
+      repo: "integration/autoland",
+      trackedTree: false,
+      unconditionalFlag: false,
+      synonyms: ["autoland"]
     },
     "mozilla-aurora": {
       repo: "releases/mozilla-aurora",
@@ -89,53 +88,17 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
-    "mozilla-esr31": {
-      repo: "releases/mozilla-esr31",
+    "mozilla-esr52": {
+      repo: "releases/mozilla-esr52",
       trackedTree: true,
       unconditionalFlag: false,
-      synonyms: ["esr31", "releases/mozilla-esr31", "mozilla-esr31"]
-    },
-    "mozilla-esr38": {
-      repo: "releases/mozilla-esr38",
-      trackedTree: true,
-      unconditionalFlag: false,
-      synonyms: ["esr38", "releases/mozilla-esr38", "mozilla-esr38"]
+      synonyms: ["esr52", "releases/mozilla-esr52", "mozilla-esr52"]
     },
     "mozilla-esr45": {
       repo: "releases/mozilla-esr45",
       trackedTree: true,
       unconditionalFlag: false,
       synonyms: ["esr45", "releases/mozilla-esr45", "mozilla-esr45"]
-    },
-    "mozilla-b2g44_v2_5": {
-      repo: "releases/mozilla-b2g44_v2_5",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["mozilla-b2g44_v2_5", "v2.5"]
-    },
-    "mozilla-b2g37_v2_2r": {
-      repo: "releases/mozilla-b2g37_v2_2r",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["mozilla-b2g37_v2_2r", "v2.2r"]
-    },
-    "mozilla-b2g37_v2_2": {
-      repo: "releases/mozilla-b2g37_v2_2",
-      unconditionalFlag: true,
-      trackedTree: true,
-      synonyms: ["b2g37", "mozilla-b2g37", "mozilla-b2g37_v2_2", "v2.2"]
-    },
-    "jetpack": {
-      repo: "projects/addon-sdk",
-      trackedTree: false,
-      unconditionalFlag: false,
-      synonyms: ["projects/addon-sdk", "addon-sdk"]
-    },
-    "fx-team": {
-      repo: "integration/fx-team",
-      trackedTree: false,
-      unconditionalFlag: false,
-      synonyms: ["fx-team"]
     },
     "ux": {
       unconditionalFlag: false,
@@ -244,17 +207,11 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
-    "comm-esr31": {
-      repo: "releases/comm-esr31",
+    "comm-esr52": {
+      repo: "releases/comm-esr52",
       unconditionalFlag: false,
       trackedTree: true,
-      synonyms: ["releases/comm-esr31", "comm-esr31"]
-    },
-    "comm-esr38": {
-      repo: "releases/comm-esr38",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-esr38", "comm-esr38"]
+      synonyms: ["releases/comm-esr52", "comm-esr52"]
     },
     "comm-esr45": {
       repo: "releases/comm-esr45",
