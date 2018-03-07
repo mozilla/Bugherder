@@ -100,6 +100,10 @@ var ConfigurationData = {
         } else if (product == "Firefox OS") {
           // B2G target milestones are date-based, handle these specially.
           productMilestones[product].defaultIndex = productMilestones[product].values.indexOf(this.getDateMilestone());
+        } else if (active_milestones.indexOf('Firefox ' + bugherder.milestone) !== -1) {
+          productMilestones[product].defaultIndex = active_milestones.indexOf('Firefox ' + bugherder.milestone);
+        } else if (active_milestones.indexOf('mozilla' + bugherder.milestone) !== -1) {
+          productMilestones[product].defaultIndex = active_milestones.indexOf('mozilla' + bugherder.milestone);
         } else {
           productMilestones[product].defaultIndex = dashIndex;
         }
