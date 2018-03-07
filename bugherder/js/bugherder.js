@@ -3,6 +3,7 @@
 var bugherder = {
   debug: false,
   expand: false,
+  milestone: null,
   remap: false,
   resume: false,
   tree: null,
@@ -213,6 +214,8 @@ var bugherder = {
     }
     if(flagData.status) {
       this.statusFlag = flagData.status;
+      // statusFlag has as value e.g. "status_firefox60"
+      this.milestone = (this.statusFlag.match(/\D+(\d+)\D*/))[1];
     }
     this.loadConfigurationFromBZ();
   },
