@@ -112,20 +112,3 @@ describe("A FlagLoader suite", function() {
   }, 10000);
 });
 
-describe("A ConfigurationData suite", function() {
-  it("should find the correct target milestone for a specific date", function() {
-    console.log("starting fxos specific date milestone");
-
-    var milestone = ConfigurationData.getDateMilestone(new Date(2015, 11, 20));
-    console.log(milestone);
-    expect(milestone).toBe("2.6 S4 - 1/1");
-  });
-
-  it("should find the correct target milestone for a specific date that matches one of the milestones", function() {
-    console.log("starting fxos specific date matching milestone");
-
-    var milestone = ConfigurationData.getDateMilestone(new Date(2016, 0, 15));
-    console.log(milestone);
-    expect(milestone).toBe("2.6 S5 - 1/15");
-  });
-});
