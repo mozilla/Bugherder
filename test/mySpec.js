@@ -20,41 +20,6 @@ describe("A FlagLoader suite", function() {
     expect(FlagLoader.generateFlags("firefox39")).toEqual(results);
   });
 
-  it("should init properly for b2g37", function() {
-    console.log("starting b2g37 test");
-
-    results = {
-      status: 'status_b2g_2_2'
-    }
-
-    var loadCallback = function loadCallback1(flagData) {
-     console.log(flagData, results);
-     expect(flagData).toEqual(results);
-    };
-
-    var errorCallback = function errorCallback(jqResponse, textStatus, errorThrown) {};
-
-    FlagLoader.init("f15bd4bdff6e", "mozilla-b2g37_v2_2", loadCallback, errorCallback);
-  });
-
-
-  it("should init properly for b2g37r", function() {
-    console.log("starting b2g37r test");
-
-    results = {
-      status: 'status_b2g_2_2r'
-    }
-
-    var loadCallback = function loadCallback1(flagData) {
-     console.log(flagData, results);
-     expect(flagData).toEqual(results);
-    };
-
-    var errorCallback = function errorCallback(jqResponse, textStatus, errorThrown) {};
-
-    FlagLoader.init("94737c119e75", "mozilla-b2g37_v2_2r", loadCallback, errorCallback);
-  });
-
   it("should init properly for esr38", function() {
     console.log("starting esr38 test");
 
