@@ -15,27 +15,6 @@ var FlagLoader = {
       loadCallback(flags);
       return;
     }
-    if (tree.indexOf('mozilla-b2g') != -1) {
-      // Hardcode some b2g release branch flags
-      var flags;
-      switch(tree) {
-        case "mozilla-b2g37_v2_2":
-          flags = this.generateFlags("b2g_2_2");
-          break;
-        case "mozilla-b2g37_v2_2r":
-          flags = this.generateFlags("b2g_2_2r");
-          break;
-        case "mozilla-b2g44_v2_5":
-          flags = this.generateFlags("b2g_2_5");
-          break;
-        default:
-          errorCallback(null, 'unknown tree');
-          flags = {};
-          return;
-      }
-      loadCallback(flags);
-      return;
-    }
     var treeInfo = Config.treeInfo[tree];
     var productName = 'firefox';
     var fileLocation = '/browser/config/version.txt';
@@ -67,12 +46,7 @@ var FlagLoader = {
   },
 
   generateFlags: function FL_generateFlags(flagSuffix) {
-    // B2G doesn't use tracking flags, only status
-    if(flagSuffix.indexOf('b2g_') != -1) {
-      return {'status': 'status_' + flagSuffix};
-    } else {
-      return {'tracking': 'tracking_' + flagSuffix,
-              'status': 'status_' + flagSuffix};
-    }
+    return {'tracking': 'tracking_' + flagSuffix,
+            'status': 'status_' + flagSuffix};
   }
 };
