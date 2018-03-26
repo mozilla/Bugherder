@@ -262,7 +262,7 @@ var BugzillaClient = (function () {
       var that = this;
 
       var req = new XMLHttpRequest();
-      req.open('GET', 'https://api-dev.bugzilla.mozilla.org/latest/configuration', true);
+      req.open('GET', 'https://bugzilla.mozilla.org/latest/configuration', true);
       req.setRequestHeader("Accept", "application/json");
       req.onreadystatechange = function (event) {
         if (req.readyState == 4 && req.status != 0) {
