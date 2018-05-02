@@ -48,7 +48,7 @@ var Config = {
     "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
     "thunderbird-esr52": "comm-esr52",
-    "thunderbird-esr45": "comm-esr45",
+    "thunderbird-esr60": "comm-esr60",
   },
 
   treeInfo: {
@@ -70,12 +70,6 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["autoland"]
     },
-    "mozilla-aurora": {
-      repo: "releases/mozilla-aurora",
-      trackedTree: true,
-      unconditionalFlag: false,
-      synonyms: ["releases/mozilla-aurora", "mozilla-aurora"]
-    },
     "mozilla-beta": {
       repo: "releases/mozilla-beta",
       trackedTree: true,
@@ -94,28 +88,23 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["esr52", "releases/mozilla-esr52", "mozilla-esr52"]
     },
-    "mozilla-esr45": {
-      repo: "releases/mozilla-esr45",
+    "mozilla-esr60": {
+      repo: "releases/mozilla-esr60",
       trackedTree: true,
       unconditionalFlag: false,
-      synonyms: ["esr45", "releases/mozilla-esr45", "mozilla-esr45"]
-    },
-    "ux": {
-      unconditionalFlag: false,
-      repo: "projects/ux",
-      synonyms: ["ux", "projects/ux"]
-    },
-    "alder": {
-      repo: "projects/alder",
-      unconditionalFlag: false,
-      trackedTree: false,
-      synonyms: ["alder", "projects/alder"]
+      synonyms: ["esr60", "releases/mozilla-esr60", "mozilla-esr60"]
     },
     "ash": {
       repo: "projects/ash",
       unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["ash", "projects/ash"]
+    },
+    "birch": {
+      repo: "projects/birch",
+      unconditionalFlag: false,
+      trackedTree: false,
+      synonyms: ["birch", "projects/birch"]
     },
     "cedar": {
       repo: "projects/cedar",
@@ -147,11 +136,11 @@ var Config = {
       trackedTree: false,
       synonyms: ["projects/fig", "fig"]
     },
-    "gum": {
-      repo: "projects/gum",
+    "graphics": {
+      repo: "projects/graphics",
       unconditionalFlag: false,
       trackedTree: false,
-      synonyms: ["projects/gum", "gum"]
+      synonyms: ["projects/graphics", "graphics"]
     },
     "holly": {
       repo: "projects/holly",
@@ -213,11 +202,11 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/comm-esr52", "comm-esr52"]
     },
-    "comm-esr45": {
-      repo: "releases/comm-esr45",
+    "comm-esr60": {
+      repo: "releases/comm-esr60",
       unconditionalFlag: false,
       trackedTree: true,
-      synonyms: ["releases/comm-esr45", "comm-esr45"]
+      synonyms: ["releases/comm-esr60", "comm-esr60"]
     }
   }
 };

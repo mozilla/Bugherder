@@ -57,8 +57,8 @@ describe("A FlagLoader suite", function() {
     FlagLoader.init("1d4f44ee5166", "mozilla-central", loadCallback, errorCallback);
   }, 10000);
 
-  it("should init properly for mozilla-aurora", function(done) {
-    console.log("starting mozilla-aurora test");
+  it("should init properly for mozilla-beta", function(done) {
+    console.log("starting mozilla-beta test");
 
     results = {
       tracking: 'tracking_firefox41',
@@ -73,7 +73,7 @@ describe("A FlagLoader suite", function() {
 
     var errorCallback = function errorCallback(jqResponse, textStatus, errorThrown) {};
 
-    FlagLoader.init("510a87909ff5", "mozilla-aurora", loadCallback, errorCallback);
+    FlagLoader.init("510a87909ff5", "mozilla-beta", loadCallback, errorCallback);
   }, 10000);
 });
 
