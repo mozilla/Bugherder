@@ -10,6 +10,7 @@ describe("A Hello World suite", function() {
   });
 });
 
+
 describe("A FlagLoader suite", function() {
   it("should generate flags for 'firefox39'", function() {
     console.log("starting firefox39 test");
@@ -75,5 +76,62 @@ describe("A FlagLoader suite", function() {
 
     FlagLoader.init("510a87909ff5", "mozilla-aurora", loadCallback, errorCallback);
   }, 10000);
+});
+
+describe("A PushData suite", function() {
+  it("should keep 'Backed out 2 changesets (bug 1457863) for merge conflict on a CLOSED TREE' as backout", function() {
+    console.log("starting backout status should be kept");
+    push = {"cset":"6340700abe0f",
+            "hgLink":"https://hg.mozilla.org/mozilla-central/rev/6340700abe0f",
+            "desc":"Backed out 2 changesets (bug 1457863) for merge conflict on a CLOSED TREE",
+            "files":["build.gradle",
+                     "mobile/android/geckoview/build.gradle",
+                     "mobile/android/geckoview/src/androidTest/java/org/mozilla/geckoview/test/GeckoSessionTestRuleTest.kt",
+                     "mobile/android/geckoview/src/androidTest/java/org/mozilla/geckoview/test/NavigationDelegateTest.kt",
+                     "mobile/android/geckoview/src/androidTest/java/org/mozilla/geckoview/test/ProgressDelegateTest.kt"],
+            "email":"somepusher@example.com",
+            "author":"Some Pusher",
+            "isMerge":false,
+            "isBackout":true,
+            "tags":["bugherder","backout"],
+            "affected":[19,20]};
+    PushData.checkIfBackout(push);
+    expect(push.isBackout).toEqual(true);
+  });
+
+  it("should classify 'Revert changeset d856b4067e80 (bug 1421144) to work around the crashes in bug 1424505. r=Jamie, a=RyanVM' as backout", function() {
+    console.log("starting backout detection (ignore) if 'revert' somewhere in the bug description");
+    push = {"cset":"f1d078c9252a",
+            "hgLink":"https://hg.mozilla.org/releases/mozilla-release/rev/f1d078c9252a",
+            "desc":"Revert changeset d856b4067e80 (bug 1421144) to work around the crashes in bug 1424505. r=Jamie, a=RyanVM",
+            "files":["accessible/windows/msaa/RootAccessibleWrap.cpp",
+                     "accessible/windows/msaa/RootAccessibleWrap.h"],
+            "email":"somepusher@example.com",
+            "author":"Some Pusher",
+            "isMerge":false,
+            "isBackout":true,
+            "tags":["bugherder","backout","uplift"],
+            "affected":[]};
+    PushData.checkIfBackout(push);
+    expect(push.isBackout).toEqual(true);
+  });
+
+  it("should not classify 'Bug 1450377 [wpt PR 10259] - Revert #10240, a=testonly' as backout", function() {
+    console.log("starting backout detection (ignore) if 'revert' somewhere in the bug description");
+    push = {"cset":"d0f81666d0aa",
+            "hgLink":"https://hg.mozilla.org/mozilla-central/rev/d0f81666d0aa",
+            "desc":"Bug 1452643 [wpt PR 9780] - Update the encoding IDL file, a=testonly",
+            "files":["testing/web-platform/meta/MANIFEST.json",
+                     "testing/web-platform/tests/encoding/idlharness.html",
+                     "testing/web-platform/tests/interfaces/encoding.idl"],
+            "email":"somepusher@example.com",
+            "author":"Some Pusher",
+            "bug":"1452643",
+            "isMerge":false,
+            "isBackout":false,
+            "tags":["bugherder"]};
+    PushData.checkIfBackout(push);
+    expect(push.isBackout).toEqual(false);
+  });
 });
 
