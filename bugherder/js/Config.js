@@ -20,7 +20,7 @@ var Config = {
   strictBugNumRE: /^(\d{4,7})$/,
   mergeRE: /\bmerg(ed?|ing)\b/i,
   backoutRE: /back(ing|ed)?\s*out/i,
-  revertRE: /revert(ing)?/i,
+  revertRE: /^revert(ing)?/i,
   partialRevertRE: /(?:from|in)(?:\s+(?:rev(?:ision)?|c(?:hange)?set))?\s+([\da-f]{12,40})/i,
   partialTestRE: /test\s+for/i,
   revertRangeRE: /revert(?:ing)?\s+(?:\S+\s+)?to(?:\s+(?:rev(?:ision)?|c(?:hange)set))?\s+([\da-f]{12,40})/i,
