@@ -62,13 +62,13 @@ var ConfigurationData = {
       productMilestones[product] = {}
       productMilestones[product].values = active_milestones.map(UI.htmlEncode);
       var dashIndex = active_milestones.indexOf('---');
-      if (dashIndex != -1) {
+      if (active_milestones.indexOf('Firefox ' + bugherder.milestone) !== -1) {
+        productMilestones[product].defaultIndex = active_milestones.indexOf('Firefox ' + bugherder.milestone);
+      } else if (active_milestones.indexOf('mozilla' + bugherder.milestone) !== -1) {
+        productMilestones[product].defaultIndex = active_milestones.indexOf('mozilla' + bugherder.milestone);
+      } else if (dashIndex != -1) {
         if (dashIndex + 1 < active_milestones.length && this.useNext.indexOf(product) != -1) {
           productMilestones[product].defaultIndex = dashIndex + 1;
-        } else if (active_milestones.indexOf('Firefox ' + bugherder.milestone) !== -1) {
-          productMilestones[product].defaultIndex = active_milestones.indexOf('Firefox ' + bugherder.milestone);
-        } else if (active_milestones.indexOf('mozilla' + bugherder.milestone) !== -1) {
-          productMilestones[product].defaultIndex = active_milestones.indexOf('mozilla' + bugherder.milestone);
         } else {
           productMilestones[product].defaultIndex = dashIndex;
         }
