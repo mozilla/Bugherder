@@ -152,6 +152,12 @@ var PushData = {
     }
 
     var reResult = Config.backoutRE.exec(push.desc);
+    var backoutOtherBug = Config.backoutOtherBugRE.exec(push.desc);
+    if (reResult && backoutOtherBug) {
+      // Example: "Bug 1449532 - Part I, Backed out changeset 99fc41ec7ce9 (Bug 1444489 Part VIII)"
+      push.isBackout = false;
+      return
+    }
 
     // If "backout" didn't match, try "revert"
     if (!reResult) {
