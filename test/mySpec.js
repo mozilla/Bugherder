@@ -79,7 +79,7 @@ describe("A FlagLoader suite", function() {
 });
 
 describe("A PushData suite", function() {
-  it("should keep 'Backed out 2 changesets (bug 1457863) for merge conflict on a CLOSED TREE' as backout", function() {
+  it("should keep as backout: 'Backed out 2 changesets (bug 1457863) for merge conflict on a CLOSED TREE'", function() {
     console.log("starting backout status should be kept");
     push = {"cset":"6340700abe0f",
             "hgLink":"https://hg.mozilla.org/mozilla-central/rev/6340700abe0f",
@@ -99,7 +99,7 @@ describe("A PushData suite", function() {
     expect(push.isBackout).toEqual(true);
   });
 
-  it("should classify 'Revert changeset d856b4067e80 (bug 1421144) to work around the crashes in bug 1424505. r=Jamie, a=RyanVM' as backout", function() {
+  it("should classify as backout: 'Revert changeset d856b4067e80 (bug 1421144) to work around the crashes in bug 1424505. r=Jamie, a=RyanVM'", function() {
     console.log("starting backout detection (ignore) if 'revert' somewhere in the bug description");
     push = {"cset":"f1d078c9252a",
             "hgLink":"https://hg.mozilla.org/releases/mozilla-release/rev/f1d078c9252a",
@@ -109,14 +109,13 @@ describe("A PushData suite", function() {
             "email":"somepusher@example.com",
             "author":"Some Pusher",
             "isMerge":false,
-            "isBackout":true,
             "tags":["bugherder","backout","uplift"],
             "affected":[]};
     PushData.checkIfBackout(push);
     expect(push.isBackout).toEqual(true);
   });
 
-  it("should not classify 'Bug 1450377 [wpt PR 10259] - Revert #10240, a=testonly' as backout", function() {
+  it("should not classify as backout: 'Bug 1450377 [wpt PR 10259] - Revert #10240, a=testonly'", function() {
     console.log("starting backout detection (ignore) if 'revert' somewhere in the bug description");
     push = {"cset":"d0f81666d0aa",
             "hgLink":"https://hg.mozilla.org/mozilla-central/rev/d0f81666d0aa",
@@ -128,8 +127,24 @@ describe("A PushData suite", function() {
             "author":"Some Pusher",
             "bug":"1452643",
             "isMerge":false,
-            "isBackout":false,
             "tags":["bugherder"]};
+    PushData.checkIfBackout(push);
+    expect(push.isBackout).toEqual(false);
+  });
+
+  it("should not classify as backout: 'Bug 1449532 - Part III, Polyfill Web Animation API features r=Gijs'", function() {
+    console.log("starting backout detection (ignore) if 'revert' somewhere in the bug description");
+    push = {'cset': '64486670492f',
+            'hgLink': 'https://hg.mozilla.org/mozilla-central/rev/64486670492f',
+            'desc': 'Bug 1449532 - Part III, Polyfill Web Animation API features r=Gijs',
+            'files': ['toolkit/content/widgets/videocontrols.xml',
+                     'toolkit/themes/shared/media/videocontrols.css'],
+            "email":"somepusher@example.com",
+            "author":"Some Pusher",
+            'bug': '1449532',
+            'isMerge': false,
+            'tags': ['bugherder']
+};
     PushData.checkIfBackout(push);
     expect(push.isBackout).toEqual(false);
   });
