@@ -484,8 +484,7 @@ var bugherder = {
 
         if ('tree' in paramsObj) {
           var treeName = paramsObj['tree'][0].toLowerCase();
-          if (!(treeName in Config.treeInfo) && !(treeName in Config.rewriteTrees) &&
-                treeName != 'firefox') {
+          if (!(treeName in Config.treeInfo) && !(treeName in Config.rewriteTrees)) {
             var replace = document.location.href.indexOf('error') != -1;
             this.go('error=treename&tree=' + treeName, replace);
             return;
@@ -494,11 +493,6 @@ var bugherder = {
           if (treeName in Config.rewriteTrees) {
             var newTree = Config.rewriteTrees[treeName];
             this.go('cset=' + cset + '&tree=' + newTree, true);
-            return;
-          }
-
-          if (treeName == 'firefox') {
-            this.go('cset=' + cset + '&tree=mozilla-central', true);
             return;
           }
 
@@ -561,7 +555,7 @@ var bugherder = {
     // Put the cset and tree parameters back in no matter what if present
     var currentURLSearch = this.chunkQuery(document.location.search);
     var newURLSearch = this.chunkQuery(newURL.split('?')[1]);
-    if (currentURLSearch['cset'] && !newURLSearch['cset'] && currentURLSearch['tree'] != 'firefox') {
+    if (currentURLSearch['cset'] && !newURLSearch['cset']) {
       newURL = newURL + '&cset=' + currentURLSearch['cset'][0];
     }
     if (currentURLSearch['tree'] && !newURLSearch['tree']) {
