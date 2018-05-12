@@ -443,12 +443,6 @@ Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, bac
   if (Config.treeName == 'mozilla-central' || backingOut) {
     // It appears some people still do this, so we may as well correct it
     newWhiteboard = whiteboard.replace('[inbound]','');
-
-    // Remove annotations on fx-team merges
-    newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)fx(?:\s+|-)team\]/ig, '');
-
-    // Remove annotations on s-c merges
-    newWhiteboard = newWhiteboard.replace(/\[fixed(?:\s+|-)in(?:\s+|-)services\]/ig, '');
   }
 
   if ('additions' in Config.treeInfo[Config.treeName]) {

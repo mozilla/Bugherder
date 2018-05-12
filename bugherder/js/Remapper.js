@@ -31,8 +31,6 @@ var Remapper = {
    html += '<input type="checkbox" id="checkin"></div>';
    html += '<div class="grid-12">Add [inbound] into whiteboard (to allow testing of [inbound] removal)';
    html += '<input type="checkbox" id="inbound"></div>';
-   html += '<div class="grid-12">Add [fixed-in-fx-team] into whiteboard (to allow testing of [fixed-in-fx-team] removal)';
-   html += '<input type="checkbox" id="fxteam"></div>';
    html += '<div class="grid-12">Ignore comments (i.e. override the "Don\'t duplicate comments" mechanism)';
    html += '<input type="checkbox" id="comments"></div>';
    html += '<hr>';
@@ -127,30 +125,6 @@ var Remapper = {
             BugData.bugs[b].whiteboard += '[inbound]';
             BugData.bugs[b].summary += ' [inbound]';
             inboundMultiple = true;
-          }
-        }
-      }
-    }
-
-    if ($('#fxteam').prop('checked')) {
-      if (remaps.items == 0) {
-        this.error('You need to redirect at least 1 bug for fxteam to work!');
-        return;
-      }
-      var fxteamSingle = false;
-      var fxteamMultiple = false;
-      for (b in remaps) {
-        if (b == 'items')
-          continue;
-        if (b in BugData.bugs) {
-          if (BugData.bugs[b].whiteboard.length == 0 && fxteamSingle == false) {
-            BugData.bugs[b].whiteboard = '[fixed-in-fx-team]'
-            BugData.bugs[b].summary += ' [fixed-in-fx-team]';
-            fxteamSingle = true;
-          } else if (BugData.bugs[b].whiteboard.length > 0 && fxteamMultiple == false) {
-            BugData.bugs[b].whiteboard += '[fixed-in-fx-team]';
-            BugData.bugs[b].summary += ' [fixed-in-fx-team]';
-            fxteamMultiple = true;
           }
         }
       }
