@@ -392,7 +392,7 @@ var UI = {
       return;
 
     var errorText = 'Warning: Pushes length verification failed. (' + rightLength + ',' + actualLength + ')';
-    errorText += 'Please ping :graememcc with this cset!';
+    errorText += 'Please ping the IRC channel #sheriffs with this cset!';
     this.showErrorMessage(errorText);
   }
 };
