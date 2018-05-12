@@ -358,8 +358,7 @@ var UI = {
   buildMergeVerification: function UI_displayMergeVerification(sourceRepo) {
     var html = '';
     if (sourceRepo) {
-      html += (PushData.allPushes.length > 150) ? 'Übermerge' : 'Merge';
-      html += ' from <a href="' + Config.hgBaseURL + Config.treeInfo[sourceRepo].repo + '" target="_blank">' + sourceRepo.toLowerCase() + '</a> ';
+      html += 'Merge from <a href="' + Config.hgBaseURL + Config.treeInfo[sourceRepo].repo + '" target="_blank">' + sourceRepo.toLowerCase() + '</a> ';
       html += 'to <a href="' + Config.hgURL + '" target="_blank">mozilla-central</a>';
     } else {
       html += 'Push to <a href="' + Config.hgURL + '" target="_blank">' + Config.treeName + '</a>';
