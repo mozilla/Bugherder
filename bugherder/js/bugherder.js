@@ -467,14 +467,10 @@ var bugherder = {
     var query = document.location.search;
     if (query) {
       var paramsObj = new URLSearchParams(query);
-      if (paramsObj.has('debug'))
-        this.debug = (paramsObj.get('debug') == '1');
-      if (paramsObj.has('expand'))
-        this.expand = (paramsObj.get('expand') == '1');
-      if (paramsObj.has('remap'))
-        this.remap = (paramsObj.get('remap') == '1');
-      if (paramsObj.has('resume'))
-        this.resume = (paramsObj.get('resume') == '1');
+      this.persistingParams.forEach((param) => {
+        if (paramsObj.has(param))
+          this[param] = (paramsObj.get(param) == '1');
+      }, this);
 
       if (paramsObj.has('error'))
         return self.errorPage(paramsObj);
@@ -511,6 +507,9 @@ var bugherder = {
     return self.acquireChangeset();
   },
 
+  // Parameters maintained across page loads
+  persistingParams: ['debug', 'expand', 'remap', 'resume'],
+
   // Push a new URL onto history
   go: function mcM_go(query, replace) {
     var maintained = [];
@@ -519,9 +518,7 @@ var bugherder = {
         maintained.push(prop + '=1');
     }
 
-    // Maintain various parameters across page loads
-    var persisted = ['debug', 'expand', 'remap', 'resume'];
-    persisted.forEach(persist, this);
+    this.persistingParams.forEach(persist, this);
 
     var newURL = document.location.href.split('?')[0];
     if (query)
