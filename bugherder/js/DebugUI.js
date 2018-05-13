@@ -5,7 +5,9 @@ var DebugUI = {
     html += '<div class="grid-2">';
     html += UI.linkifyChangeset(push.cset) + "</div>";
     html += '<div class="grid-12">' + UI.linkifyDescription(push.desc);
-    html  += ' (Bug ' + UI.linkifyBug(push.bug) + ')';
+    if (push.bug) {
+      html  += ' (Bug ' + UI.linkifyBug(push.bug) + ')';
+    }
     html += ' Index: ' + index;
     if (push.backedOut)
       html += ' backed out by ' + UI.linkifyChangeset(push.backedOut);
