@@ -216,7 +216,7 @@ var UI = {
 
 
   onCredentialsSubmit: function UI_onCredentialsSubmit(e) {
-    ViewerController.onCredentialsEntered($('#apikey').val());
+    ViewerController.onCredentialsEntered($('#apikey').val().trim());
     $('#apikey').val('');
   },
 
