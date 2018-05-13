@@ -512,24 +512,17 @@ var bugherder = {
 
   // Push a new URL onto history
   go: function mcM_go(query, replace) {
-    var maintained = [];
-    function persist(prop) {
-      if (this[prop])
-        maintained.push(prop + '=1');
-    }
+    var params = new URLSearchParams(query);
+    this.persistingParams.forEach((param) => {
+      if (this[param]) {
+        params.append(param, '1');
+      }
+    }, this);
 
-    this.persistingParams.forEach(persist, this);
-
+    var newQueryString = params.toString();
     var newURL = document.location.href.split('?')[0];
-    if (query)
-      newURL = newURL + '?' + query;
-
-    var maintainedQuery = maintained.join('&');
-    if (!query && maintainedQuery.length > 0)
-      newURL += '?';
-    else if (query && maintainedQuery.length > 0)
-      newURL += '&';
-    newURL += maintainedQuery;
+    if (newQueryString)
+      newURL = newURL + '?' + newQueryString;
 
     // Put the cset and tree parameters back in no matter what if present
     var currentURLSearch = new URLSearchParams(document.location.search);
