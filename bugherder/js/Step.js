@@ -211,7 +211,7 @@ Step.prototype.constructData = function Step_constructData() {
 
 
 Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
-  if (where == 'lct' && (msg == 'HTTP status 400' || msg == 'HTTP status 401') ) {
+  if (where == 'lct') {
     // There are a number of possibilities here:
     // - an invalid api key was supplied
     // - the bug we were trying to load is a security bug (shouldn't happen, unless someone
@@ -222,7 +222,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while bugherder was working?!?)
     // Else, we'll note this one failed and try the next. If we carry on without further failure, then this was a
     //  security bug that wasn't one before
-    if (i == 0 || this.retries[this.retries.length-1] == i - 1) {
+    if (msg && msg.message == "The API key you specified is invalid. Please check that you typed it correctly." || this.retries[this.retries.length-1] == i - 1) {
       // XXX What if we've already succesfully submitted some?
       delete Step.privilegedLoad;
       delete Step.privilegedUpdate;
@@ -234,6 +234,7 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     this.retries.push(i);
     this.continueSubmit(i);
   }
+  /* TODO: This doesn't work because msg is an object now. Either update or rip out the unused assignee matching code. */
   if (where == 'submit' && (msg == 'HTTP status 400' || msg == 'HTTP status 401') ) {
     // First check to see if there was an assignee in the data we sent. If so, we should try and submitting again - it may have been a
     // case where the email was wrong (or the author's bugzilla email is different from the email in the changeset). Don't count that as
