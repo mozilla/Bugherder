@@ -438,18 +438,14 @@ Step.prototype.continueSubmit = function Step_continueSubmit(i) {
 };
 
 
-Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(whiteboard, backingOut) {
-  var newWhiteboard = whiteboard;
+Step.prototype.adjustWhiteboard = function Step_adjustWhiteboard(bugData) {
+  
+  var newWhiteboard = bugData['whiteboard'];
 
-  if (Config.treeName == 'mozilla-central' || backingOut) {
-    // It appears some people still do this, so we may as well correct it
-    newWhiteboard = whiteboard.replace('[inbound]','');
-  }
-
-  if ('additions' in Config.treeInfo[Config.treeName]) {
-    var addition = Config.treeInfo[Config.treeName].additions;
-    if (newWhiteboard.indexOf(addition) == -1)
-      newWhiteboard = newWhiteboard + addition;
+  // Remove [checkin-needed-<treename>] from the whiteboard.
+  var treeNameShort = Config.treeName.replace(/^mozilla-/, '');
+  if (!bugData['isBackout'] && !bugData['isMerge']) {
+    newWhiteboard = bugData['whiteboard'].replace(`[checkin-needed-${treeNameShort}]`,'');
   }
 
   return newWhiteboard;
@@ -564,7 +560,9 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
 
     // Adjust the whiteboard the first time we see this bug
     if (bug)
-      bug.whiteboard = this.adjustWhiteboard(bug.whiteboard, this.bugInfo[bugID].canReopen);
+      bug.whiteboard = this.adjustWhiteboard({ 'whiteboard': bug.whiteboard,
+                                               'isBackout': PushData.allPushes[index].isBackout,
+                                               'isMerge': PushData.allPushes[index].isMerge });
   }
 
   if (bug && bug.comments) {
