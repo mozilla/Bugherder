@@ -29,8 +29,6 @@ var Remapper = {
    html += '<input type="checkbox" id="new"></div>';
    html += '<div class="grid-12">Add checkin-needed into keywords (to allow testing of checkin-needed removal)';
    html += '<input type="checkbox" id="checkin"></div>';
-   html += '<div class="grid-12">Add [inbound] into whiteboard (to allow testing of [inbound] removal)';
-   html += '<input type="checkbox" id="inbound"></div>';
    html += '<div class="grid-12">Ignore comments (i.e. override the "Don\'t duplicate comments" mechanism)';
    html += '<input type="checkbox" id="comments"></div>';
    html += '<hr>';
@@ -101,30 +99,6 @@ var Remapper = {
           if (BugData.bugs[b].keywords.length == 0 && checkinSingle == false) {
             BugData.bugs[b].keywords.push('checkin-needed');
             checkinSingle = true;
-          }
-        }
-      }
-    }
-
-    if ($('#inbound').prop('checked')) {
-      if (remaps.items == 0) {
-        this.error('You need to redirect at least 1 bug for inbound to work!');
-        return;
-      }
-      var inboundSingle = false;
-      var inboundMultiple = false;
-      for (b in remaps) {
-        if (b == 'items')
-          continue;
-        if (b in BugData.bugs) {
-          if (BugData.bugs[b].whiteboard.length == 0 && inboundSingle == false) {
-            BugData.bugs[b].whiteboard = '[inbound]'
-            BugData.bugs[b].summary += ' [inbound]';
-            inboundSingle = true;
-          } else if (BugData.bugs[b].whiteboard.length > 0 && inboundMultiple == false) {
-            BugData.bugs[b].whiteboard += '[inbound]';
-            BugData.bugs[b].summary += ' [inbound]';
-            inboundMultiple = true;
           }
         }
       }
