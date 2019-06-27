@@ -46,10 +46,9 @@ var Config = {
 
   rewriteTrees: {
     "thunderbird-trunk": "comm-central",
-    "thunderbird-aurora": "comm-aurora",
     "thunderbird-beta": "comm-beta",
-    "thunderbird-esr52": "comm-esr52",
     "thunderbird-esr60": "comm-esr60",
+    "thunderbird-esr68": "comm-esr68",
   },
 
   treeInfo: {
@@ -83,17 +82,17 @@ var Config = {
       unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
-    "mozilla-esr52": {
-      repo: "releases/mozilla-esr52",
-      trackedTree: true,
-      unconditionalFlag: false,
-      synonyms: ["esr52", "releases/mozilla-esr52", "mozilla-esr52"]
-    },
     "mozilla-esr60": {
       repo: "releases/mozilla-esr60",
       trackedTree: true,
       unconditionalFlag: false,
       synonyms: ["esr60", "releases/mozilla-esr60", "mozilla-esr60"]
+    },
+    "mozilla-esr68": {
+      repo: "releases/mozilla-esr68",
+      trackedTree: true,
+      unconditionalFlag: false,
+      synonyms: ["esr68", "releases/mozilla-esr68", "mozilla-esr68"]
     },
     "ash": {
       repo: "projects/ash",
@@ -185,29 +184,23 @@ var Config = {
       trackedTree: true,
       synonyms: ["comm-central", "c-c"]
     },
-    "comm-aurora": {
-      repo: "releases/comm-aurora",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-aurora", "comm-aurora"]
-    },
     "comm-beta": {
       repo: "releases/comm-beta",
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
-    "comm-esr52": {
-      repo: "releases/comm-esr52",
-      unconditionalFlag: false,
-      trackedTree: true,
-      synonyms: ["releases/comm-esr52", "comm-esr52"]
-    },
     "comm-esr60": {
       repo: "releases/comm-esr60",
       unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr60", "comm-esr60"]
+    },
+    "comm-esr68": {
+      repo: "releases/comm-esr68",
+      unconditionalFlag: false,
+      trackedTree: true,
+      synonyms: ["releases/comm-esr68", "comm-esr68"]
     }
   }
 };
