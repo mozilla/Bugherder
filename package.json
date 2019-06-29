@@ -1,7 +1,7 @@
 {
   "name": "bugherder",
   "description": "Bugherder helps keep bugzilla entries up to date when things are pushed to the tree",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "start": "node web-server.js",
@@ -12,19 +12,17 @@
     "url": "https://github.com/mozilla/bugherder.git"
   },
   "engines": {
-    "node": "5.6.0"
+    "node": "8.16.0"
   },
   "dependencies": {
-    "express": "4.13.4",
-    "express-sslify": "1.0.1"
+    "express": "4.17.1",
+    "express-sslify": "1.2.0"
   },
   "devDependencies": {
     "jasmine-core": "*",
     "karma": "*",
+    "karma-firefox-launcher": "*",
     "karma-cli": "*",
-    "karma-jasmine": "*",
-    "karma-phantomjs-launcher": "*",
-    "karma-chrome-launcher": "~0.2.0",
-    "phantomjs-prebuilt": "*"
+    "karma-jasmine": "*"
   }
 }
