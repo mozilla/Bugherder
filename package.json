@@ -15,16 +15,16 @@
     "node": "5.6.0"
   },
   "dependencies": {
-    "express": "4.13.4",
-    "express-sslify": "1.0.1"
+    "express": "4.17.1",
+    "express-sslify": "1.2.0"
   },
   "devDependencies": {
     "jasmine-core": "*",
     "karma": "*",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "*",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
-    "karma-chrome-launcher": "~0.2.0",
     "phantomjs-prebuilt": "*"
   }
 }
