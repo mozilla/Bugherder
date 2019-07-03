@@ -55,150 +55,125 @@ var Config = {
     "mozilla-central": {
       repo: "mozilla-central",
       trackedTree: true,
-      unconditionalFlag: false,
       synonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"]
     },
     "mozilla-inbound": {
       repo: "integration/mozilla-inbound",
       trackedTree: false,
-      unconditionalFlag: false,
       synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
     },
     "autoland": {
       repo: "integration/autoland",
       trackedTree: false,
-      unconditionalFlag: false,
       synonyms: ["autoland"]
     },
     "mozilla-beta": {
       repo: "releases/mozilla-beta",
       trackedTree: true,
-      unconditionalFlag: false,
       synonyms: ["releases/mozilla-beta", "mozilla-beta"]
     },
     "mozilla-release": {
       repo: "releases/mozilla-release",
       trackedTree: true,
-      unconditionalFlag: false,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
     "mozilla-esr60": {
       repo: "releases/mozilla-esr60",
       trackedTree: true,
-      unconditionalFlag: false,
       synonyms: ["esr60", "releases/mozilla-esr60", "mozilla-esr60"]
     },
     "mozilla-esr68": {
       repo: "releases/mozilla-esr68",
       trackedTree: true,
-      unconditionalFlag: false,
       synonyms: ["esr68", "releases/mozilla-esr68", "mozilla-esr68"]
     },
     "ash": {
       repo: "projects/ash",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["ash", "projects/ash"]
     },
     "birch": {
       repo: "projects/birch",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["birch", "projects/birch"]
     },
     "cedar": {
       repo: "projects/cedar",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/cedar", "cedar"]
     },
     "cypress": {
       repo: "projects/cypress",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/cypress", "cypress"]
     },
     "date": {
       repo: "projects/date",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/date", "date"]
     },
     "elm": {
       repo: "projects/elm",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/elm", "elm"]
     },
     "fig": {
       repo: "projects/fig",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/fig", "fig"]
     },
     "graphics": {
       repo: "projects/graphics",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/graphics", "graphics"]
     },
     "holly": {
       repo: "projects/holly",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/holly", "holly"]
     },
     "jamun": {
       repo: "projects/jamun",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/jamun", "jamun"]
     },
     "larch": {
       repo: "projects/larch",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/larch", "larch"]
     },
     "maple": {
       repo: "projects/maple",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/maple", "maple"]
     },
     "oak": {
       repo: "projects/oak",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/oak", "oak"]
     },
     "pine": {
       repo: "projects/pine",
-      unconditionalFlag: false,
       trackedTree: false,
       synonyms: ["projects/pine", "pine"]
     },
     "comm-central": {
       repo: "comm-central",
-      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["comm-central", "c-c"]
     },
     "comm-beta": {
       repo: "releases/comm-beta",
-      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
     "comm-esr60": {
       repo: "releases/comm-esr60",
-      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr60", "comm-esr60"]
     },
     "comm-esr68": {
       repo: "releases/comm-esr68",
-      unconditionalFlag: false,
       trackedTree: true,
       synonyms: ["releases/comm-esr68", "comm-esr68"]
     }
