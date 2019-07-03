@@ -4,7 +4,6 @@ var bugherder = {
   debug: false,
   expand: false,
   milestone: null,
-  remap: false,
   resume: false,
   tree: null,
   trackingFlag: null,
@@ -376,25 +375,13 @@ var bugherder = {
       return;
     }
 
-    this.remaps = {items: 0};
-
-    if (this.remap)
-      Remapper.show();
-    else
-      this.showSteps();
-  },
-
-
-  onRemap: function mcM_onRemap(remaps) {
-    this.remaps = remaps;
     this.showSteps();
   },
 
 
   showSteps: function mcM_showSteps() {
-    Step.remaps = this.remaps;
     Viewer.expand = this.expand;
-    ViewerController.init(this.remap, this.resume);
+    ViewerController.init(this.resume);
     Viewer.init();
 
     // How many stages do we have?
@@ -471,8 +458,6 @@ var bugherder = {
         this.debug = (paramsObj['debug'][0] == '1');
       if ('expand' in paramsObj)
         this.expand = (paramsObj['expand'][0] == '1');
-      if ('remap' in paramsObj)
-        this.remap = (paramsObj['remap'][0] == '1');
       if ('resume' in paramsObj)
         this.resume = (paramsObj['resume'][0] == '1');
 
@@ -538,7 +523,7 @@ var bugherder = {
     }
 
     // Maintain various parameters across page loads
-    var persisted = ['debug', 'expand', 'remap', 'resume'];
+    var persisted = ['debug', 'expand', 'resume'];
     persisted.forEach(persist, this);
 
     var newURL = document.location.href.split('?')[0];
