@@ -549,9 +549,6 @@ Step.prototype.attachBugToCset = function Step_attachBugToCset(index, bugID) {
         this.bugInfo[bugID].canSetStatus = this.bugInfo[bugID].canResolve;
       else if (Config.treeInfo[Config.treeName].trackedTree)
         this.bugInfo[bugID].canSetStatus = true;
-    } else if (bug && Config.treeInfo[Config.treeName].trackedTree && Config.treeInfo[Config.treeName].unconditionalFlag) {
-        bug.isTracked = true;
-        this.bugInfo[bugID].canSetStatus = true;
     }
 
     // Allow setting of intestsuite if possible
@@ -968,7 +965,7 @@ Step.prototype.getAdditionalHelpText = function Step_getAdditionalHelpText() {
   if (this.hasMilestones.length > 0)
     text += this.constructTextFor(this.hasMilestones, milestonePost, already, true);
 
-  if (this.statusChangeBugs.length > 0 && !Config.treeInfo[Config.treeName].unconditionalFlag)
+  if (this.statusChangeBugs.length > 0)
     text += this.constructTextFor(this.statusChangeBugs, statusChangePost, isare);
 
   return text;
@@ -1010,9 +1007,6 @@ Step.prototype.getHelpText = function Step_getHelpText() {
   if (this.name in Step.helpTexts)
     helpText = Step.helpTexts[this.name];
   helpText += this.getAdditionalHelpText();
-
-  if (this.statusChangeBugs.length > 0 && Config.treeInfo[Config.treeName].unconditionalFlag)
-    helpText += '<br>- Submitted bugs will have ' + bugherder.statusFlag + ' set to "fixed"';
 
   if (Step.remaps && 'items' in Step.remaps && Step.remaps.items > 0)
     helpText += '<br><strong>Note: You are in debug mode. Only remap bugs will be submitted, and will be submitted to landfill.bugzilla.org!</strong>';
