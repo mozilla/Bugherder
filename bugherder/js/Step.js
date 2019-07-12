@@ -47,12 +47,6 @@ function Step(name, callbacks, isBackout) {
   this.statusChangeBugs = [];
   this.haveComment = [];
 
-  var options = {};
-  if (Step.remaps.items > 0) {
-    options.url = "https://bugzilla-dev.allizom.org/rest";
-  }
-  this.unprivilegedLoader = bz.createClient(options);
-
   constructAttachedBugs(false);
   if (this.hasBackouts)
     constructAttachedBugs(true);
@@ -186,9 +180,6 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
         bug.flags[0].id = BugData.bugs[bugID].testsuiteFlagID;
     }
 
-    if (bugID in Step.remaps) {
-      bug.id = Step.remaps[bugID];
-    }
     return bug;
   }
 
@@ -199,13 +190,11 @@ Step.prototype.createBug = function Step_createBug(bugID, info) {
 Step.prototype.constructData = function Step_constructData() {
   this.sendData = [];
   for (var bug in this.bugInfo) {
-    if (Step.remaps.items == 0 || bug in Step.remaps) {
-      var info = this.bugInfo[bug];
-      var data = this.createBug(bug, info);
+    var info = this.bugInfo[bug];
+    var data = this.createBug(bug, info);
 
-      if (data)
-        this.sendData.push(data);
-    }
+    if (data)
+      this.sendData.push(data);
   }
 };
 
@@ -216,7 +205,6 @@ Step.prototype.onSubmitError = function Step_onSubmitError(where, msg, i) {
     // - an invalid api key was supplied
     // - the bug we were trying to load is a security bug (shouldn't happen, unless someone
     //    changed the bug underneath us after the initial bug data load)
-    // - a tester remapped to a non-existant bug on landfill, (they should know better :))
     // If we've failed trying to get the time/token on our very first bug, let's just put it
     //   down to api key, and abandon this submit attempt
     // If we failed in the i-1th bug too, again abandon all hope. (Did you change your password while bugherder was working?!?)
@@ -339,10 +327,6 @@ Step.prototype.getLastChangeAndToken = function Step_getLastChangeAndToken(i, ca
 
 
 Step.prototype.submit = function Step_submit(i) {
-  // we start with an utterly unsophisticated hack for debugging/testing
-  if (Step.remaps.items > 0 && Step.remaps.midair)
-    alert('MID-AIR TIME!');
-
   var self = this;
   var callback = function Step_submitCallback(errmsg, data) {
     if (errmsg)
@@ -367,16 +351,6 @@ Step.prototype.postSubmit = function Step_postSubmit(i) {
   delete sent.update_token;
   this.sent.push(sent);
   var bugID = sent.id;
-
-  // If we were in remapping mode, we need to reverse the mapping!
-  for (var k in Step.remaps) {
-    if (k == 'items')
-      continue;
-    if (Step.remaps[k] == bugID) {
-      bugID = k;
-      break;
-    }
-  }
 
   var info = this.bugInfo[bugID];
 
@@ -1014,8 +988,6 @@ Step.prototype.getHelpText = function Step_getHelpText() {
   if (this.statusChangeBugs.length > 0 && Config.treeInfo[Config.treeName].unconditionalFlag)
     helpText += '<br>- Submitted bugs will have ' + bugherder.statusFlag + ' set to "fixed"';
 
-  if (Step.remaps && 'items' in Step.remaps && Step.remaps.items > 0)
-    helpText += '<br><strong>Note: You are in debug mode. Only remap bugs will be submitted, and will be submitted to landfill.bugzilla.org!</strong>';
   return helpText;
 };
 

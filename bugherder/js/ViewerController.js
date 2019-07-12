@@ -1,8 +1,7 @@
 "use strict";
 
 var ViewerController = {
-  init: function vc_Init(remap, resume) {
-    this.remap = remap;
+  init: function vc_Init(resume) {
     this.currentStep = -1;
     this.maxStep = -1;
     this.steps = [];
