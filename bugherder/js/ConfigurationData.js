@@ -7,12 +7,10 @@ var ConfigurationData = {
 
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
-  useNext: ['Android Background Services',
+  useNext: [
             'Core',
             'Firefox',
             'Firefox for Android',
-            'Firefox for Metro',
-            'Firefox Health Report',
             'MailNews Core',
             'Mozilla Localizations',
             'Other Applications',
@@ -20,7 +18,8 @@ var ConfigurationData = {
             'Taskcluster',
             'Testing',
             'Thunderbird',
-            'Toolkit'],
+            'Toolkit'
+           ],
 
   init: function CD_init(loadCallback, errorCallback) {
     var self = this;
