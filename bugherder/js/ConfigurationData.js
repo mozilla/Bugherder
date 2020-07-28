@@ -8,17 +8,23 @@ var ConfigurationData = {
   // useNext represents products where I'm reasonably
   // confident that the correct milestone is --- + 1
   useNext: [
+            'Cloud Services',
             'Core',
+            'DevTools',
             'Firefox',
+            'Firefox Build System',
             'Firefox for Android',
+            'GeckoView',
             'MailNews Core',
             'Mozilla Localizations',
             'Other Applications',
+            'Remote Protocol',
             'SeaMonkey',
             'Taskcluster',
             'Testing',
             'Thunderbird',
-            'Toolkit'
+            'Toolkit',
+            'WebExtensions'
            ],
 
   init: function CD_init(loadCallback, errorCallback) {
