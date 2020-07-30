@@ -71,6 +71,8 @@ var ConfigurationData = {
         productMilestones[product].defaultIndex = active_milestones.indexOf('Firefox ' + bugherder.milestone);
       } else if (active_milestones.indexOf('mozilla' + bugherder.milestone) !== -1) {
         productMilestones[product].defaultIndex = active_milestones.indexOf('mozilla' + bugherder.milestone);
+      } else if (active_milestones.indexOf(bugherder.milestone + ' Branch') !== -1) {
+        productMilestones[product].defaultIndex = active_milestones.indexOf(bugherder.milestone + ' Branch');
       } else if (dashIndex != -1) {
         if (dashIndex + 1 < active_milestones.length && this.useNext.indexOf(product) != -1) {
           productMilestones[product].defaultIndex = dashIndex + 1;
