@@ -21,7 +21,6 @@ var ConfigurationData = {
             'Remote Protocol',
             'SeaMonkey',
             'Taskcluster',
-            'Testing',
             'Thunderbird',
             'Toolkit',
             'WebExtensions'
