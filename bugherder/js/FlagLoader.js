@@ -19,7 +19,7 @@ var FlagLoader = {
     var productName = 'firefox';
     var fileLocation = '/browser/config/version.txt';
     if (tree.indexOf('comm') != -1) {
-      productName = 'thunderbird';
+      productName = 'thunderbird_';
       fileLocation = '/mail/config/version.txt';
     }
     var self = this;
