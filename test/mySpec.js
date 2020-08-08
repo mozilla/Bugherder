@@ -76,6 +76,25 @@ describe("A FlagLoader suite", function() {
 
     FlagLoader.init("510a87909ff5", "mozilla-beta", loadCallback, errorCallback);
   }, 10000);
+
+  it("should init properly for comm-beta", function(done) {
+      console.log("starting comm-beta test");
+
+      results = {
+          tracking: 'tracking_thunderbird_75',
+          status: 'status_thunderbird_75'
+      }
+
+      var loadCallback = function loadCallback(flagData) {
+          console.log(flagData, results);
+          expect(flagData).toEqual(results);
+          done();
+      };
+
+      var errorCallback = function errorCallback(jqResponse, textStatus, errorThrown) {};
+
+      FlagLoader.init("df290067118a", "comm-beta", loadCallback, errorCallback);
+  }, 10000);
 });
 
 describe("A PushData suite", function() {
