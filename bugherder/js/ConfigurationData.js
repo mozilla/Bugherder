@@ -5,27 +5,6 @@ var ConfigurationData = {
   hasTestsuiteFlag: {},
   testsuiteFlagID: -1,
 
-  // useNext represents products where I'm reasonably
-  // confident that the correct milestone is --- + 1
-  useNext: [
-            'Cloud Services',
-            'Core',
-            'DevTools',
-            'Firefox',
-            'Firefox Build System',
-            'Firefox for Android',
-            'GeckoView',
-            'MailNews Core',
-            'Mozilla Localizations',
-            'Other Applications',
-            'Remote Protocol',
-            'SeaMonkey',
-            'Taskcluster',
-            'Thunderbird',
-            'Toolkit',
-            'WebExtensions'
-           ],
-
   init: function CD_init(loadCallback, errorCallback) {
     var self = this;
     var callback  = function CD_initCallback(errmsg, data) {
@@ -73,11 +52,7 @@ var ConfigurationData = {
       } else if (active_milestones.indexOf(bugherder.milestone + ' Branch') !== -1) {
         productMilestones[product].defaultIndex = active_milestones.indexOf(bugherder.milestone + ' Branch');
       } else if (dashIndex != -1) {
-        if (dashIndex + 1 < active_milestones.length && this.useNext.indexOf(product) != -1) {
-          productMilestones[product].defaultIndex = dashIndex + 1;
-        } else {
-          productMilestones[product].defaultIndex = dashIndex;
-        }
+        productMilestones[product].defaultIndex = dashIndex;
       } else {
         productMilestones[product].defaultIndex = 0;
       }
