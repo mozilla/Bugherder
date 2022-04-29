@@ -47,8 +47,8 @@ var Config = {
   rewriteTrees: {
     "thunderbird-trunk": "comm-central",
     "thunderbird-beta": "comm-beta",
-    "thunderbird-esr78": "comm-esr78",
     "thunderbird-esr91": "comm-esr91",
+    "thunderbird-esr102": "comm-esr102",
   },
 
   treeInfo: {
@@ -77,15 +77,15 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/mozilla-release", "mozilla-release"]
     },
-    "mozilla-esr78": {
-      repo: "releases/mozilla-esr78",
-      trackedTree: true,
-      synonyms: ["esr78", "releases/mozilla-esr78", "mozilla-esr78"]
-    },
     "mozilla-esr91": {
       repo: "releases/mozilla-esr91",
       trackedTree: true,
       synonyms: ["esr91", "releases/mozilla-esr91", "mozilla-esr91"]
+    },
+    "mozilla-esr102": {
+      repo: "releases/mozilla-esr102",
+      trackedTree: true,
+      synonyms: ["esr102", "releases/mozilla-esr102", "mozilla-esr102"]
     },
     "ash": {
       repo: "projects/ash",
@@ -167,15 +167,15 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
     },
-    "comm-esr78": {
-      repo: "releases/comm-esr78",
-      trackedTree: true,
-      synonyms: ["releases/comm-esr78", "comm-esr78"]
-    },
     "comm-esr91": {
       repo: "releases/comm-esr91",
       trackedTree: true,
       synonyms: ["releases/comm-esr91", "comm-esr91"]
+    },
+    "comm-esr102": {
+      repo: "releases/comm-esr102",
+      trackedTree: true,
+      synonyms: ["releases/comm-esr102", "comm-esr102"]
     },
   }
 };
