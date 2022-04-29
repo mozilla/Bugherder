@@ -57,11 +57,6 @@ var Config = {
       trackedTree: true,
       synonyms: ["mozilla-central", "central", "m-c", "mc", "mozilla central"]
     },
-    "mozilla-inbound": {
-      repo: "integration/mozilla-inbound",
-      trackedTree: false,
-      synonyms: ["mozilla-inbound", "inbound", "m-i", "mi"]
-    },
     "autoland": {
       repo: "integration/autoland",
       trackedTree: false,
