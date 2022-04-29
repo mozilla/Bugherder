@@ -16,7 +16,6 @@ Bugherder will not check the existence of any bugs you enter - be careful! Each 
 When testing target milestone setting, the equivalent bug in landfill must be filed in the *mcMerge Test Product* product, or the submission will fail.
 
 There are various checkbox options at the bottom of the screen:
-* an option to add [inbound] to some random bug whiteboards, to allow you to test it's removal on submission
 * an option to add checkin-needed to some random bug whiteboards, to allow you to test it's removal on submission. Be careful of bugs with additional keywords - if they are not defined on landfill (and they probably won't be), the submission will fail
 * an option to throw up an alert - hacky, I know - partway through the submission process, to allow you to jump over to the landfill bug, and mid-air Bugherder
 * a useful option to ignore the real bug status, and set it to NEW, as you will likely be working with historic pushlogs when testing
