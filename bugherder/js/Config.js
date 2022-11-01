@@ -172,6 +172,10 @@ var Config = {
       trackedTree: true,
       synonyms: ["releases/comm-esr102", "comm-esr102"]
     },
+    "ci-configuration": {
+      repo: "ci/ci-configuration",
+      trackedTree: false
+    },
   }
 };
 
