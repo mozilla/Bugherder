@@ -47,6 +47,7 @@ var Config = {
   rewriteTrees: {
     "thunderbird-trunk": "comm-central",
     "thunderbird-beta": "comm-beta",
+    "thunderbird-release": "comm-release",
     "thunderbird-esr102": "comm-esr102",
     "thunderbird-esr115": "comm-esr115",
   },
@@ -161,6 +162,11 @@ var Config = {
       repo: "releases/comm-beta",
       trackedTree: true,
       synonyms: ["releases/comm-beta", "comm-beta"]
+    },
+    "comm-release": {
+      repo: "releases/comm-release",
+      trackedTree: true,
+      synonyms: ["releases/comm-release", "comm-release"]
     },
     "comm-esr102": {
       repo: "releases/comm-esr102",
