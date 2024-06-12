@@ -50,6 +50,7 @@ var Config = {
     "thunderbird-release": "comm-release",
     "thunderbird-esr102": "comm-esr102",
     "thunderbird-esr115": "comm-esr115",
+    "thunderbird-esr128": "comm-esr128",
   },
 
   treeInfo: {
@@ -82,6 +83,11 @@ var Config = {
       repo: "releases/mozilla-esr115",
       trackedTree: true,
       synonyms: ["esr115", "releases/mozilla-esr115", "mozilla-esr115"]
+    },
+    "mozilla-esr128": {
+      repo: "releases/mozilla-esr128",
+      trackedTree: true,
+      synonyms: ["esr128", "releases/mozilla-esr128", "mozilla-esr128"]
     },
     "ash": {
       repo: "projects/ash",
@@ -177,6 +183,11 @@ var Config = {
       repo: "releases/comm-esr115",
       trackedTree: true,
       synonyms: ["releases/comm-esr115", "comm-esr115"]
+    },
+    "comm-esr128": {
+      repo: "releases/comm-esr128",
+      trackedTree: true,
+      synonyms: ["releases/comm-esr128", "comm-esr128"]
     },
     "ci-configuration": {
       repo: "ci/ci-configuration",
